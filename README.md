@@ -23,7 +23,9 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 ### Batches
 
 *AddToBatch* - Add an object to a batch.
-*CommitBatch* - Commit a batch
+
+*CommitBatch* - Commit a batch.
+
 *DeleteAll* - Removes ALL instances of a certain domain object type using batches.
 
 
