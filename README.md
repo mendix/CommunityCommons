@@ -8,6 +8,10 @@ This module adds many reusable java methods to your project, which can be called
 
 The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
+## Contributing
+
+For the guidelines about contributing, check [here](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
+
 ## Usage
 
 All functions in this package can be invoked using a microflow Java action call in a Microflow, our from your own java code by calling
