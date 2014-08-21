@@ -361,4 +361,8 @@ public class StringUtils
 					.replace("'", "&#39;");// notice this one: for xml "&#39;" would be "&apos;" (http://blogs.msdn.com/b/kirillosenkov/archive/2010/03/19/apos-is-in-xml-in-html-use-39.aspx)
 		// OWASP also advises to escape "/" but give no convincing reason why: https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet
 	}
+
+	public static String regexQuote(String unquotedLiteral) {
+		return Pattern.quote(unquotedLiteral);
+	}
 }
