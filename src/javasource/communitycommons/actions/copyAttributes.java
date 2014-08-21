@@ -11,26 +11,32 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
-import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
+import communitycommons.ORM;
 
 /**
- * Escapes a string value so that it can be used literally with Mendix build-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example). 
+ * Copies all common primitive attributes from source to target, which are not necessarily of the same type. This is useful to, for example, translate database object into view objects.
+ * 
+ * Note that no automatic type conversion is done. 
  */
-public class RegexQuote extends CustomJavaAction<String>
+public class copyAttributes extends CustomJavaAction<Boolean>
 {
-	private String unquotedLiteral;
+	private IMendixObject source;
+	private IMendixObject target;
 
-	public RegexQuote(IContext context, String unquotedLiteral)
+	public copyAttributes(IContext context, IMendixObject source, IMendixObject target)
 	{
 		super(context);
-		this.unquotedLiteral = unquotedLiteral;
+		this.source = source;
+		this.target = target;
 	}
 
 	@Override
-	public String executeAction() throws Exception
+	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return StringUtils.regexQuote(unquotedLiteral);
+		ORM.copyAttributes(getContext(), source, target);
+		return true;
 		// END USER CODE
 	}
 
@@ -40,7 +46,7 @@ public class RegexQuote extends CustomJavaAction<String>
 	@Override
 	public String toString()
 	{
-		return "RegexQuote";
+		return "copyAttributes";
 	}
 
 	// BEGIN EXTRA CODE
