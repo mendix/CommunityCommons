@@ -12,12 +12,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
@@ -289,54 +288,58 @@ public class Misc
 
 	//MWE: based on: http://download.oracle.com/javase/6/docs/api/java/util/concurrent/Executor.html
 	
-	static class MFSerialExecutor implements Executor {
+	static class MFSerialExecutor {
+		private static final ILogNode LOG = Core.getLogger("communitycommons");
 		
-		final ExecutorService executer = Executors.newSingleThreadExecutor(new ThreadFactory() {
-
-			final ThreadFactory tf =  Executors.defaultThreadFactory();
-
-			@Override
-			public Thread newThread(Runnable arg0)
-			{
-				Thread t = tf.newThread(arg0);
-				t.setPriority(Thread.MIN_PRIORITY);
-				return t;
-			}
-			
-		});
-		
-		AtomicInteger tasknr = new AtomicInteger();
 		private static MFSerialExecutor _instance = new MFSerialExecutor();
+		
+		private final AtomicLong tasknr = new AtomicLong();
+		private final ExecutorService executor;
 		
 		public static MFSerialExecutor instance() {
 			return _instance;
 		}
 		
-		@Override
-		public void execute(final Runnable command)
-		{
-			final int currentask = tasknr.incrementAndGet();
-			
-			final ILogNode logger = Core.getLogger("communitycommons");
-			logger.info("[RunMicroflowAsyncInQueue] Scheduling task #" + currentask);
-			
-			//wrap the runnable in a new runnable with some logging
-			
-			executer.execute(new Runnable() {
+		private MFSerialExecutor() {
+			executor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 				
+				//Default thread factory takes care of setting the proper thread context
+				private final ThreadFactory defaultFactory = Executors.defaultThreadFactory();
+
 				@Override
-				public void run() {
-					logger.debug("[RunMicroflowAsyncInQueue] Running task #" + currentask);
-					try {
-						command.run();
-					} catch(Exception e) {
-						logger.error("[RunMicroflowAsyncInQueue] Execution of task #" + currentask + " failed: " + e.getMessage(), e);
-					}
-					logger.info("[RunMicroflowAsyncInQueue] Completed task #" + currentask + " tasks.");
-			}
+				public Thread newThread(Runnable runnable) {
+					Thread t = defaultFactory.newThread(runnable);
+					t.setPriority(Thread.MIN_PRIORITY);
+					t.setName("CommunityCommons background pool executor thread");
+					return t;
+				}
+				
 			});
 		}
-
+		
+		public void execute(final Runnable command)
+		{
+			if (command == null) {
+				throw new NullPointerException("command");
+			}
+			
+			final long currenttasknr = tasknr.incrementAndGet();
+			LOG.info("[RunMicroflowAsyncInQueue] Scheduling task #" + currenttasknr);
+			
+			executor.submit(new Runnable() {
+				@Override
+				public void run() {
+					LOG.info("[RunMicroflowAsyncInQueue] Running task #" + currenttasknr);
+					try {
+						command.run();
+					} catch(RuntimeException e) {
+						LOG.error("[RunMicroflowAsyncInQueue] Execution of task #" + currenttasknr + " failed: " + e.getMessage(), e);
+						throw e; //single thread executor will continue, even if an exception is thrown.
+					}
+					LOG.info("[RunMicroflowAsyncInQueue] Completed task #" + currenttasknr + ". Tasks left: " + (tasknr.get() - currenttasknr));
+				}
+			});
+		}
 	}
 
 	public static Boolean runMicroflowAsyncInQueue(final String microflowName)
