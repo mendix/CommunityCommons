@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
 
 import system.proxies.FileDocument;
+import system.proxies.Language;
 
 import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
@@ -527,4 +528,18 @@ public class Misc
 		return left.equals(right);
 	}
 	
+	/**
+	 * Get the default language
+	 * @param context
+	 * @return The default language
+	 * @throws CoreException
+	 */
+	public static Language getDefaultLanguage(IContext context) throws CoreException {
+		String languageCode = Core.getDefaultLanguage().getCode();
+		List<Language> languageList = Language.load(context, "[Code = '" + languageCode + "']");
+		if (languageList == null || languageList.isEmpty()) {
+			throw new RuntimeException("No language found for default language constant value " + languageCode);
+		}
+		return languageList.get(0);		
+	}
 }
