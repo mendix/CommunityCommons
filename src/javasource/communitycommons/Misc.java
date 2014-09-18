@@ -1,6 +1,7 @@
 package communitycommons;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,6 +20,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.Overlay;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 
 import system.proxies.FileDocument;
 import system.proxies.Language;
@@ -541,5 +546,60 @@ public class Misc
 			throw new RuntimeException("No language found for default language constant value " + languageCode);
 		}
 		return languageList.get(0);		
+	}
+
+	/**
+	 * Overlay a generated PDF document with another PDF (containing the company stationary for example)
+	 * @param context
+	 * @param generatedDocumentMendixObject The document to overlay
+	 * @param overlayMendixObject The document containing the overlay
+	 * @return boolean
+	 * @throws IOException
+	 * @throws COSVisitorException
+	 */
+	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException, COSVisitorException {
+		Logging.simpleLog("Overlay PDF ophalen");
+		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
+		int overlayPageCount = overlayDoc.getNumberOfPages();
+		PDPage lastOverlayPage = (PDPage)overlayDoc.getDocumentCatalog().getAllPages().get(overlayPageCount - 1);
+
+		Logging.simpleLog("Offerte PDF ophalen");
+		PDDocument offerteDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+
+		int pageCount = offerteDoc.getNumberOfPages();		
+		Logging.simpleLog("Aantal pagina's overlay: " + overlayPageCount + ", offerte: " + pageCount);			
+		if (pageCount > overlayPageCount) {
+			Logging.simpleLog("Overlay PDF aanvullen met extra pagina's.");
+			for (int i = overlayPageCount; i < pageCount; i++) {
+				overlayDoc.importPage(lastOverlayPage);
+			}
+		} else if (overlayPageCount > pageCount) {
+			Logging.simpleLog("Overbodige pagina's uit overlay PDF verwijderen.");
+			for (int i = pageCount; i < overlayPageCount; i++) {
+				overlayDoc.removePage(i);
+			}
+		}
+				
+		Logging.simpleLog("Overlay uitvoeren");
+		Overlay overlay = new Overlay();
+		overlay.overlay(offerteDoc,overlayDoc);
+		
+		Logging.simpleLog("Resultaat opslaan in output stream");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		overlayDoc.save(baos);
+		
+		Logging.simpleLog("Resultaat overnemen in input stream");
+		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
+		
+		Logging.simpleLog("Resultaat opslaan in offerte document");
+		Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+		
+		Logging.simpleLog("Close PDFs");
+		overlayDoc.close();
+		offerteDoc.close();
+		
+		Logging.simpleLog("Overlay Offerte PDF eind");
+		return true;
+		
 	}
 }

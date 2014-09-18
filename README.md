@@ -61,6 +61,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *GenerateThumbnail* - Generates a thumbnail for a source object that preserves aspect ratio. Some borders might be clipped to achieve this. If the thumbnail is larger than the source image, the image will not be upscaled, but use transparent borders instead (new in 2.4).
 
+*OverlayPdfDocument* - Overlay a generated PDF document with another PDF (containing the company stationary for example)
+
 ### Logging
 
 *Log* - Prints a message to the Mendix log. 
