@@ -18,6 +18,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import myfirstmodule.proxies.constants.Constants;
+
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.Overlay;
@@ -558,47 +560,51 @@ public class Misc
 	 * @throws COSVisitorException
 	 */
 	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException, COSVisitorException {
-		Logging.simpleLog("Overlay PDF ophalen");
+		
+		ILogNode logger = Core.getLogger(Constants.getOverlayPdfLogNode()); 
+		logger.trace("Overlay PDF start, retrieve overlay PDF");
 		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 		int overlayPageCount = overlayDoc.getNumberOfPages();
 		PDPage lastOverlayPage = (PDPage)overlayDoc.getDocumentCatalog().getAllPages().get(overlayPageCount - 1);
 
-		Logging.simpleLog("Offerte PDF ophalen");
+		logger.trace("Retrieve generated document");
 		PDDocument offerteDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 
-		int pageCount = offerteDoc.getNumberOfPages();		
-		Logging.simpleLog("Aantal pagina's overlay: " + overlayPageCount + ", offerte: " + pageCount);			
+		int pageCount = offerteDoc.getNumberOfPages();
+		if (logger.isTraceEnabled()) {
+			logger.trace("Number of pages in overlay: " + overlayPageCount + ", in generated document: " + pageCount);						
+		}
 		if (pageCount > overlayPageCount) {
-			Logging.simpleLog("Overlay PDF aanvullen met extra pagina's.");
+			logger.trace("Duplicate last overlay page to match number of pages");
 			for (int i = overlayPageCount; i < pageCount; i++) {
 				overlayDoc.importPage(lastOverlayPage);
 			}
 		} else if (overlayPageCount > pageCount) {
-			Logging.simpleLog("Overbodige pagina's uit overlay PDF verwijderen.");
+			logger.trace("Delete unnecessary pages from the overlay to match number of pages");
 			for (int i = pageCount; i < overlayPageCount; i++) {
 				overlayDoc.removePage(i);
 			}
 		}
 				
-		Logging.simpleLog("Overlay uitvoeren");
+		logger.trace("Perform overlay");
 		Overlay overlay = new Overlay();
 		overlay.overlay(offerteDoc,overlayDoc);
 		
-		Logging.simpleLog("Resultaat opslaan in output stream");
+		logger.trace("Save result in output stream");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		overlayDoc.save(baos);
 		
-		Logging.simpleLog("Resultaat overnemen in input stream");
+		logger.trace("Duplicate result in input stream");
 		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
 		
-		Logging.simpleLog("Resultaat opslaan in offerte document");
+		logger.trace("Store result in original document");
 		Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
 		
-		Logging.simpleLog("Close PDFs");
+		logger.trace("Close PDFs");
 		overlayDoc.close();
 		offerteDoc.close();
 		
-		Logging.simpleLog("Overlay Offerte PDF eind");
+		logger.trace("Overlay PDF end");
 		return true;
 		
 	}
