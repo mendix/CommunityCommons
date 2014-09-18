@@ -14,3 +14,5 @@ proxies
 /*.mpr.bak
 /*.mpr.left*
 /*.mpr.right*
+src/javasource/system/actions/VerifyPassword.java
+src/javasource/system/UserActionsRegistrar.java
