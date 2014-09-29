@@ -8,7 +8,7 @@
 .mendix-cache
 proxies
 
-/.svn
+*.svn
 /modeler-merge-marker
 /.mendix-cache
 /*.mpr.bak
