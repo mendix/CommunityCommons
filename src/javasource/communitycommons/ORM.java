@@ -31,6 +31,7 @@ import com.mendix.systemwideinterfaces.core.meta.IMetaAssociation.AssociationTyp
 import com.mendix.systemwideinterfaces.core.meta.IMetaEnumValue;
 import com.mendix.systemwideinterfaces.core.meta.IMetaEnumeration;
 import com.mendix.systemwideinterfaces.core.meta.IMetaObject;
+import com.mendix.systemwideinterfaces.core.meta.IMetaPrimitive;
 import com.mendix.systemwideinterfaces.core.meta.IMetaPrimitive.PrimitiveType;
 
 public class ORM
@@ -417,5 +418,22 @@ public class ORM
 		{
 			throw new RuntimeException(e);
 		}
-	}	
+	}
+
+	public static void copyAttributes(IContext context, IMendixObject source, IMendixObject target)
+	{
+		if (source == null)
+			throw new IllegalStateException("source is null");
+		if (target == null)
+			throw new IllegalStateException("target is null");
+		
+		for(IMetaPrimitive e : target.getMetaObject().getMetaPrimitives()) {
+			if (!source.hasMember(e.getName()))
+				continue;
+			if (e.isVirtual() || e.getType() == PrimitiveType.AutoNumber)
+				continue;
+			
+			target.setValue(context, e.getName(), source.getValue(context, e.getName()));
+		}
+	}
 }
