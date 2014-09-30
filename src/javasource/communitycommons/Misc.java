@@ -1,6 +1,7 @@
 package communitycommons;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -16,10 +17,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
+import myfirstmodule.proxies.constants.Constants;
+
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.Overlay;
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 
 import system.proxies.FileDocument;
+import system.proxies.Language;
 
 import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
@@ -530,4 +538,77 @@ public class Misc
 		return left.equals(right);
 	}
 	
+	/**
+	 * Get the default language
+	 * @param context
+	 * @return The default language
+	 * @throws CoreException
+	 */
+	public static Language getDefaultLanguage(IContext context) throws CoreException {
+		String languageCode = Core.getDefaultLanguage().getCode();
+		List<Language> languageList = Language.load(context, "[Code = '" + languageCode + "']");
+		if (languageList == null || languageList.isEmpty()) {
+			throw new RuntimeException("No language found for default language constant value " + languageCode);
+		}
+		return languageList.get(0);		
+	}
+
+	/**
+	 * Overlay a generated PDF document with another PDF (containing the company stationary for example)
+	 * @param context
+	 * @param generatedDocumentMendixObject The document to overlay
+	 * @param overlayMendixObject The document containing the overlay
+	 * @return boolean
+	 * @throws IOException
+	 * @throws COSVisitorException
+	 */
+	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException, COSVisitorException {
+		
+		ILogNode logger = Core.getLogger(Constants.getOverlayPdfLogNode()); 
+		logger.trace("Overlay PDF start, retrieve overlay PDF");
+		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
+		int overlayPageCount = overlayDoc.getNumberOfPages();
+		PDPage lastOverlayPage = (PDPage)overlayDoc.getDocumentCatalog().getAllPages().get(overlayPageCount - 1);
+
+		logger.trace("Retrieve generated document");
+		PDDocument offerteDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+
+		int pageCount = offerteDoc.getNumberOfPages();
+		if (logger.isTraceEnabled()) {
+			logger.trace("Number of pages in overlay: " + overlayPageCount + ", in generated document: " + pageCount);						
+		}
+		if (pageCount > overlayPageCount) {
+			logger.trace("Duplicate last overlay page to match number of pages");
+			for (int i = overlayPageCount; i < pageCount; i++) {
+				overlayDoc.importPage(lastOverlayPage);
+			}
+		} else if (overlayPageCount > pageCount) {
+			logger.trace("Delete unnecessary pages from the overlay to match number of pages");
+			for (int i = pageCount; i < overlayPageCount; i++) {
+				overlayDoc.removePage(i);
+			}
+		}
+				
+		logger.trace("Perform overlay");
+		Overlay overlay = new Overlay();
+		overlay.overlay(offerteDoc,overlayDoc);
+		
+		logger.trace("Save result in output stream");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		overlayDoc.save(baos);
+		
+		logger.trace("Duplicate result in input stream");
+		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
+		
+		logger.trace("Store result in original document");
+		Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+		
+		logger.trace("Close PDFs");
+		overlayDoc.close();
+		offerteDoc.close();
+		
+		logger.trace("Overlay PDF end");
+		return true;
+		
+	}
 }

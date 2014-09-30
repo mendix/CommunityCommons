@@ -61,6 +61,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *GenerateThumbnail* - Generates a thumbnail for a source object that preserves aspect ratio. Some borders might be clipped to achieve this. If the thumbnail is larger than the source image, the image will not be upscaled, but use transparent borders instead (new in 2.4).
 
+*OverlayPdfDocument* - Overlay a generated PDF document with another PDF (containing the company stationary for example)
+
 ### Logging
 
 *Log* - Prints a message to the Mendix log. 
@@ -91,6 +93,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 *ThrowException* - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.
 
 *ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
+
+*GetDefaultLanguage* - Gets the Language object for the default language as defined in the model.
 
 ### Execute Microflow
 
@@ -184,7 +188,7 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *Base64Decode* - Converts a base64 encoded string to the plain, original string.
 
-*XSSSanitize* - Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users.
+*XSSSanitize* - Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users. It also transforms HTML into XHTML, nice for PDF export.
 
 *RandomStrongPassword* - Returns a random strong password containing at least one number, lowercase character,uppercase character and strange character.
 
