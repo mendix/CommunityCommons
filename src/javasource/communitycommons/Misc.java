@@ -17,8 +17,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
-import myfirstmodule.proxies.constants.Constants;
-
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.Overlay;
@@ -564,7 +562,7 @@ public class Misc
 	 */
 	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException, COSVisitorException {
 		
-		ILogNode logger = Core.getLogger(Constants.getOverlayPdfLogNode()); 
+		ILogNode logger = Core.getLogger("OverlayPdf"); 
 		logger.trace("Overlay PDF start, retrieve overlay PDF");
 		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 		int overlayPageCount = overlayDoc.getNumberOfPages();
