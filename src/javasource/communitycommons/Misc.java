@@ -23,6 +23,7 @@ import org.apache.pdfbox.Overlay;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFMergerUtility;
 
 import system.proxies.FileDocument;
 import system.proxies.Language;
@@ -550,6 +551,37 @@ public class Misc
 		}
 		return languageList.get(0);		
 	}
+	
+	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ){
+		
+		int i = 0;
+		PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+		for(i=0; i < documents.size(); i++)
+		{
+		    FileDocument file = documents.get(i);
+		    InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
+		    mergePdf.addSource(content);            
+		}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		mergePdf.setDestinationStream(out);
+		try {
+			mergePdf.mergeDocuments();
+		} catch (COSVisitorException e) {
+			throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+			
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+			
+		}
+		 
+		Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
+
+		out.reset();
+		documents.clear();
+		
+		return true;	
+	}
+	
 
 	/**
 	 * Overlay a generated PDF document with another PDF (containing the company stationary for example)
@@ -609,4 +641,6 @@ public class Misc
 		return true;
 		
 	}
+	
+	
 }
