@@ -275,7 +275,7 @@ public class ORM
 				continue;
 			if (m instanceof MendixAutoNumber)
 				continue;
-			if (withAssociations || ((!(m instanceof MendixObjectReference) && !(m instanceof MendixObjectReferenceSet))))
+			if (withAssociations || ((!(m instanceof MendixObjectReference) && !(m instanceof MendixObjectReferenceSet)&& !(m instanceof MendixAutoNumber))))
 				target.setValue(c, key, m.getValue(c));
 		}
 		return true;
