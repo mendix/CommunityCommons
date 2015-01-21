@@ -37,7 +37,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *DateTimeToLong* - Converts a DateTime to a Unix timestamps (Milliseconds since 1-1-1970).
 
-*LongToDateTime* - Converts a Unix timestamp to a dateTime object.
+*LongToDateTime* - Converts a Unix timestamp(ms) to a dateTime object.
 
 *YearsBetween* - Calculates the number of years between two dates.
 
