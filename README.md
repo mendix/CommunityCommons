@@ -37,7 +37,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *DateTimeToLong* - Converts a DateTime to a Unix timestamps (Milliseconds since 1-1-1970).
 
-*LongToDateTime* - Converts a Unix timestamp to a dateTime object.
+*LongToDateTime* - Converts a Unix timestamp(ms) to a dateTime object.
 
 *YearsBetween* - Calculates the number of years between two dates.
 
@@ -58,8 +58,6 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 *DuplicateFileDocument* - Clones the contents of one file document into another.
 
 *GetFileSize* - Returns the filesize of a file document in bytes.
-
-*GenerateThumbnail* - Generates a thumbnail for a source object that preserves aspect ratio. Some borders might be clipped to achieve this. If the thumbnail is larger than the source image, the image will not be upscaled, but use transparent borders instead (new in 2.4).
 
 *OverlayPdfDocument* - Overlay a generated PDF document with another PDF (containing the company stationary for example)
 
@@ -196,37 +194,6 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
-
-## Changelog
-
-### Community Commons 2.4
-
-*New:*
-
-- ConversationLog class, utility class to manage short lived log conversations, which only show details if an exception occurred somewhere along the way
-- Extended and improved XPath api
-  - Added DateTime value support
-  - Added constructor that accepts String as entity name instead of a proxy class. This returns IMendixObjects instead of proxies in the end. 
-  - Added .hasRefence(reference) constraint
-  - Added .batch(IBatchProcessor) to easily create a batch operation for large datasets
-Made the function that finds a proxy class for an entityname public
-  - Added .deleteAll functionality to delete objects using batches and replace the deprecated deleteAll call. 
-  - Added .firstOrWait() that tries to retrieve for a certain amount of time until something is found
-  - Now automatically inserts .and() statements if necessary
-- Added generateThumbnail function, as used in home.mendix.com. This thumbnail generator crops the images to best fit and does not enlarge images, so thumbnails are never distorted.
-- Added recommitInBatches java, which allows you to quickly run a commit-with-events on all objects of a certain type, which is useful in many migration scenerios
-- Added RandomStrongPassword
-- Added symmetric EncryptString / DecryptString that .. encodes a string
-- Added asymmetric HMAC/Sha256 encoding function for strings
-
-*Fixes:*
-
-- Deprecated the Batch functionility, this is natively build into Mendix 4.
-- CreateUserIfNotExists now always updates the user to the specified credentials. This make sure passwords from configuration files for example are applied after restart
-- Microflow batches now have an additional parameter whether the batch should run ascending or descending trough the dataset
-- #14893: Deepclone does no longer break on autonumbers and reverse associations received several improvements
-- #14376: Fixed base64DecodeToFile (Solution as proposed by Chris de Gelder)
-
 
 ## Help us to improve!
 
