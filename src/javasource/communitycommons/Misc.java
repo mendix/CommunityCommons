@@ -237,23 +237,49 @@ public class Misc
 		Thread.sleep(delaytime);
 	}
 
-	public static IContext getContextFor(IContext context, String username, boolean sudoContext) throws Exception {
-		if (username == null || username.isEmpty())
-			throw new Exception("Assertion: No username provided");
-		
-		ISession session  = Core.getActiveSession(username);
-		if (session == null) {
-			IUser user = Core.getUser(context, username);
-			if (user == null)
-				throw new Exception("Assertion: user with username '" + username + "' does not exist");
-			session = Core.initializeSession(user, null);
+	public static IContext getContextFor(IContext context, String username, boolean sudoContext) {
+		if (username == null || username.isEmpty()) {
+			throw new RuntimeException("Assertion: No username provided");
 		}
 		
+		ISession session = getSessionFor(context, username);
+		
 		IContext c = session.createContext();
-		if (sudoContext)
+		if (sudoContext) {
 			return c.getSudoContext();
-			
+		}
+		
 		return c;
+	}
+
+	private static ISession getSessionFor(IContext context, String username) {
+		ISession session  = Core.getActiveSession(username);
+		
+		if (session == null) {
+			IContext newContext = context.getSession().createContext().getSudoContext();
+			newContext.startTransaction();
+			try {
+				session = initializeSessionForUser(newContext, username);
+			} catch (CoreException e) {
+				newContext.rollbackTransAction();
+				
+				throw new RuntimeException("Failed to initialize session for user: " + username + ": " + e.getMessage(), e);
+			} finally {
+				newContext.endTransaction();
+			}
+		}
+		
+		return session;
+	}
+
+	private static ISession initializeSessionForUser(IContext context, String username) throws CoreException {
+		IUser user = Core.getUser(context, username);
+
+		if (user == null) {
+			throw new RuntimeException("Assertion: user with username '" + username + "' does not exist");
+		}
+
+		return Core.initializeSession(user, null);
 	}
 	
 	public static Object executeMicroflowAsUser(IContext context,
