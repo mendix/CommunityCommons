@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -26,9 +27,9 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.owasp.validator.html.AntiSamy;
 import org.owasp.validator.html.CleanResults;
 import org.owasp.validator.html.Policy;
@@ -69,22 +70,22 @@ public class StringUtils
 	public static String leftPad(String value, Long amount, String fillCharacter)
 	{
 		if (fillCharacter == null || fillCharacter.length() == 0) {
-			return org.apache.commons.lang.StringUtils.leftPad(value, amount.intValue(), " ");
+			return org.apache.commons.lang3.StringUtils.leftPad(value, amount.intValue(), " ");
 		}
-		return org.apache.commons.lang.StringUtils.leftPad(value, amount.intValue(), fillCharacter);
+		return org.apache.commons.lang3.StringUtils.leftPad(value, amount.intValue(), fillCharacter);
 	}
 	
 	public static String rightPad(String value, Long amount, String fillCharacter)
 	{
 		if (fillCharacter == null || fillCharacter.length() == 0) {
-			return org.apache.commons.lang.StringUtils.rightPad(value, amount.intValue(), " ");
+			return org.apache.commons.lang3.StringUtils.rightPad(value, amount.intValue(), " ");
 		}
-		return org.apache.commons.lang.StringUtils.rightPad(value, amount.intValue(), fillCharacter);
+		return org.apache.commons.lang3.StringUtils.rightPad(value, amount.intValue(), fillCharacter);
 	}
 
 	public static String randomString(int length)
 	{
-		return org.apache.commons.lang.RandomStringUtils.randomAlphanumeric(length);
+		return org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric(length);
 	}
 
 	public static String substituteTemplate(final IContext context, String template,
@@ -134,7 +135,7 @@ public class StringUtils
 
 	public static String HTMLEncode(String value)
 	{
-		return StringEscapeUtils.escapeHtml(value);
+		return StringEscapeUtils.escapeHtml4(value);
 	}
 
 	public static String randomHash()
@@ -267,39 +268,50 @@ public class StringUtils
 		}
 	}
 
-	private static final String _pw_charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "!@#$%^&*()+-_[]{}=,./\\|~`'\":;<>?" + "1234567890";
-	
+	private static final String ALPHA_CAPS  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String ALPHA   = "abcdefghijklmnopqrstuvwxyz";
+    private static final String NUM     = "0123456789";
+    private static final String SPL_CHARS   = "!@#$%^&*_=+-/";
 	/**
 	 * Returns a random strong password containing at least one number, lowercase character, uppercase character and strange character
 	 * @param length
 	 * @return
 	 */
-	public static String randomStrongPassword(int length) {
-		if (length < 5)
-			throw new IllegalArgumentException("Password length should at least be 4");
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < length - 4; i++)
-			sb.append(_pw_charset.charAt(RandomUtils.nextInt(_pw_charset.length())));
-	
-		//make sure it is strong
-		sb.append(RandomStringUtils.random(1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-		sb.append(RandomStringUtils.random(1, "abcdefghijklmnopqrstuvwxyz"));
-		sb.append(RandomStringUtils.random(1, "!@#$%^&*()+-_[]{}=,./\\|~`'\":;<>?"));
-		sb.append(RandomStringUtils.random(1, "1234567890"));
-		
-		//do shuffle
-		List<String> base = new ArrayList<String>();
-		StringBuilder result = new StringBuilder();
-
-		for (char c : sb.toString().toCharArray())
-			base.add(String.valueOf(c));
-		
-		while(base.size() > 0) 
-			result.append(base.remove(RandomUtils.nextInt(base.size())));
-			
-		return result.toString();
-	}
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, 
+            int noOfDigits, int noOfSplChars) {
+        if(minLen > maxLen)
+            throw new IllegalArgumentException("Min. Length > Max. Length!");
+        if( (noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen )
+            throw new IllegalArgumentException
+            ("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
+        Random rnd = new Random();
+        int len = rnd.nextInt(maxLen - minLen + 1) + minLen;
+        char[] pswd = new char[len];
+        int index = 0;
+        for (int i = 0; i < noOfCAPSAlpha; i++) {
+            index = getNextIndex(rnd, len, pswd);
+            pswd[index] = ALPHA_CAPS.charAt(rnd.nextInt(ALPHA_CAPS.length()));
+        }
+        for (int i = 0; i < noOfDigits; i++) {
+            index = getNextIndex(rnd, len, pswd);
+            pswd[index] = NUM.charAt(rnd.nextInt(NUM.length()));
+        }
+        for (int i = 0; i < noOfSplChars; i++) {
+            index = getNextIndex(rnd, len, pswd);
+            pswd[index] = SPL_CHARS.charAt(rnd.nextInt(SPL_CHARS.length()));
+        }
+        for(int i = 0; i < len; i++) {
+            if(pswd[i] == 0) {
+                pswd[i] = ALPHA.charAt(rnd.nextInt(ALPHA.length()));
+            }
+        }
+        return String.valueOf(pswd);
+    }
+	private static int getNextIndex(Random rnd, int len, char[] pswd) {
+        int index = rnd.nextInt(len);
+        while(pswd[index = rnd.nextInt(len)] != 0);
+        return index;
+    }
 
 	public static String encryptString(String key, String valueToEncrypt) throws Exception
 	{
