@@ -12,6 +12,21 @@ The module addes functionality for working with Dates, Batches, Strings, Interne
 
 For more information on contributing to this repository visit [Contributing to a GitHub repository](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
 
+## Dependencies
+ -  antisamy-1.5.3.jar
+ -  com.google.guava-14.0.1.jar
+ -  com.springsource.org.apache.batik.css-1.7.0.j
+ -  fontbox-1.8.5.jar
+ -  jempbox-1.8.5.jar
+ -  joda-time-1.6.2.jar
+ -  nekohtml.jar
+ -  org.apache.commons.fileupload-1.2.1.jar
+ -  org.apache.commons.io-2.3.0.jar
+ -  org.apache.commons.lang3.jar
+ -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
+ -  pdfbox-1.8.5.jar
+ -  xml-apis-ext.jar
+
 ## Usage
 
 All functions in this package can be invoked using a microflow Java action call in a Microflow, our from your own java code by calling
