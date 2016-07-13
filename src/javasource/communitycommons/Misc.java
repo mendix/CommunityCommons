@@ -143,20 +143,33 @@ public class Misc
 	}
 
 	public static Boolean duplicateFileDocument(IContext context, IMendixObject toClone, IMendixObject target) throws Exception
-	{
-		if (toClone == null || target == null)
-			throw new Exception("No file to clone or to clone into provided");
-		
-		 MendixBoolean hasContents = (MendixBoolean) toClone.getMember(context, FileDocument.MemberNames.HasContents.toString());
-     if (!hasContents.getValue(context))
-    	 return false;
+    {
+        if (toClone == null || target == null)
+            throw new Exception("No file to clone or to clone into provided");
 
-		InputStream inputStream = Core.getFileDocumentContent(context, toClone); 
-	
-		Core.storeFileDocumentContent(context, target, (String) toClone.getValue(context, system.proxies.FileDocument.MemberNames.Name.toString()),  inputStream); 
-		return true;
-	}
-	
+         MendixBoolean hasContents = (MendixBoolean) toClone.getMember(context, FileDocument.MemberNames.HasContents.toString());
+     if (!hasContents.getValue(context))
+         return false;
+
+        InputStream inputStream = Core.getFileDocumentContent(context, toClone); 
+
+        try {
+            Core.storeFileDocumentContent(context, target, (String) toClone.getValue(context, system.proxies.FileDocument.MemberNames.Name.toString()),  inputStream); 
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally{
+            try {
+                if(inputStream != null)
+                inputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
   public static Boolean duplicateImage(IContext context, IMendixObject toClone, IMendixObject target, int thumbWidth, int thumbHeight) throws Exception
   {
       if (toClone == null || target == null)
@@ -168,8 +181,21 @@ public class Misc
 
       InputStream inputStream = Core.getImage(context, toClone, false); 
 
-      Core.storeImageDocumentContent(context, target, inputStream, thumbWidth, thumbHeight);
+      try {
+        Core.storeImageDocumentContent(context, target, inputStream, thumbWidth, thumbHeight);
 
+          return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+      finally {
+          try {
+            if(inputStream!= null)
+              inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+      }
       return true;
   }
 
