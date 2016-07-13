@@ -242,14 +242,21 @@ public class Misc
 			throw new RuntimeException("Assertion: No username provided");
 		}
 		
-		ISession session = getSessionFor(context, username);
-		
-		IContext c = session.createContext();
-		if (sudoContext) {
-			return c.getSudoContext();
+		if (username.equals(context.getSession().getUser().getName()))
+		{
+			return context;
 		}
+		else
+		{
+			ISession session = getSessionFor(context, username);
 		
-		return c;
+			IContext c = session.createContext();
+			if (sudoContext) {
+				return c.getSudoContext();
+			}
+		
+			return c;
+		}
 	}
 
 	private static ISession getSessionFor(IContext context, String username) {
