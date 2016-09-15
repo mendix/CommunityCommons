@@ -267,8 +267,9 @@ public class Misc
 		if (username == null || username.isEmpty()) {
 			throw new RuntimeException("Assertion: No username provided");
 		}
-		
-		if (username.equals(context.getSession().getUser().getName()))
+
+        // Session does not have a user when it's a scheduled event.
+		if (context.getSession().getUser() != null && username.equals(context.getSession().getUser().getName()))
 		{
 			return context;
 		}
