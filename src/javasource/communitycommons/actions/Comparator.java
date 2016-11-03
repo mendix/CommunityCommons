@@ -9,9 +9,11 @@ import java.util.Map.Entry;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
+import com.mendix.core.objectmanagement.MendixObjectMember;
 import com.mendix.core.objectmanagement.member.MendixHashString;
 import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixIdentifier;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.IMendixObjectMember;
 
@@ -86,9 +88,6 @@ public class Comparator {
             if (map.get(defaultKey) != null) {
                 map.remove(defaultKey);
             }
-            if (map.containsKey(defaultKey)) {
-                map.remove(defaultKey);
-            }
         }
 
         for (Iterator<? extends Map.Entry<String, ? extends IMendixObjectMember<?>>> it =
@@ -101,7 +100,7 @@ public class Comparator {
                 it.remove();
             }
             if (entry.getValue().getValue(context) instanceof List) {
-                List list = (List) entry.getValue().getValue(context);
+              List<MendixObjectMember<List<IMendixIdentifier>>> list = (List<MendixObjectMember<List<IMendixIdentifier>>>) entry.getValue().getValue(context);
                 if (list.size() == 0) {
                     it.remove();
                 }

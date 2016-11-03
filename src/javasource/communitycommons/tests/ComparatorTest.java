@@ -7,17 +7,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.mendix.core.objectmanagement.MendixObjectMember;
 import com.mendix.core.objectmanagement.member.MendixHashString;
+import com.mendix.core.objectmanagement.member.MendixObjectReferenceSet;
 import com.mendix.core.objectmanagement.member.MendixString;
 import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixIdentifier;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.IMendixObjectMember;
 
@@ -78,7 +83,7 @@ public class ComparatorTest {
 
     @Test
     public void testIfFalseIsReturnedWhenValuesAreNotEqual() {
-        // Given we have an expected object with a String value
+        // Given we have an expected object with a String value and an actual with another String value
         IMendixObjectMember<String> expectedString = mock(MendixString.class);
         expectedMockMap.put("OtherStringTest", expectedString);
         when(expectedString.getValue(context)).thenReturn("Some string");
@@ -124,17 +129,21 @@ public class ComparatorTest {
     public void testIfDefaultKeysAreProperlyDeleted() {
         // Given we have an expected object with a all the default keys + another string
         IMendixObjectMember<String> expectedString = mock(MendixString.class);
-        IMendixObjectMember<String> expectedNull = mock(MendixString.class);
         IMendixObjectMember<String> expectedHashString = mock(MendixHashString.class);
         expectedMockMap.put("changedDate", expectedString);
         expectedMockMap.put("createdDate", expectedString);
         expectedMockMap.put("System.changedBy", expectedString);
-        expectedMockMap.put("System.owner", expectedNull);
+        expectedMockMap.put("System.owner", expectedString);
         expectedMockMap.put("HashString", expectedHashString);
         expectedMockMap.put("OtherStringTest", expectedString);
         when(expectedString.getValue(context)).thenReturn("Some string");
-        when(expectedNull.getValue(context)).thenReturn(null);
         when(expectedHashString.getValue(context)).thenReturn("Some hash");
+        
+        // And we have an expected object with an empty list
+        MendixObjectMember<List<IMendixIdentifier>> expectedList = mock(MendixObjectReferenceSet.class); 
+        expectedMockMap.put("SomeList", expectedList);
+        List<IMendixIdentifier> someList = new ArrayList<IMendixIdentifier>();
+        when(expectedList.getValue(context)).thenReturn(someList);
         
         // And we have an actual object without the default keys
         actualMockMap.put("OtherStringTest", expectedString);
