@@ -162,4 +162,16 @@ public class ComparatorTest {
         verify(actualMock, times(1)).getMembers(context);
         verify(loggerMock, times(0)).error(Mockito.anyString());
     }
+    
+    @Test
+    public void testIfFalseIsReturnedWhenIMendixObjectIsNull() {
+      // When: Expected and Actual objects are null
+      Comparator comparator = new Comparator(null, null, context, loggerMock);
+      
+      // Then: I expect false to be returned
+      assertFalse(comparator.CompareLists());
+      
+      // And: I expect a log message
+      verify(loggerMock, times(1)).error(Mockito.anyString());
+    }
 }

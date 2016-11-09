@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
@@ -34,78 +35,98 @@ public class Comparator {
     }
 
     public boolean CompareLists() {
+        if (expected == null) {
+          logger.error("Expected object is NULL.");
+          return false;
+        }
+        
+        if (actual == null) {
+          logger.error("Actual object is NULL.");
+          return false;
+        }
+        
         Map<String, ? extends IMendixObjectMember<?>> expectedMembers = expected.getMembers(context);
-        Map<String, ? extends IMendixObjectMember<?>> cleanedExpectedMembers =
+        TreeMap<String, Object> cleanedExpectedMembers =
                 cleanDefaultKeys(expectedMembers);
-
+        
         Map<String, ? extends IMendixObjectMember<?>> actualMembers = actual.getMembers(context);
-        Map<String, ? extends IMendixObjectMember<?>> cleanedActualMembers =
+        TreeMap<String, Object> cleanedActualMembers =
                 cleanDefaultKeys(actualMembers);
-
-        MapDifference<String, ? extends IMendixObjectMember<?>> mapDifference =
+        
+        MapDifference<String, Object> mapDifference =
                 Maps.difference(cleanedExpectedMembers, cleanedActualMembers);
 
         if (!mapDifference.entriesDiffering().isEmpty()) {
             assertStatus = false;
-            Map<String, ? extends ValueDifference<? extends IMendixObjectMember<?>>> differences =
+            Map<String, ValueDifference<Object>> differences =
                     mapDifference.entriesDiffering();
-            for (Map.Entry<String, ? extends ValueDifference<? extends IMendixObjectMember<?>>> entry : differences.entrySet()) {
-                logger.error(expected.getType() + "." + entry.getKey() + "' expected value is '"
-                        + entry.getValue().leftValue().getValue(context) + "' where actual value is '"
-                        + entry.getValue().rightValue().getValue(context) + "'");
+            for (Map.Entry<String, ? extends ValueDifference<Object>> entry : differences.entrySet()) {
+                logger.error(expected.getType() + "." + entry.getKey() + 
+                        " expected value is '" + entry.getValue().leftValue().getClass().getSimpleName() + " => " +
+                        entry.getValue().leftValue() + "' where actual value is '" + 
+                        entry.getValue().leftValue().getClass().getSimpleName() + " => " + 
+                        entry.getValue().rightValue()  + "'");
             }
         }
         if (!mapDifference.entriesOnlyOnLeft().isEmpty()) {
             assertStatus = false;
-            Map<String, ? extends IMendixObjectMember<?>> existsInExpected =
+            Map<String, Object> existsInExpected =
                     mapDifference.entriesOnlyOnLeft();
-            for (Map.Entry<String, ? extends IMendixObjectMember<?>> entry : existsInExpected.entrySet()) {
+            for (Map.Entry<String, Object> entry : existsInExpected.entrySet()) {
                 logger.error(expected.getType() + "." + entry.getKey() + " => " +
-                        entry.getValue().getValue(context) + "' is not set in actual object.");
+                        entry.getValue() + "' is not set in actual object.");
             }
         }
         if (!mapDifference.entriesOnlyOnRight().isEmpty()) {
             assertStatus = false;
-            Map<String, ? extends IMendixObjectMember<?>> existsInExpected =
+            Map<String, Object> existsInExpected =
                     mapDifference.entriesOnlyOnRight();
-            for (Map.Entry<String, ? extends IMendixObjectMember<?>> entry : existsInExpected.entrySet()) {
+            for (Map.Entry<String, Object> entry : existsInExpected.entrySet()) {
                 logger.error(actual.getType() + "." + entry.getKey() + " => " +
-                        entry.getValue().getValue(context) + "' is not set in expected object.");
+                        entry.getValue() + "' is not set in expected object.");
             }
         }
         return assertStatus;
     }
 
-    private Map<String, ? extends IMendixObjectMember<?>> cleanDefaultKeys(
+    private TreeMap<String, Object> cleanDefaultKeys(
             Map<String, ? extends IMendixObjectMember<?>> map) {
         List<String> defaultKeys = new ArrayList<>();
         defaultKeys.add("changedDate");
         defaultKeys.add("createdDate");
         defaultKeys.add("System.changedBy");
         defaultKeys.add("System.owner");
-
+        
         for (String defaultKey : defaultKeys) {
             if (map.get(defaultKey) != null) {
                 map.remove(defaultKey);
             }
         }
 
+        TreeMap<String, Object> treeMap = new TreeMap<>();
+        
         for (Iterator<? extends Map.Entry<String, ? extends IMendixObjectMember<?>>> it =
              map.entrySet().iterator(); it.hasNext();) {
             Entry<String, ? extends IMendixObjectMember<?>> entry = it.next();
             if (entry.getValue() instanceof MendixHashString) {
                 it.remove();
+                continue;
             }
             if (entry.getValue().getValue(context) == null) {
                 it.remove();
+                continue;
             }
             if (entry.getValue().getValue(context) instanceof List) {
               List<MendixObjectMember<List<IMendixIdentifier>>> list = (List<MendixObjectMember<List<IMendixIdentifier>>>) entry.getValue().getValue(context);
                 if (list.size() == 0) {
                     it.remove();
+                    continue;
                 }
             }
+            treeMap.put(entry.getKey(), entry.getValue().getValue(context));
+            continue;
         }
-        return map;
+
+        return treeMap;
     }
 }
