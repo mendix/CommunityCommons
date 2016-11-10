@@ -31,7 +31,6 @@ import com.mendix.core.Core;
 import com.mendix.core.CoreException;
 import com.mendix.core.conf.RuntimeVersion;
 import com.mendix.core.objectmanagement.member.MendixBoolean;
-import com.mendix.integration.WebserviceException;
 import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
@@ -114,10 +113,6 @@ public class Misc
 	public static void throwException(String message) throws UserThrownException
 	{
 		throw new UserThrownException(message);		
-	}
-	
-	public static void throwWebserviceException(String faultstring) throws WebserviceException {
-		throw new WebserviceException(WebserviceException.clientFaultCode, faultstring);
 	}
 
 	public static String retrieveURL(String url, String postdata) throws Exception

@@ -16,7 +16,7 @@ For more information on contributing to this repository visit [Contributing to a
  -  antisamy-1.5.3.jar
  -  com.google.guava-14.0.1.jar
  -  com.springsource.org.apache.batik.css-1.7.0.j
- -  fontbox-1.8.5.jar
+ -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
  -  joda-time-1.6.2.jar
  -  nekohtml.jar
@@ -24,7 +24,8 @@ For more information on contributing to this repository visit [Contributing to a
  -  org.apache.commons.io-2.3.0.jar
  -  org.apache.commons.lang3.jar
  -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
- -  pdfbox-1.8.5.jar
+ -  ~~pdfbox-1.8.5.jar~~
+ -  pdfbox-app-2.0.3.jar
  -  xml-apis-ext.jar
 
 ## Usage
@@ -105,7 +106,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *ThrowException* - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.
 
-*ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
+*~~ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)~~
 
 *GetDefaultLanguage* - Gets the Language object for the default language as defined in the model.
 
