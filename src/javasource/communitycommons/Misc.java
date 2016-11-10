@@ -374,19 +374,19 @@ public class Misc
 			}
 			
 			final long currenttasknr = tasknr.incrementAndGet();
-			LOG.info("[RunMicroflowAsyncInQueue] Scheduling task #" + currenttasknr);
+			LOG.debug("[RunMicroflowAsyncInQueue] Scheduling task #" + currenttasknr);
 			
 			executor.submit(new Runnable() {
 				@Override
 				public void run() {
-					LOG.info("[RunMicroflowAsyncInQueue] Running task #" + currenttasknr);
+					LOG.debug("[RunMicroflowAsyncInQueue] Running task #" + currenttasknr);
 					try {
 						command.run();
 					} catch(RuntimeException e) {
 						LOG.error("[RunMicroflowAsyncInQueue] Execution of task #" + currenttasknr + " failed: " + e.getMessage(), e);
 						throw e; //single thread executor will continue, even if an exception is thrown.
 					}
-					LOG.info("[RunMicroflowAsyncInQueue] Completed task #" + currenttasknr + ". Tasks left: " + (tasknr.get() - currenttasknr));
+					LOG.debug("[RunMicroflowAsyncInQueue] Completed task #" + currenttasknr + ". Tasks left: " + (tasknr.get() - currenttasknr));
 				}
 			});
 		}
