@@ -19,11 +19,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
-import org.apache.pdfbox.Overlay;
-import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.util.PDFMergerUtility;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 import system.proxies.FileDocument;
 import system.proxies.Language;
@@ -376,19 +374,19 @@ public class Misc
 			}
 			
 			final long currenttasknr = tasknr.incrementAndGet();
-			LOG.info("[RunMicroflowAsyncInQueue] Scheduling task #" + currenttasknr);
+			LOG.debug("[RunMicroflowAsyncInQueue] Scheduling task #" + currenttasknr);
 			
 			executor.submit(new Runnable() {
 				@Override
 				public void run() {
-					LOG.info("[RunMicroflowAsyncInQueue] Running task #" + currenttasknr);
+					LOG.debug("[RunMicroflowAsyncInQueue] Running task #" + currenttasknr);
 					try {
 						command.run();
 					} catch(RuntimeException e) {
 						LOG.error("[RunMicroflowAsyncInQueue] Execution of task #" + currenttasknr + " failed: " + e.getMessage(), e);
 						throw e; //single thread executor will continue, even if an exception is thrown.
 					}
-					LOG.info("[RunMicroflowAsyncInQueue] Completed task #" + currenttasknr + ". Tasks left: " + (tasknr.get() - currenttasknr));
+					LOG.debug("[RunMicroflowAsyncInQueue] Completed task #" + currenttasknr + ". Tasks left: " + (tasknr.get() - currenttasknr));
 				}
 			});
 		}
@@ -613,7 +611,6 @@ public class Misc
 	}
 	
 	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ){
-		
 		int i = 0;
 		PDFMergerUtility  mergePdf = new  PDFMergerUtility();
 		for(i=0; i < documents.size(); i++)
@@ -625,10 +622,7 @@ public class Misc
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		mergePdf.setDestinationStream(out);
 		try {
-			mergePdf.mergeDocuments();
-		} catch (COSVisitorException e) {
-			throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
-			
+			mergePdf.mergeDocuments(null);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
 			
@@ -650,42 +644,24 @@ public class Misc
 	 * @param overlayMendixObject The document containing the overlay
 	 * @return boolean
 	 * @throws IOException
-	 * @throws COSVisitorException
 	 */
-	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException, COSVisitorException {
-		
+	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException {	
 		ILogNode logger = Core.getLogger("OverlayPdf"); 
+		logger.trace("Retrieve generated document");
+		PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+		
 		logger.trace("Overlay PDF start, retrieve overlay PDF");
 		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
-		int overlayPageCount = overlayDoc.getNumberOfPages();
-		PDPage lastOverlayPage = (PDPage)overlayDoc.getDocumentCatalog().getAllPages().get(overlayPageCount - 1);
-
-		logger.trace("Retrieve generated document");
-		PDDocument offerteDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
-
-		int pageCount = offerteDoc.getNumberOfPages();
-		if (logger.isTraceEnabled()) {
-			logger.trace("Number of pages in overlay: " + overlayPageCount + ", in generated document: " + pageCount);						
-		}
-		if (pageCount > overlayPageCount) {
-			logger.trace("Duplicate last overlay page to match number of pages");
-			for (int i = overlayPageCount; i < pageCount; i++) {
-				overlayDoc.importPage(lastOverlayPage);
-			}
-		} else if (overlayPageCount > pageCount) {
-			logger.trace("Delete unnecessary pages from the overlay to match number of pages");
-			for (int i = pageCount; i < overlayPageCount; i++) {
-				overlayDoc.removePage(i);
-			}
-		}
 				
 		logger.trace("Perform overlay");
 		Overlay overlay = new Overlay();
-		overlay.overlay(offerteDoc,overlayDoc);
+		overlay.setInputPDF(inputDoc);
+		overlay.setDefaultOverlayPDF(overlayDoc);
+		overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
 		
 		logger.trace("Save result in output stream");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		overlayDoc.save(baos);
+		overlay.overlay(new HashMap<Integer, String>()).save(baos);
 		
 		logger.trace("Duplicate result in input stream");
 		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
@@ -695,12 +671,9 @@ public class Misc
 		
 		logger.trace("Close PDFs");
 		overlayDoc.close();
-		offerteDoc.close();
+		inputDoc.close();
 		
 		logger.trace("Overlay PDF end");
 		return true;
-		
 	}
-	
-	
 }
