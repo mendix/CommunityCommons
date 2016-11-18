@@ -1,7 +1,7 @@
 package com.mendix.core;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import com.mendix.core.actionmanagement.ActionListener;
 import com.mendix.core.actionmanagement.CoreAction;
 import com.mendix.core.component.LocalComponent;
+import com.mendix.core.component.InternalCore;
 import com.mendix.core.conf.Configuration;
 import com.mendix.externalinterface.connector.RequestHandler;
 import com.mendix.integration.Integration;
@@ -24,8 +25,8 @@ import com.mendix.integration.WebserviceException;
 import com.mendix.logging.ILogNode;
 import com.mendix.logging.LogSubscriber;
 import com.mendix.m2ee.api.IMxRuntimeRequest;
-import com.mendix.systemwideinterfaces.IWebserviceResponse;
 import com.mendix.systemwideinterfaces.MendixException;
+import com.mendix.systemwideinterfaces.IWebserviceResponse;
 import com.mendix.systemwideinterfaces.connectionbus.data.IDataTable;
 import com.mendix.systemwideinterfaces.connectionbus.requests.IMetaAssociationSchema;
 import com.mendix.systemwideinterfaces.connectionbus.requests.IRetrievalSchema;
