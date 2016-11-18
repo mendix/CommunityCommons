@@ -18,7 +18,8 @@ For more information on contributing to this repository visit [Contributing to a
  -  com.springsource.org.apache.batik.css-1.7.0.j
  -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
- -  joda-time-1.6.2.jar
+ -  ~~joda-time-1.6.2.jar~~
+ -  joda-time-2.9.6.jar
  -  nekohtml.jar
  -  org.apache.commons.fileupload-1.2.1.jar
  -  org.apache.commons.io-2.3.0.jar
