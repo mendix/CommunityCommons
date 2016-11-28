@@ -392,7 +392,7 @@ public class StringUtils
 		return org.apache.commons.lang3.StringUtils.substringAfter(str, separator);
 	}
 
-	public static String substringAfter(String str, String separator) {
+	public static String substringAfterLast(String str, String separator) {
 		return org.apache.commons.lang3.StringUtils.substringAfterLast(str, separator);
 	}
 }
