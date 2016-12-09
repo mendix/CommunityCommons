@@ -43,7 +43,7 @@ public class StringUtils
 {
 
 	public static final String	HASH_ALGORITHM	= "SHA-256";
-	
+
 	public static String hash(String value, int length) throws NoSuchAlgorithmException, DigestException
 	{
 		byte[] inBytes = value.getBytes();
@@ -76,7 +76,7 @@ public class StringUtils
 		}
 		return org.apache.commons.lang3.StringUtils.leftPad(value, amount.intValue(), fillCharacter);
 	}
-	
+
 	public static String rightPad(String value, Long amount, String fillCharacter)
 	{
 		if (fillCharacter == null || fillCharacter.length() == 0) {
@@ -113,25 +113,25 @@ public class StringUtils
 				}
 				return HTMLEncode ? HTMLEncode(value) : value;
 			}
-			
+
 		});
 	}
-	
+
 	public static String regexReplaceAll(String source, String regexString, Function<MatchResult, String> replaceFunction)  {
 		if (source == null || source.trim().isEmpty()) // avoid NPE's, save CPU
 			return "";
-	
+
 		StringBuffer resultString = new StringBuffer();
 		Pattern regex = Pattern.compile(regexString);
 		Matcher regexMatcher = regex.matcher(source);
-		
+
 		while (regexMatcher.find()) {
 			MatchResult match = regexMatcher.toMatchResult();
-			String value = replaceFunction.apply(match); 
+			String value = replaceFunction.apply(match);
 			regexMatcher.appendReplacement(resultString, Matcher.quoteReplacement(value));
 		}
 		regexMatcher.appendTail(resultString);
-	
+
 		return resultString.toString();
 	}
 
@@ -158,7 +158,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Source file is null");
 		if (encoded == null)
 			throw new IllegalArgumentException("Source data is null");
-		
+
 		byte [] decoded = Base64.decodeBase64(encoded.getBytes());
 		Core.storeFileDocumentContent(context, targetFile.getMendixObject(), new ByteArrayInputStream(decoded));
 	}
@@ -177,7 +177,7 @@ public class StringUtils
 		if (!file.getHasContents())
 			throw new IllegalArgumentException("Source file has no contents!");
 		InputStream f = Core.getFileDocumentContent(context, file.getMendixObject());
-		return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));		
+		return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));
 	}
 
 	public static String stringFromFile(IContext context, FileDocument source) throws IOException
@@ -188,7 +188,7 @@ public class StringUtils
 		return org.apache.commons.io.IOUtils.toString(f);
 	}
 
-	public static void stringToFile(IContext context, String value, FileDocument destination) 
+	public static void stringToFile(IContext context, String value, FileDocument destination)
 	{
 		if (destination == null)
 			throw new IllegalArgumentException("Destination file is null");
@@ -202,39 +202,39 @@ public class StringUtils
 		if (html == null)
 			return "";
 		final StringBuffer result = new StringBuffer();
-		
-    HTMLEditorKit.ParserCallback callback = 
+
+    HTMLEditorKit.ParserCallback callback =
       new HTMLEditorKit.ParserCallback () {
         @Override
 				public void handleText(char[] data, int pos) {
             result.append(data); //TODO: needds to be html entity decode?
         }
-        
+
         @Override
         public void handleComment(char[] data, int pos) {
         	//Do nothing
         }
-        
+
         @Override
 				public void handleError(String errorMsg, int pos) {
         	//Do nothing
         }
-        
+
         @Override
         public void handleSimpleTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
         		 if (tag == HTML.Tag.BR)
         			 result.append("\r\n");
         }
-        
+
         @Override
         public void handleEndTag(HTML.Tag tag, int pos){
      		 if (tag == HTML.Tag.P)
     			 result.append("\r\n");
         }
     };
-    
+
     new ParserDelegator().parse(new StringReader(html), callback, true);
-		
+
     return result.toString();
 	}
 
@@ -247,18 +247,18 @@ public class StringUtils
 				.toLowerCase();
 		return XSSSanitize(html, policyString);
 	}
-	
+
 	public static String XSSSanitize(String html, String policyString)
 			throws Exception {
 		if (html == null)
 			return "";
 		if (policyString == null)
 			throw new Exception("Unable to perform XSS sanitization: policyString is null");
-		
+
 		String filename = Core.getConfiguration().getResourcesPath() + File.separator
 				+ "communitycommons" + File.separator + "antisamy"
 				+ File.separator + "antisamy-" + policyString + "-1.4.4.xml";
-	
+
 		AntiSamy as = new AntiSamy(); // Create AntiSamy object
 		Policy p = Policy.getInstance(filename);
 		try {
@@ -279,7 +279,7 @@ public class StringUtils
 	 * @param length
 	 * @return
 	 */
-	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, 
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha,
             int noOfDigits, int noOfSplChars) {
         if(minLen > maxLen)
             throw new IllegalArgumentException("Min. Length > Max. Length!");
@@ -317,7 +317,7 @@ public class StringUtils
 
 	public static String encryptString(String key, String valueToEncrypt) throws Exception
 	{
-		if (valueToEncrypt == null) 
+		if (valueToEncrypt == null)
 			return null;
 		if (key == null)
 			throw new MendixRuntimeException("Key should not be empty");
@@ -328,7 +328,7 @@ public class StringUtils
 		c.init(Cipher.ENCRYPT_MODE, k);
 		byte[] encryptedData = c.doFinal(valueToEncrypt.getBytes());
 		byte[] iv = c.getIV();
-		
+
 		return new String(Base64.encodeBase64(iv)) + ";" + new String(Base64.encodeBase64(encryptedData));
 	}
 
@@ -366,7 +366,7 @@ public class StringUtils
 			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}
-	
+
 	public static String escapeHTML(String input) {
 		return input.replace("\"", "&quot;")
 					.replace("&", "&amp;")
@@ -378,5 +378,21 @@ public class StringUtils
 
 	public static String regexQuote(String unquotedLiteral) {
 		return Pattern.quote(unquotedLiteral);
+	}
+
+	public static String substringBefore(String str, String separator) {
+		return org.apache.commons.lang3.StringUtils.substringBefore(str, separator);
+	}
+
+	public static String substringBeforeLast(String str, String separator) {
+		return org.apache.commons.lang3.StringUtils.substringBeforeLast(str, separator);
+	}
+
+	public static String substringAfter(String str, String separator) {
+		return org.apache.commons.lang3.StringUtils.substringAfter(str, separator);
+	}
+
+	public static String substringAfterLast(String str, String separator) {
+		return org.apache.commons.lang3.StringUtils.substringAfterLast(str, separator);
 	}
 }
