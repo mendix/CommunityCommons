@@ -7,30 +7,32 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package unittesting.actions;
 
+import unittesting.TestManager;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
-import communitycommons.XPath;
 
-/**
- * Removes ALL instances of a certain domain object type using batches.
- */
-public class deleteAll extends CustomJavaAction<Boolean>
+public class RunUnitTest extends CustomJavaAction<Boolean>
 {
-	private String entityType;
+	private IMendixObject __unitTest;
+	private unittesting.proxies.UnitTest unitTest;
 
-	public deleteAll(IContext context, String entityType)
+	public RunUnitTest(IContext context, IMendixObject unitTest)
 	{
 		super(context);
-		this.entityType = entityType;
+		this.__unitTest = unitTest;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
+		this.unitTest = __unitTest == null ? null : unittesting.proxies.UnitTest.initialize(getContext(), __unitTest);
+
 		// BEGIN USER CODE
-		return XPath.create(this.getContext(), entityType).deleteAll();
+		TestManager.instance().runTest(getContext(), unitTest);
+		return true;
 		// END USER CODE
 	}
 
@@ -40,7 +42,7 @@ public class deleteAll extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "deleteAll";
+		return "RunUnitTest";
 	}
 
 	// BEGIN EXTRA CODE

@@ -7,32 +7,27 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
-import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns the actual type of an Entity. Useful as alternative way to split upon inheritance, or as input of other functions in this module.
+ * Ends the current transaction.
  */
-public class getTypeAsString extends CustomJavaAction<String>
+public class EndTransaction extends CustomJavaAction<Boolean>
 {
-	private IMendixObject instance;
-
-	public getTypeAsString(IContext context, IMendixObject instance)
+	public EndTransaction(IContext context)
 	{
 		super(context);
-		this.instance = instance;
 	}
 
 	@Override
-	public String executeAction() throws Exception
+	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		if (instance == null)
-			return "";
-		return instance.getType();
+		getContext().endTransaction();
+		return true;
 		// END USER CODE
 	}
 
@@ -42,7 +37,7 @@ public class getTypeAsString extends CustomJavaAction<String>
 	@Override
 	public String toString()
 	{
-		return "getTypeAsString";
+		return "EndTransaction";
 	}
 
 	// BEGIN EXTRA CODE

@@ -7,27 +7,32 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-/**
- * Ends the current transaction.
- */
-public class EndTransaction extends CustomJavaAction<Boolean>
+public class createObjectListFromObject extends CustomJavaAction<java.util.List<IMendixObject>>
 {
-	public EndTransaction(IContext context)
+	private IMendixObject inputObject;
+
+	public createObjectListFromObject(IContext context, IMendixObject inputObject)
 	{
 		super(context);
+		this.inputObject = inputObject;
 	}
 
 	@Override
-	public Boolean executeAction() throws Exception
+	public java.util.List<IMendixObject> executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		getContext().endTransaction();
-		return true;
+		List<IMendixObject> objectList = new ArrayList<IMendixObject>();
+		objectList.add(this.inputObject);
+		
+		return objectList;
 		// END USER CODE
 	}
 
@@ -37,7 +42,7 @@ public class EndTransaction extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "EndTransaction";
+		return "createObjectListFromObject";
 	}
 
 	// BEGIN EXTRA CODE

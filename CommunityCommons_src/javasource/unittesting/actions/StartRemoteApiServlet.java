@@ -7,35 +7,28 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package unittesting.actions;
 
+import unittesting.RemoteApiServlet;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.webui.CustomJavaAction;
-import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-/**
- * This function commits an object in a seperate context and transaction, making sure it gets persisted in the database (regarding which exception happens after invocation).
- */
-public class commitInSeparateDatabaseTransaction extends CustomJavaAction<Boolean>
+public class StartRemoteApiServlet extends CustomJavaAction<Boolean>
 {
-	private IMendixObject mxObject;
+	private String password;
 
-	public commitInSeparateDatabaseTransaction(IContext context, IMendixObject mxObject)
+	public StartRemoteApiServlet(IContext context, String password)
 	{
 		super(context);
-		this.mxObject = mxObject;
+		this.password = password;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		ISession session = getContext().getSession();
-		IContext newContext = session.createContext();
-		Core.commit(newContext, mxObject);
-		newContext.endTransaction();
+		Core.addRequestHandler("unittests/", new RemoteApiServlet(password));
 		return true;
 		// END USER CODE
 	}
@@ -46,7 +39,7 @@ public class commitInSeparateDatabaseTransaction extends CustomJavaAction<Boolea
 	@Override
 	public String toString()
 	{
-		return "commitInSeparateDatabaseTransaction";
+		return "StartRemoteApiServlet";
 	}
 
 	// BEGIN EXTRA CODE

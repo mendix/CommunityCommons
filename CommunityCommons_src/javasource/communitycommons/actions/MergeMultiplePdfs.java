@@ -14,9 +14,6 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
 
-/**
- * 
- */
 public class MergeMultiplePdfs extends CustomJavaAction<Boolean>
 {
 	private java.util.List<IMendixObject> __FilesToMerge;

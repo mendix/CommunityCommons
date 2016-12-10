@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -15,23 +15,25 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * returns the Global Unique Identifier (GUID, or id) of an object.
+ * Returns the user that created the object 
+ * 
+ * (or empty if not applicable).
  */
-public class getGUID extends CustomJavaAction<Long>
+public class getCreatedByUser extends CustomJavaAction<IMendixObject>
 {
-	private IMendixObject item;
+	private IMendixObject thing;
 
-	public getGUID(IContext context, IMendixObject item)
+	public getCreatedByUser(IContext context, IMendixObject thing)
 	{
 		super(context);
-		this.item = item;
+		this.thing = thing;
 	}
 
 	@Override
-	public Long executeAction() throws Exception
+	public IMendixObject executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.getGUID(item);
+		return ORM.getCreatedByUser(getContext(), thing);
 		// END USER CODE
 	}
 
@@ -41,7 +43,7 @@ public class getGUID extends CustomJavaAction<Long>
 	@Override
 	public String toString()
 	{
-		return "getGUID";
+		return "getCreatedByUser";
 	}
 
 	// BEGIN EXTRA CODE

@@ -7,33 +7,27 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
-import com.mendix.systemwideinterfaces.core.IMendixObject;
-import communitycommons.ORM;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns the user that created an object 
- * 
- * (or empty if not applicable).
+ * Starts a new transaction.
  */
-public class getCreatedByUser extends CustomJavaAction<IMendixObject>
+public class StartTransaction extends CustomJavaAction<Boolean>
 {
-	private IMendixObject thing;
-
-	public getCreatedByUser(IContext context, IMendixObject thing)
+	public StartTransaction(IContext context)
 	{
 		super(context);
-		this.thing = thing;
 	}
 
 	@Override
-	public IMendixObject executeAction() throws Exception
+	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.getCreatedByUser(getContext(), thing);
+		getContext().startTransaction();
+		return true;
 		// END USER CODE
 	}
 
@@ -43,7 +37,7 @@ public class getCreatedByUser extends CustomJavaAction<IMendixObject>
 	@Override
 	public String toString()
 	{
-		return "getCreatedByUser";
+		return "StartTransaction";
 	}
 
 	// BEGIN EXTRA CODE

@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -15,30 +15,33 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
+ * Clones objects
  * 
- * - item : the object to inspect
- * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
+ * - Source: the original object to copy
+ * - Target: the object to copy it into (should be of the same type, or a specialization)
+ * - includeAssociations: whether to clone associations. 
  * 
- * Returns true if changed.
+ * If associated objects need to be cloned as well, use deepClone, this function only copies the references, not the reffered objects. Target is not committed automatically.
  */
-public class memberHasChanged extends CustomJavaAction<Boolean>
+public class clone extends CustomJavaAction<Boolean>
 {
-	private IMendixObject item;
-	private String member;
+	private IMendixObject source;
+	private IMendixObject target;
+	private Boolean withAssociations;
 
-	public memberHasChanged(IContext context, IMendixObject item, String member)
+	public clone(IContext context, IMendixObject source, IMendixObject target, Boolean withAssociations)
 	{
 		super(context);
-		this.item = item;
-		this.member = member;
+		this.source = source;
+		this.target = target;
+		this.withAssociations = withAssociations;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.memberHasChanged(this.getContext(), item, member);
+		return ORM.cloneObject(this.getContext(), source, target, withAssociations);
 		// END USER CODE
 	}
 
@@ -48,7 +51,7 @@ public class memberHasChanged extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "memberHasChanged";
+		return "clone";
 	}
 
 	// BEGIN EXTRA CODE

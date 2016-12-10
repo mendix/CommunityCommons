@@ -7,33 +7,32 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
-import communitycommons.Misc;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
-public class recommitInBatches extends CustomJavaAction<Boolean>
+/**
+ * Returns the actual type of an Entity. Useful as alternative way to split upon inheritance, or as input of other functions in this module.
+ */
+public class getTypeAsString extends CustomJavaAction<String>
 {
-	private String xpath;
-	private Long batchsize;
-	private Boolean waitUntilFinished;
-	private Boolean ascending;
+	private IMendixObject instance;
 
-	public recommitInBatches(IContext context, String xpath, Long batchsize, Boolean waitUntilFinished, Boolean ascending)
+	public getTypeAsString(IContext context, IMendixObject instance)
 	{
 		super(context);
-		this.xpath = xpath;
-		this.batchsize = batchsize;
-		this.waitUntilFinished = waitUntilFinished;
-		this.ascending = ascending;
+		this.instance = instance;
 	}
 
 	@Override
-	public Boolean executeAction() throws Exception
+	public String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return Misc.recommitInBatches(xpath, batchsize.intValue(), waitUntilFinished.booleanValue(), ascending);
+		if (instance == null)
+			return "";
+		return instance.getType();
 		// END USER CODE
 	}
 
@@ -43,7 +42,7 @@ public class recommitInBatches extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "recommitInBatches";
+		return "getTypeAsString";
 	}
 
 	// BEGIN EXTRA CODE

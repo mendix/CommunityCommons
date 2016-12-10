@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
@@ -15,7 +15,7 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
 
 /**
- * Copies all common primitive attributes from source to target, which are not necessarily of the same type. This is useful to, for example, translate database object into view objects.
+ * Copies all common primitive attributes from source to target, which are not necessarily of the same type. This is useful to, for example, translate persistent object into non-persistant (view) objects.
  * 
  * Note that no automatic type conversion is done. 
  */

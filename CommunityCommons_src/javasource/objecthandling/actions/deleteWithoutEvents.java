@@ -7,35 +7,33 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
+import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
-import com.mendix.webui.FeedbackHelper;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 /**
- * Refreshes a certain domain object type in the client. Useful to enforce a datagrid to refresh for example.
- * 
- * - instance : This object is used to identify the type of objects that need to be refreshed. For example passing $currentUser will refresh all System.Account's.
+ * Deletes the given objects from the database and server cache (synchronously) without events This action is executed in a transaction.
  */
-public class refreshClassByObject extends CustomJavaAction<Boolean>
+public class deleteWithoutEvents extends CustomJavaAction<Boolean>
 {
-	private IMendixObject instance;
+	private java.util.List<IMendixObject> objectList;
+	private Boolean useDeleteBehavior;
 
-	public refreshClassByObject(IContext context, IMendixObject instance)
+	public deleteWithoutEvents(IContext context, java.util.List<IMendixObject> objectList, Boolean useDeleteBehavior)
 	{
 		super(context);
-		this.instance = instance;
+		this.objectList = objectList;
+		this.useDeleteBehavior = useDeleteBehavior;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		if (instance != null) {
-		    FeedbackHelper.addRefreshClass(this.getContext(), instance.getType());
-		}
+		Core.deleteWithoutEvents(getContext(), objectList, useDeleteBehavior);
 		return true;
 		// END USER CODE
 	}
@@ -46,7 +44,7 @@ public class refreshClassByObject extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "refreshClassByObject";
+		return "deleteWithoutEvents";
 	}
 
 	// BEGIN EXTRA CODE

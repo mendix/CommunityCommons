@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -15,33 +15,23 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Clones objects
- * 
- * - Source: the original object to copy
- * - Target: the object to copy it into (should be of the same type, or a specialization)
- * - includeAssociations: whether to clone associations. 
- * 
- * If associated objects need to be cloned as well, use deepClone, this function only copies the references, not the reffered objects. Target is not committed automatically.
+ * Returns true if at least one member (including owned associations) of this object has changed.
  */
-public class Clone extends CustomJavaAction<Boolean>
+public class objectHasChanged extends CustomJavaAction<Boolean>
 {
-	private IMendixObject source;
-	private IMendixObject target;
-	private Boolean withAssociations;
+	private IMendixObject item;
 
-	public Clone(IContext context, IMendixObject source, IMendixObject target, Boolean withAssociations)
+	public objectHasChanged(IContext context, IMendixObject item)
 	{
 		super(context);
-		this.source = source;
-		this.target = target;
-		this.withAssociations = withAssociations;
+		this.item = item;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.cloneObject(this.getContext(), source, target, withAssociations);
+		return ORM.objectHasChanged(item);
 		// END USER CODE
 	}
 
@@ -51,7 +41,7 @@ public class Clone extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "Clone";
+		return "objectHasChanged";
 	}
 
 	// BEGIN EXTRA CODE

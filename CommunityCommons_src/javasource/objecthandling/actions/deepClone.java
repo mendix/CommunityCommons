@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -35,7 +35,7 @@ import com.mendix.webui.CustomJavaAction;
  * 
  * Note that DeepClone does commit all objects, where Clone does not.
  */
-public class DeepClone extends CustomJavaAction<Boolean>
+public class deepClone extends CustomJavaAction<Boolean>
 {
 	private IMendixObject source;
 	private IMendixObject target;
@@ -45,7 +45,7 @@ public class DeepClone extends CustomJavaAction<Boolean>
 	private String excludeEntities;
 	private String excludeModules;
 
-	public DeepClone(IContext context, IMendixObject source, IMendixObject target, String membersToSkip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules)
+	public deepClone(IContext context, IMendixObject source, IMendixObject target, String membersToSkip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules)
 	{
 		super(context);
 		this.source = source;
@@ -78,7 +78,7 @@ public class DeepClone extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "DeepClone";
+		return "deepClone";
 	}
 
 	// BEGIN EXTRA CODE

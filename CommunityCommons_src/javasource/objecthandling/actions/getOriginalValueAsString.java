@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -21,7 +21,7 @@ import com.mendix.webui.CustomJavaAction;
  * - item : the object of which you want to inspect a member
  * - member: the member to retrieve the previous value from. Note that for references, the module name needs to be included.
  * 
- * The function is applicable for non-String members as well, but always returns a String representation of the previous value.
+ * The function is applicable for non-String members as well, but always returns a String representation of the committed value.
  */
 public class getOriginalValueAsString extends CustomJavaAction<String>
 {

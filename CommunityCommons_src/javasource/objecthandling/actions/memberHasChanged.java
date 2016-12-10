@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
@@ -15,25 +15,30 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns the user that last changed this object as System.User 
+ * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
  * 
- * (or empty if not applicable).
+ * - item : the object to inspect
+ * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
+ * 
+ * Returns true if changed.
  */
-public class getLastChangedByUser extends CustomJavaAction<IMendixObject>
+public class memberHasChanged extends CustomJavaAction<Boolean>
 {
-	private IMendixObject thing;
+	private IMendixObject item;
+	private String member;
 
-	public getLastChangedByUser(IContext context, IMendixObject thing)
+	public memberHasChanged(IContext context, IMendixObject item, String member)
 	{
 		super(context);
-		this.thing = thing;
+		this.item = item;
+		this.member = member;
 	}
 
 	@Override
-	public IMendixObject executeAction() throws Exception
+	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.getLastChangedByUser(getContext(), thing);
+		return ORM.memberHasChanged(this.getContext(), item, member);
 		// END USER CODE
 	}
 
@@ -43,7 +48,7 @@ public class getLastChangedByUser extends CustomJavaAction<IMendixObject>
 	@Override
 	public String toString()
 	{
-		return "getLastChangedByUser";
+		return "memberHasChanged";
 	}
 
 	// BEGIN EXTRA CODE

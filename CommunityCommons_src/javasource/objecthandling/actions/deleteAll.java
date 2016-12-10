@@ -7,33 +7,31 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package objecthandling.actions;
 
-import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import objecthandling.XPath;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-public class recommitInBatches extends CustomJavaAction<Boolean>
+/**
+ * Removes ALL instances of a certain domain object type using batches.
+ */
+public class deleteAll extends CustomJavaAction<Boolean>
 {
-	private String xpath;
-	private Long batchsize;
-	private Boolean waitUntilFinished;
-	private Boolean ascending;
+	private IMendixObject entityType;
 
-	public recommitInBatches(IContext context, String xpath, Long batchsize, Boolean waitUntilFinished, Boolean ascending)
+	public deleteAll(IContext context, IMendixObject entityType)
 	{
 		super(context);
-		this.xpath = xpath;
-		this.batchsize = batchsize;
-		this.waitUntilFinished = waitUntilFinished;
-		this.ascending = ascending;
+		this.entityType = entityType;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return Misc.recommitInBatches(xpath, batchsize.intValue(), waitUntilFinished.booleanValue(), ascending);
+		return XPath.create(this.getContext(), entityType.toString()).deleteAll();
 		// END USER CODE
 	}
 
@@ -43,7 +41,7 @@ public class recommitInBatches extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "recommitInBatches";
+		return "deleteAll";
 	}
 
 	// BEGIN EXTRA CODE

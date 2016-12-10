@@ -7,33 +7,28 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
 
-package communitycommons.actions;
+package unittesting.actions;
 
-import communitycommons.Misc;
+import unittesting.TestManager;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
-public class recommitInBatches extends CustomJavaAction<Boolean>
+public class ReportStepJava extends CustomJavaAction<Boolean>
 {
-	private String xpath;
-	private Long batchsize;
-	private Boolean waitUntilFinished;
-	private Boolean ascending;
+	private String message;
 
-	public recommitInBatches(IContext context, String xpath, Long batchsize, Boolean waitUntilFinished, Boolean ascending)
+	public ReportStepJava(IContext context, String message)
 	{
 		super(context);
-		this.xpath = xpath;
-		this.batchsize = batchsize;
-		this.waitUntilFinished = waitUntilFinished;
-		this.ascending = ascending;
+		this.message = message;
 	}
 
 	@Override
 	public Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return Misc.recommitInBatches(xpath, batchsize.intValue(), waitUntilFinished.booleanValue(), ascending);
+		TestManager.instance().reportStep(message);
+		return true;
 		// END USER CODE
 	}
 
@@ -43,7 +38,7 @@ public class recommitInBatches extends CustomJavaAction<Boolean>
 	@Override
 	public String toString()
 	{
-		return "recommitInBatches";
+		return "ReportStepJava";
 	}
 
 	// BEGIN EXTRA CODE
