@@ -637,7 +637,7 @@ public class Misc
 	 * @return boolean
 	 * @throws IOException
 	 */
-	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject) throws IOException {	
+	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {	
 		ILogNode logger = Core.getLogger("OverlayPdf"); 
 		logger.trace("Retrieve generated document");
 		PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
@@ -649,7 +649,11 @@ public class Misc
 		Overlay overlay = new Overlay();
 		overlay.setInputPDF(inputDoc);
 		overlay.setDefaultOverlayPDF(overlayDoc);
-		overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+		if (onTopOfContent == true){
+			overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+		} else {
+			overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+		}
 		
 		logger.trace("Save result in output stream");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
