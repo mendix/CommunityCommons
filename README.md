@@ -8,6 +8,9 @@ This module adds many reusable java methods to your project, which can be called
 
 The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
+## _Important when updating_ :warning:
+_In version 6.1 several libraries (jar files in the userlib folder of your project) have been updated. pdfbox-1.8.5.jar currently causes a compile error in your project when it's still present. Make sure to remove old libraries from the userlib folder in your project!_ 
+
 ## Contributing
 
 For more information on contributing to this repository visit [Contributing to a GitHub repository](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
@@ -16,15 +19,17 @@ For more information on contributing to this repository visit [Contributing to a
  -  antisamy-1.5.3.jar
  -  com.google.guava-14.0.1.jar
  -  com.springsource.org.apache.batik.css-1.7.0.j
- -  fontbox-1.8.5.jar
+ -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
- -  joda-time-1.6.2.jar
+ -  ~~joda-time-1.6.2.jar~~
+ -  joda-time-2.9.6.jar
  -  nekohtml.jar
  -  org.apache.commons.fileupload-1.2.1.jar
  -  org.apache.commons.io-2.3.0.jar
  -  org.apache.commons.lang3.jar
  -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
- -  pdfbox-1.8.5.jar
+ -  ~~pdfbox-1.8.5.jar~~
+ -  pdfbox-app-2.3.0.jar
  -  xml-apis-ext.jar
 
 ## Usage
@@ -209,14 +214,6 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
-
-## Help us to improve!
-
-Feel free to suggest content or report issues in this forum thread:
-
-https://mxforum.mendix.com/questions/1511/Community-Commons-Module
-
- 
 
 ## Thank you, community.
 
