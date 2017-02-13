@@ -653,7 +653,7 @@ public class Misc
 		
 		logger.trace("Save result in output stream");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		overlay.overlay(new HashMap<Integer, String>()).save(baos);
+//		overlay.overlay(new HashMap<Integer, String>()).save(baos);
 		
 		logger.trace("Duplicate result in input stream");
 		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
