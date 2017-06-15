@@ -46,14 +46,22 @@ public class StringUtils
 
 	public static String hash(String value, int length) throws NoSuchAlgorithmException, DigestException
 	{
-		byte[] inBytes = value.getBytes();
-	    byte[] outBytes = new byte[length];
+		byte[] inBytes = value.getBytes(StandardCharsets.UTF_8);
+		byte[] outBytes = new byte[length];
 
 	    MessageDigest alg=MessageDigest.getInstance(HASH_ALGORITHM);
 	    alg.update(inBytes);
 
 	    alg.digest(outBytes, 0, length);
-	    return String.valueOf(outBytes);
+
+	    StringBuffer hexString = new StringBuffer();
+	    for (int i = 0; i < outBytes.length; i++) {
+	    String hex = Integer.toHexString(0xff & outBytes[i]);
+	    if(hex.length() == 1) hexString.append('0');
+	        hexString.append(hex);
+	    }
+	    
+	    return hexString.toString();
 	}
 
 	public static String regexReplaceAll(String haystack, String needleRegex,
