@@ -8,9 +8,29 @@ This module adds many reusable java methods to your project, which can be called
 
 The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
+## _Important when updating_ :warning:
+_In version 6.1 several libraries (jar files in the userlib folder of your project) have been updated. pdfbox-1.8.5.jar currently causes a compile error in your project when it's still present. Make sure to remove old libraries from the userlib folder in your project!_ 
+
 ## Contributing
 
-For the guidelines about contributing, check [here](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
+For more information on contributing to this repository visit [Contributing to a GitHub repository](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
+
+## Dependencies
+ -  antisamy-1.5.3.jar
+ -  com.google.guava-14.0.1.jar
+ -  com.springsource.org.apache.batik.css-1.7.0.j
+ -  ~~fontbox-1.8.5.jar~~
+ -  jempbox-1.8.5.jar
+ -  ~~joda-time-1.6.2.jar~~
+ -  joda-time-2.9.6.jar
+ -  nekohtml.jar
+ -  org.apache.commons.fileupload-1.2.1.jar
+ -  org.apache.commons.io-2.3.0.jar
+ -  org.apache.commons.lang3.jar
+ -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
+ -  ~~pdfbox-1.8.5.jar~~
+ -  pdfbox-app-2.3.0.jar
+ -  xml-apis-ext.jar
 
 ## Usage
 
@@ -37,7 +57,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *DateTimeToLong* - Converts a DateTime to a Unix timestamps (Milliseconds since 1-1-1970).
 
-*LongToDateTime* - Converts a Unix timestamp to a dateTime object.
+*LongToDateTime* - Converts a Unix timestamp(ms) to a dateTime object.
 
 *YearsBetween* - Calculates the number of years between two dates.
 
@@ -59,7 +79,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *GetFileSize* - Returns the filesize of a file document in bytes.
 
-*GenerateThumbnail* - Generates a thumbnail for a source object that preserves aspect ratio. Some borders might be clipped to achieve this. If the thumbnail is larger than the source image, the image will not be upscaled, but use transparent borders instead (new in 2.4).
+*OverlayPdfDocument* - Overlay a generated PDF document with another PDF (containing the company stationary for example)
 
 ### Logging
 
@@ -91,6 +111,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 *ThrowException* - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.
 
 *ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
+
+*GetDefaultLanguage* - Gets the Language object for the default language as defined in the model.
 
 ### Execute Microflow
 
@@ -184,7 +206,7 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *Base64Decode* - Converts a base64 encoded string to the plain, original string.
 
-*XSSSanitize* - Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users.
+*XSSSanitize* - Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users. It also transforms HTML into XHTML, nice for PDF export.
 
 *RandomStrongPassword* - Returns a random strong password containing at least one number, lowercase character,uppercase character and strange character.
 
@@ -192,45 +214,6 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
-
-## Changelog
-
-### Community Commons 2.4
-
-*New:*
-
-- ConversationLog class, utility class to manage short lived log conversations, which only show details if an exception occurred somewhere along the way
-- Extended and improved XPath api
-  - Added DateTime value support
-  - Added constructor that accepts String as entity name instead of a proxy class. This returns IMendixObjects instead of proxies in the end. 
-  - Added .hasRefence(reference) constraint
-  - Added .batch(IBatchProcessor) to easily create a batch operation for large datasets
-Made the function that finds a proxy class for an entityname public
-  - Added .deleteAll functionality to delete objects using batches and replace the deprecated deleteAll call. 
-  - Added .firstOrWait() that tries to retrieve for a certain amount of time until something is found
-  - Now automatically inserts .and() statements if necessary
-- Added generateThumbnail function, as used in home.mendix.com. This thumbnail generator crops the images to best fit and does not enlarge images, so thumbnails are never distorted.
-- Added recommitInBatches java, which allows you to quickly run a commit-with-events on all objects of a certain type, which is useful in many migration scenerios
-- Added RandomStrongPassword
-- Added symmetric EncryptString / DecryptString that .. encodes a string
-- Added asymmetric HMAC/Sha256 encoding function for strings
-
-*Fixes:*
-
-- Deprecated the Batch functionility, this is natively build into Mendix 4.
-- CreateUserIfNotExists now always updates the user to the specified credentials. This make sure passwords from configuration files for example are applied after restart
-- Microflow batches now have an additional parameter whether the batch should run ascending or descending trough the dataset
-- #14893: Deepclone does no longer break on autonumbers and reverse associations received several improvements
-- #14376: Fixed base64DecodeToFile (Solution as proposed by Chris de Gelder)
-
-
-## Help us to improve!
-
-Feel free to suggest content or report issues in this forum thread:
-
-https://mxforum.mendix.com/questions/1511/Community-Commons-Module
-
- 
 
 ## Thank you, community.
 

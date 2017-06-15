@@ -1,14 +1,13 @@
-/deployment
+deployment
 /releases
 /.settings
-/*.launch
-/.classpath
-/.project
-/*.mpr.lock
+*.launch
+.classpath
+.project
+*.mpr.lock
 .mendix-cache
 proxies
-
-/.svn
+*.svn
 /modeler-merge-marker
 /.mendix-cache
 /*.mpr.bak
@@ -28,4 +27,5 @@ src/releases
 *.launch
 .classpath
 .project
-#mxgit-marker-end
+src/javasource/system/actions/VerifyPassword.java
+src/javasource/system/UserActionsRegistrar.java
