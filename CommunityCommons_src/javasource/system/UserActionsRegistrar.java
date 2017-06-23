@@ -72,6 +72,7 @@ public class UserActionsRegistrar implements EventHandler
 			component.actionRegistry().registerUserAction(communitycommons.actions.GetFileContentsFromResource.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.getFileSize.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.getGUID.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.GetImageDimensions.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.GetIntFromDateTime.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.getLastChangedByUser.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.getLockOwner.class);
