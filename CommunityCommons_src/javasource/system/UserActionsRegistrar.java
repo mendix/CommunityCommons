@@ -47,6 +47,7 @@ public class UserActionsRegistrar implements EventHandler
 			component.actionRegistry().registerUserAction(communitycommons.actions.commitInSeparateDatabaseTransaction.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.commitWithoutEvents.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.copyAttributes.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.CreateLogNode.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DateTimeToLong.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DecryptString.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DeepClone.class);
