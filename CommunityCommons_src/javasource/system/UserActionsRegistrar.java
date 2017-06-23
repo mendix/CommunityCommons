@@ -47,6 +47,7 @@ public class UserActionsRegistrar implements EventHandler
 			component.actionRegistry().registerUserAction(communitycommons.actions.commitInSeparateDatabaseTransaction.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.commitWithoutEvents.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.copyAttributes.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.CreateLogNode.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DateTimeToLong.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DecryptString.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.DeepClone.class);
@@ -114,6 +115,10 @@ public class UserActionsRegistrar implements EventHandler
 			component.actionRegistry().registerUserAction(communitycommons.actions.StringTrim.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.SubstituteTemplate.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.SubstituteTemplate2.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.SubstringAfter.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.SubstringAfterLast.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.SubstringBefore.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.SubstringBeforeLast.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.ThrowException.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.ThrowWebserviceException.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.TimeMeasureEnd.class);
