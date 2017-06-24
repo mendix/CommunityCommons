@@ -7,7 +7,7 @@
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., Ã©, Ã¶, Ã , etc. are supported in comments.
 
-package basis.actions;
+package communitycommons.actions;
 
 import java.time.LocalDate;
 import java.time.YearMonth;

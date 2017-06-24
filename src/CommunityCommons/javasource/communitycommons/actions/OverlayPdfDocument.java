@@ -16,7 +16,6 @@ import communitycommons.Misc;
 
 /**
  * Overlay a generated PDF document with another PDF (containing the company stationary for example)
- * 
  */
 public class OverlayPdfDocument extends CustomJavaAction<Boolean>
 {
