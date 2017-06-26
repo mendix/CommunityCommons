@@ -88,6 +88,7 @@ public class UserActionsRegistrar implements EventHandler
 			component.actionRegistry().registerUserAction(communitycommons.actions.LongToDateTime.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.memberHasChanged.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.MergeMultiplePdfs.class);
+			component.actionRegistry().registerUserAction(communitycommons.actions.MonthsBetween.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.objectHasChanged.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.objectIsNew.class);
 			component.actionRegistry().registerUserAction(communitycommons.actions.OverlayPdfDocument.class);
