@@ -27,7 +27,8 @@ For more information on contributing to this repository visit [Contributing to a
  -  org.apache.commons.fileupload-1.2.1.jar
  -  org.apache.commons.io-2.3.0.jar
  -  org.apache.commons.lang3.jar
- -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
+ -  ~~org.apache.servicemix.bundles.commons-codec-1.3.0.jar~~
+ -  commons-codec-1.10.jar
  -  ~~pdfbox-1.8.5.jar~~
  -  pdfbox-app-2.3.0.jar
  -  xml-apis-ext.jar
