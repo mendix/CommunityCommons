@@ -176,6 +176,10 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *getLockOwner* - Returns the user.name of the lock owner, or empty if the item is not locked.
 
+*EndTransaction* - Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested.
+
+*StartTransaction* - Start a transaction, if a transaction is already started for this context, a savepoint will be added.
+
 ### StringUtils
 
 *Hash* - Hashes a value using the SHA-256 hash algorithm.
