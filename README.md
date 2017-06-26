@@ -84,6 +84,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 ### Logging
 
+*CreateLogNode* - Initialize a log node without having a log line.
+
 *Log* - Prints a message to the Mendix log. 
 
 *SimpleLog* - Logs a message to 'Community Commons' with loglevel 'Info'. 
