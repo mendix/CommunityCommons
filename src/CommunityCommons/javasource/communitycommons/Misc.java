@@ -472,7 +472,7 @@ public class Misc
 	}
 
 	public static Boolean executeMicroflowInBatches(String xpath, final String microflow, int batchsize, boolean waitUntilFinished, boolean asc) throws CoreException, InterruptedException {
-		Core.getLogger("communitycommons").info("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
+		Core.getLogger("communitycommons").debug("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
 		
 		return executeInBatches(xpath, new BatchState(new IBatchItemHandler() {
 
@@ -488,7 +488,7 @@ public class Misc
 	public static Boolean recommitInBatches(String xpath, int batchsize,
 			boolean waitUntilFinished, Boolean asc) throws CoreException, InterruptedException
 	{
-		Core.getLogger("communitycommons").info("[ExecuteInBatches] Starting recommit batch...");
+		Core.getLogger("communitycommons").debug("[ExecuteInBatches] Starting recommit batch...");
 		
 		return executeInBatches(xpath, new BatchState(new IBatchItemHandler() {
 
@@ -509,7 +509,7 @@ public class Misc
 		int loop = (int) Math.ceil(((float)count) / ((float)batchsize));
 		
 		
-		Core.getLogger("communitycommons").info(
+		Core.getLogger("communitycommons").debug(
 				"[ExecuteInBatches] Starting batch on ~ " + count + " objects divided over ~ " + loop + " batches. "
 				+ (waitUntilFinished ? "Waiting until the batch has finished..." : "")
 		);
@@ -546,7 +546,7 @@ public class Misc
 					
 					//no new objects found :)
 					if (objects.size() == 0) {
-						Core.getLogger("communitycommons").info("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
+						Core.getLogger("communitycommons").debug("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
 						batchState.setState(1);
 					}
 					else {
