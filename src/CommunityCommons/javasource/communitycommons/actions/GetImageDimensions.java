@@ -17,9 +17,6 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.ImageDimensions;
 
-/**
- * 
- */
 public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 {
 	private IMendixObject __ImageParameter1;
@@ -49,7 +46,7 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 	 * Returns a string representation of this action
 	 */
 	@Override
-	public String toString()
+	public java.lang.String toString()
 	{
 		return "GetImageDimensions";
 	}

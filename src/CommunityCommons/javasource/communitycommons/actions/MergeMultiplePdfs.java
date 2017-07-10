@@ -14,10 +14,7 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
 
-/**
- * 
- */
-public class MergeMultiplePdfs extends CustomJavaAction<Boolean>
+public class MergeMultiplePdfs extends CustomJavaAction<java.lang.Boolean>
 {
 	private java.util.List<IMendixObject> __FilesToMerge;
 	private java.util.List<system.proxies.FileDocument> FilesToMerge;
@@ -32,7 +29,7 @@ public class MergeMultiplePdfs extends CustomJavaAction<Boolean>
 	}
 
 	@Override
-	public Boolean executeAction() throws Exception
+	public java.lang.Boolean executeAction() throws Exception
 	{
 		this.FilesToMerge = new java.util.ArrayList<system.proxies.FileDocument>();
 		if (__FilesToMerge != null)
@@ -50,7 +47,7 @@ public class MergeMultiplePdfs extends CustomJavaAction<Boolean>
 	 * Returns a string representation of this action
 	 */
 	@Override
-	public String toString()
+	public java.lang.String toString()
 	{
 		return "MergeMultiplePdfs";
 	}

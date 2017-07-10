@@ -16,12 +16,12 @@ import communitycommons.StringUtils;
 /**
  * Gets the substring before the first occurrence of a separator.
  */
-public class SubstringBefore extends CustomJavaAction<String>
+public class SubstringBefore extends CustomJavaAction<java.lang.String>
 {
-	private String str;
-	private String separator;
+	private java.lang.String str;
+	private java.lang.String separator;
 
-	public SubstringBefore(IContext context, String str, String separator)
+	public SubstringBefore(IContext context, java.lang.String str, java.lang.String separator)
 	{
 		super(context);
 		this.str = str;
@@ -29,7 +29,7 @@ public class SubstringBefore extends CustomJavaAction<String>
 	}
 
 	@Override
-	public String executeAction() throws Exception
+	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
 		return StringUtils.substringBefore(str, separator);
@@ -40,7 +40,7 @@ public class SubstringBefore extends CustomJavaAction<String>
 	 * Returns a string representation of this action
 	 */
 	@Override
-	public String toString()
+	public java.lang.String toString()
 	{
 		return "SubstringBefore";
 	}

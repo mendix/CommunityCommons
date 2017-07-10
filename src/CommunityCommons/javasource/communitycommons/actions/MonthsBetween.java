@@ -16,10 +16,7 @@ import java.time.temporal.ChronoUnit;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
-/**
- * 
- */
-public class MonthsBetween extends CustomJavaAction<Long>
+public class MonthsBetween extends CustomJavaAction<java.lang.Long>
 {
 	private java.util.Date date1;
 	private java.util.Date date2;
@@ -32,7 +29,7 @@ public class MonthsBetween extends CustomJavaAction<Long>
 	}
 
 	@Override
-	public Long executeAction() throws Exception
+	public java.lang.Long executeAction() throws Exception
 	{
 		// BEGIN USER CODE
 	    LocalDate localDate1 = date1.toInstant()
@@ -52,7 +49,7 @@ public class MonthsBetween extends CustomJavaAction<Long>
 	 * Returns a string representation of this action
 	 */
 	@Override
-	public String toString()
+	public java.lang.String toString()
 	{
 		return "MonthsBetween";
 	}

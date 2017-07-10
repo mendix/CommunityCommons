@@ -13,21 +13,18 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.Logging;
 
-/**
- * 
- */
-public class CreateLogNode extends CustomJavaAction<Boolean>
+public class CreateLogNode extends CustomJavaAction<java.lang.Boolean>
 {
-	private String LogNode;
+	private java.lang.String LogNode;
 
-	public CreateLogNode(IContext context, String LogNode)
+	public CreateLogNode(IContext context, java.lang.String LogNode)
 	{
 		super(context);
 		this.LogNode = LogNode;
 	}
 
 	@Override
-	public Boolean executeAction() throws Exception
+	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
 		Logging.createLogNode(LogNode);
@@ -39,7 +36,7 @@ public class CreateLogNode extends CustomJavaAction<Boolean>
 	 * Returns a string representation of this action
 	 */
 	@Override
-	public String toString()
+	public java.lang.String toString()
 	{
 		return "CreateLogNode";
 	}
