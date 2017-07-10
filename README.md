@@ -32,6 +32,7 @@ For more information on contributing to this repository visit [Contributing to a
  -  ~~pdfbox-1.8.5.jar~~
  -  pdfbox-app-2.3.0.jar
  -  xml-apis-ext.jar
+ -  xerces.xercesImpl.2.8.1.jar
 
 ## Usage
 
