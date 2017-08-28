@@ -18,7 +18,7 @@ For more information on contributing to this repository visit [Contributing to a
 ## Dependencies
  -  antisamy-1.5.3.jar
  -  com.google.guava-14.0.1.jar
- -  com.springsource.org.apache.batik.css-1.7.0.j
+ -  com.springsource.org.apache.batik.css-1.7.0.jar
  -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
  -  ~~joda-time-1.6.2.jar~~
@@ -27,6 +27,7 @@ For more information on contributing to this repository visit [Contributing to a
  -  org.apache.commons.fileupload-1.2.1.jar
  -  org.apache.commons.io-2.3.0.jar
  -  org.apache.commons.lang3.jar
+ -  org.apache.servicemix.bundles.batik.1.8_1.jar
  -  ~~org.apache.servicemix.bundles.commons-codec-1.3.0.jar~~
  -  commons-codec-1.10.jar
  -  ~~pdfbox-1.8.5.jar~~
