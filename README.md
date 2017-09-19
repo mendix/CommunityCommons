@@ -18,7 +18,7 @@ For more information on contributing to this repository visit [Contributing to a
 ## Dependencies
  -  antisamy-1.5.3.jar
  -  com.google.guava-14.0.1.jar
- -  com.springsource.org.apache.batik.css-1.7.0.j
+ -  com.springsource.org.apache.batik.css-1.7.0.jar
  -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
  -  ~~joda-time-1.6.2.jar~~
@@ -27,10 +27,13 @@ For more information on contributing to this repository visit [Contributing to a
  -  org.apache.commons.fileupload-1.2.1.jar
  -  org.apache.commons.io-2.3.0.jar
  -  org.apache.commons.lang3.jar
- -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
+ -  org.apache.servicemix.bundles.batik.1.8_1.jar
+ -  ~~org.apache.servicemix.bundles.commons-codec-1.3.0.jar~~
+ -  commons-codec-1.10.jar
  -  ~~pdfbox-1.8.5.jar~~
  -  pdfbox-app-2.3.0.jar
  -  xml-apis-ext.jar
+ -  xerces.xercesImpl.2.8.1.jar
 
 ## Usage
 
@@ -82,6 +85,8 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 *OverlayPdfDocument* - Overlay a generated PDF document with another PDF (containing the company stationary for example)
 
 ### Logging
+
+*CreateLogNode* - Initialize a log node without having a log line.
 
 *Log* - Prints a message to the Mendix log. 
 
@@ -175,6 +180,10 @@ From version *1.2* upward, locks are released automatically when a session expir
 *waitForLock* - Identical to acquirelock, but on failure, waits until the lock can be obtained.
 
 *getLockOwner* - Returns the user.name of the lock owner, or empty if the item is not locked.
+
+*EndTransaction* - Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested.
+
+*StartTransaction* - Start a transaction, if a transaction is already started for this context, a savepoint will be added.
 
 ### StringUtils
 
