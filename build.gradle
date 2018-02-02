@@ -79,3 +79,19 @@ task fullDist {
 clean {
     delete "$projectDir/src/CommunityCommons/userlib"
 }
+
+task list {
+    doLast {
+	File srcDir
+	
+	//org.gradle.api.file.FileCollection collection = files { srcDir.listFiles() }
+	
+	srcDir = file('src/CommunityCommons')
+	println "Contents of $srcDir.name"
+	def list = []
+	srcDir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
+	    list << file(java.nio.file.Paths.get('.').relativize(entry.absolutePath)) //FIXME
+	}
+	println list
+    }
+}
