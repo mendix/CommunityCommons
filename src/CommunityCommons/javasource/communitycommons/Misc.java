@@ -1,5 +1,6 @@
 package communitycommons;
 
+import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -26,7 +26,6 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import system.proxies.FileDocument;
 import system.proxies.Language;
 
-import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
 import com.mendix.core.CoreException;
 import com.mendix.core.conf.RuntimeVersion;
@@ -37,7 +36,6 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
-
 
 public class Misc
 {
@@ -135,7 +133,7 @@ public class Misc
 		IOUtils.closeQuietly(conn.getOutputStream());
 
 		// Get the response
-		String result = new String(IOUtils.toString(conn.getInputStream()));
+		String result = "" + IOUtils.toString(conn.getInputStream(), Charsets.UTF_8);
 		IOUtils.closeQuietly(conn.getInputStream());
 		return result;
 	}
@@ -212,16 +210,15 @@ public class Misc
 
         //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image. 
         if (connection.getContentLength() > MAX_REMOTE_FILESIZE) { //maximum of 200 mb 
-            throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url: " + connection.getContentLength()+ " (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
+            throw new IllegalArgumentException("importing image, wrong filesize of remote url: " + connection.getContentLength()+ " (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
         } else if (connection.getContentLength() < 0) {
-            // connection has not specified content length, wrap stream in a LimitedInputStream
-            LimitedInputStream limitStream = new LimitedInputStream(connection.getInputStream(), MAX_REMOTE_FILESIZE) {                
-                @Override
-                protected void raiseError(long pSizeMax, long pCount) throws IOException {
-                    throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");                    
-                }
-            };
-            Core.storeFileDocumentContent(context, __document, filename, limitStream);
+			byte[] outBytes = new byte[MAX_REMOTE_FILESIZE];
+			InputStream stream = connection.getInputStream();
+			IOUtils.read(stream, outBytes, 0, MAX_REMOTE_FILESIZE);
+			if (stream.read() != -1) {
+				throw new IllegalArgumentException("importing image, wrong filesize of remote url (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
+			}
+            Core.storeFileDocumentContent(context, __document, filename, new ByteArrayInputStream(outBytes));
         } else {
             // connection has specified correct content length, read the stream normally
             //NB; stream is closed by the core
@@ -542,7 +539,11 @@ public class Misc
 					Thread.sleep(200);
 					IContext c = Core.createSystemContext();
 					
-					List<IMendixObject> objects = Core.retrieveXPathQuery(c, xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""), batchsize, 0, ImmutableMap.of("id", asc ? "asc" : "desc"));
+					List<IMendixObject> objects = Core.retrieveXPathQuery(c, xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""),
+						batchsize,
+						0,
+						new HashMap<String,String>() {{ put ("id", asc ? "asc" : "desc"); }}
+					);
 					
 					//no new objects found :)
 					if (objects.size() == 0) {

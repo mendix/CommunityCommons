@@ -31,13 +31,13 @@ import org.owasp.validator.html.AntiSamy;
 import org.owasp.validator.html.CleanResults;
 import org.owasp.validator.html.Policy;
 
-import com.google.common.base.Function;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 import communitycommons.proxies.XSSPolicy;
+import java.util.function.Function;
 import system.proxies.FileDocument;
 
 public class StringUtils
@@ -55,7 +55,7 @@ public class StringUtils
 
 	    alg.digest(outBytes, 0, length);
 
-	    StringBuffer hexString = new StringBuffer();
+	    StringBuilder hexString = new StringBuilder();
 	    for (int i = 0; i < outBytes.length; i++) {
 	    String hex = Integer.toHexString(0xff & outBytes[i]);
 	    if(hex.length() == 1) hexString.append('0');
@@ -101,28 +101,22 @@ public class StringUtils
 
 	public static String substituteTemplate(final IContext context, String template,
 			final IMendixObject substitute, final boolean HTMLEncode, final String datetimeformat) {
-		return regexReplaceAll(template, "\\{(@)?([\\w./]+)\\}", new Function<MatchResult, String>() {
-
-			@Override
-			public String apply(MatchResult match)
-			{
-				String value;
-				String path = match.group(2);
-				if (match.group(1) != null)
-					value = String.valueOf(Core.getConfiguration().getConstantValue(path));
-				else {
-					try
-					{
-						value = ORM.getValueOfPath(context, substitute, path,	datetimeformat);
-					}
-					catch (Exception e)
-					{
-						throw new RuntimeException(e);
-					}
+		return regexReplaceAll(template, "\\{(@)?([\\w./]+)\\}", (MatchResult match) -> {
+			String value;
+			String path = match.group(2);
+			if (match.group(1) != null)
+				value = String.valueOf(Core.getConfiguration().getConstantValue(path));
+			else {
+				try
+				{
+					value = ORM.getValueOfPath(context, substitute, path,	datetimeformat);
 				}
-				return HTMLEncode ? HTMLEncode(value) : value;
+				catch (Exception e)
+				{
+					throw new RuntimeException(e);
+				}
 			}
-
+			return HTMLEncode ? HTMLEncode(value) : value;
 		});
 	}
 

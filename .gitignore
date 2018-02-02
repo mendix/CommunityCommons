@@ -30,3 +30,7 @@ src/releases
 src/javasource/system/actions/VerifyPassword.java
 src/javasource/system/UserActionsRegistrar.java
 src/CommunityCommons/javasource/com/
+/.nb-gradle/
+/.gradle/
+/build/
+private/cache/retriever/catalog.xml
