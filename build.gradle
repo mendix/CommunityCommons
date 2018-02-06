@@ -3,7 +3,10 @@ apply plugin: 'distribution'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
+
+//def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
+def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
+def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 def version = '6.4.0'
 
 // NetBeans will automatically add "run" and "debug" tasks relying on the
@@ -47,7 +50,7 @@ sourceSets {
 }
 
 task copyToUserlib( type: Copy ) {
-    into "$projectDir/src/CommunityCommons/userlib"
+    into userLibDir
     from configurations.runtime
 }
 
@@ -80,18 +83,33 @@ clean {
     delete "$projectDir/src/CommunityCommons/userlib"
 }
 
-task list {
+task packageXML { // TODO see https://stackoverflow.com/questions/25671765/closures-in-a-multiline-string
+    ext.iterateResources = {
+        def list = []
+        def userLibDirectory = file(userLibDir)
+        def resource = ""
+        def fileElementXML = "<file path=\"${ -> resource}\" />"
+        
+        sourceSets.main.java.srcDirs.each { dir ->
+            dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
+                resource = "javasource" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
+                list << fileElementXML
+            }
+        }
+        sourceSets.main.resources.srcDirs.each { dir ->
+            dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
+                resource = "resources" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
+                list << fileElementXML
+            }
+        }
+        userLibDirectory.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
+            resource = "userlib" + (entry.absolutePath - userLibDirectory.absolutePath).replace("/", "\\")
+            list << fileElementXML
+        }
+        return list
+    }
+    
     doLast {
-	File srcDir
-	
-	//org.gradle.api.file.FileCollection collection = files { srcDir.listFiles() }
-	
-	srcDir = file('src/CommunityCommons')
-	println "Contents of $srcDir.name"
-	def list = []
-	srcDir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-	    list << file(java.nio.file.Paths.get('.').relativize(entry.absolutePath)) //FIXME
-	}
-	println list
+        println iterateResources()        
     }
 }
