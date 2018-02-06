@@ -6,7 +6,6 @@ deployment
 .project
 *.mpr.lock
 .mendix-cache
-proxies
 *.svn
 /modeler-merge-marker
 /.mendix-cache
