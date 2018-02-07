@@ -6,8 +6,8 @@ sourceCompatibility = '1.8'
 
 import groovy.util.XmlParser
 
-//def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
-def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
+def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
+//def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 def version = '6.4.0'
 
@@ -63,6 +63,7 @@ distributions {
 	    into('/') {
 		from 'src/CommunityCommons'
 		exclude('**/proxies/*')
+		exclude('**/system/*')
 	    }
 	    into('/') {
 		from 'package.xml'
