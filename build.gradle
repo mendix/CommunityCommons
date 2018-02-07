@@ -83,28 +83,30 @@ clean {
     delete "$projectDir/src/CommunityCommons/userlib"
 }
 
-task packageXML { // TODO see https://stackoverflow.com/questions/25671765/closures-in-a-multiline-string
+task packageXML { // TODO replace placeholder in package.xml by output of this task
+    ext.interpolateFileElementXML = { resource ->
+        return "<file path=\"${resource}\" />"
+    }
+    
     ext.iterateResources = {
         def list = []
-        def userLibDirectory = file(userLibDir)
-        def resource = ""
-        def fileElementXML = "<file path=\"${ -> resource}\" />"
+        def userLibDirectory = file(userLibDir)        
         
         sourceSets.main.java.srcDirs.each { dir ->
             dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                resource = "javasource" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
-                list << fileElementXML
+                def resource = "javasource" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
+                list << interpolateFileElementXML(resource)
             }
         }
         sourceSets.main.resources.srcDirs.each { dir ->
             dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                resource = "resources" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
-                list << fileElementXML
+                def resource = "resources" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
+                list << interpolateFileElementXML(resource)
             }
         }
         userLibDirectory.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-            resource = "userlib" + (entry.absolutePath - userLibDirectory.absolutePath).replace("/", "\\")
-            list << fileElementXML
+            def resource = "userlib" + (entry.absolutePath - userLibDirectory.absolutePath).replace("/", "\\")
+            list << interpolateFileElementXML(resource)
         }
         return list
     }
