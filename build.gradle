@@ -4,6 +4,8 @@ apply plugin: 'distribution'
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+import groovy.util.XmlParser
+
 //def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
 def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
@@ -73,45 +75,66 @@ distZip {
     archiveName "$baseName-$version" + ".mpk"
 }
 
-tasks.distZip.shouldRunAfter tasks.copyToUserlib
 
 task fullDist {
-    dependsOn 'clean', 'copyToUserlib', 'distZip'
+    dependsOn 'clean', 'copyToUserlib', 'packageXML', 'distZip'
 }
 
 clean {
     delete "$projectDir/src/CommunityCommons/userlib"
+    delete "$projectDir/package.xml"
 }
 
-task packageXML { // TODO replace placeholder in package.xml by output of this task
+task packageXML {
     ext.interpolateFileElementXML = { resource ->
         return "<file path=\"${resource}\" />"
     }
     
-    ext.iterateResources = {
+    ext.buildRelativePath = { prefix, fileEntry, directory ->
+        return prefix + (fileEntry.absolutePath - directory.absolutePath).replace("/", "\\")
+    }
+    
+    ext.addFileElementToList = { sourceDir, String targetDir, entry, list ->
+        def resource = buildRelativePath(targetDir, entry, sourceDir)
+        list << interpolateFileElementXML(resource)
+    }
+    
+    ext.getResources = {
         def list = []
         def userLibDirectory = file(userLibDir)        
         
         sourceSets.main.java.srcDirs.each { dir ->
             dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                def resource = "javasource" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
-                list << interpolateFileElementXML(resource)
+                if (entry.toString().contains("proxies")) { return }
+                addFileElementToList(dir, "javasource", entry, list)
             }
         }
         sourceSets.main.resources.srcDirs.each { dir ->
             dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                def resource = "resources" + (entry.absolutePath - dir.absolutePath).replace("/", "\\")
-                list << interpolateFileElementXML(resource)
+                addFileElementToList(dir, "resources", entry, list)
             }
-        }
+        }        
         userLibDirectory.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-            def resource = "userlib" + (entry.absolutePath - userLibDirectory.absolutePath).replace("/", "\\")
-            list << interpolateFileElementXML(resource)
+            addFileElementToList(userLibDirectory, "userlib", entry, list)
         }
+        
         return list
     }
     
     doLast {
-        println iterateResources()        
+        def packageXMLResources = getResources()
+        def packageXMLTemplate = "$projectDir/package.xml.in"
+        def packageXML = new XmlParser().parse(packageXMLTemplate)
+                
+        packageXMLResources.each { resource -> 
+            def resourceXML = new XmlParser().parseText(resource)
+            packageXML.modelerProject.files[0].append(resourceXML)
+        }
+        
+        String out = groovy.xml.XmlUtil.serialize( packageXML )
+        new File("$projectDir/package.xml").write(out)
     }
+
+    tasks.distZip.shouldRunAfter tasks.packageXML
+    tasks.packageXML.shouldRunAfter tasks.copyToUserlib
 }
