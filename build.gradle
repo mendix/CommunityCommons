@@ -105,8 +105,10 @@ task packageXML {
         def userLibDirectory = file(userLibDir)        
         
         sourceSets.main.java.srcDirs.each { dir ->
+	    def ignored = ["proxies", "system"]
             dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
                 if (entry.toString().contains("proxies")) { return }
+		if (entry.toString().contains("system")) { return } // TODO: make more robust
                 addFileElementToList(dir, "javasource", entry, list)
             }
         }
