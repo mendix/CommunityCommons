@@ -45,6 +45,11 @@ sourceSets {
             srcDirs = ["src/CommunityCommons/resources"]
         }
     }
+    test {
+        java {
+            srcDirs = ["src/CommunityCommons/test"]
+        }
+    }
 }
 
 task copyToUserlib( type: Copy ) {
