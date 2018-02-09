@@ -9,6 +9,16 @@ This module adds many reusable java methods to your project, which can be called
 The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
 ## _Important when updating_ :warning:
+In version 6.4.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
+Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder.
+Therefore, it is recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` by hand before importing the CommunityCommons-6.4.0.mpk module file in the Modeler.
+
+To build the MPK, all you have to do is to execute: 
+```
+gradle fullDist
+``` 
+from the command line. The resulting MPK can be found in `build/distributions/CommunityCommons-x.y.z.mpk`.
+
 _In version 6.1 several libraries (jar files in the userlib folder of your project) have been updated. pdfbox-1.8.5.jar currently causes a compile error in your project when it's still present. Make sure to remove old libraries from the userlib folder in your project!_ 
 
 ## Contributing
@@ -17,8 +27,11 @@ For more information on contributing to this repository visit [Contributing to a
 
 ## Dependencies
  -  antisamy-1.5.3.jar
- -  com.google.guava-14.0.1.jar
- -  com.springsource.org.apache.batik.css-1.7.0.jar
+ -  ~~com.google.guava-14.0.1.jar~~
+ -  ~~com.springsource.org.apache.batik.css-1.7.0.jar~~
+ -  batik-css-1.7.jar
+ -  batik-ext-1.7.jar
+ -  batik-util-1.7.jar
  -  ~~fontbox-1.8.5.jar~~
  -  jempbox-1.8.5.jar
  -  ~~joda-time-1.6.2.jar~~
@@ -223,6 +236,15 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
+
+*SubstringAfter* - Returns the substring of a string after the first occurence of a given separator.
+
+*SubstringAfterLast* - Returns the substring of a string after the last occurence of a given separator.
+
+*SubstringBefore* - Returns the substring of a string before the first occurence of a given separator.
+
+*SubstringBeforeLast* - Returns the substring of a string before the last occurence of a given separator.
+
 
 ## Thank you, community.
 
