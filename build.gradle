@@ -42,7 +42,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.owasp.antisamy', name: 'antisamy', version: '1.5.3'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.8'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox-app', version: '2.0.8'
     compileOnly fileTree(dir: "$runtimeLibs")
 }
 
@@ -60,6 +60,10 @@ sourceSets {
 task copyToUserlib( type: Copy ) {
     into userLibDir
     from configurations.runtime
+    eachFile { fileCopyDetails ->
+        def requiredLibFlag = new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib")
+        requiredLibFlag.write ''
+    }
 }
 
 distributions {
@@ -108,7 +112,9 @@ task packageXML {
         def distributionCopySpec = distributions.main.contents.buildRootResolver().allSource
 
         distributionCopySpec.each { f ->
-            list << interpolateFileElementXML(buildRelativePath(f, file("$projectDir/src/CommunityCommons")))
+            list << interpolateFileElementXML(
+                buildRelativePath(f, file("$projectDir/src/CommunityCommons"))
+            )
         }
 
         return list
