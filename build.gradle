@@ -5,9 +5,20 @@ sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 import groovy.util.XmlParser
+import org.gradle.api.internal.file.copy.CopySpecInternal
 
-def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
-//def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
+def packageXMLTemplate =
+'''<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mendix.com/package/1.0/">
+    <modelerProject xmlns="http://www.mendix.com/modelerProject/1.0/">
+        <module name="''' + "${project.name}" + '''" />
+        <projectFile path="''' + "${project.name}.mpr" + '''" />
+        <files/>
+    </modelerProject>
+</package>'''
+
+//def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
+def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 def version = '6.4.0'
 
@@ -24,15 +35,9 @@ if (!hasProperty('mainClass')) {
 
 repositories {
     mavenCentral()
-    // You may define additional repositories, or even remove "mavenCentral()".
-    // Read more about repositories here:
-    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:repositories
 }
 
 dependencies {
-    // TODO: Add dependencies here ...
-    // You can read more about how to add dependency here:
-    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.owasp.antisamy', name: 'antisamy', version: '1.5.3'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
@@ -42,12 +47,12 @@ dependencies {
 
 sourceSets {
     main {
-	java {
-	    srcDirs = ["src/CommunityCommons/javasource"]
-	}
-	resources {
-	    srcDirs = ["src/CommunityCommons/resources"]
-	}
+        java {
+            srcDirs = ["src/CommunityCommons/javasource"]
+        }
+        resources {
+            srcDirs = ["src/CommunityCommons/resources"]
+        }
     }
 }
 
@@ -58,17 +63,17 @@ task copyToUserlib( type: Copy ) {
 
 distributions {
     main {
-	baseName = 'CommunityCommons'
-	contents {
-	    into('/') {
-		from 'src/CommunityCommons'
-		exclude('**/proxies/*')
-		exclude('**/system/*')
-	    }
-	    into('/') {
-		from 'package.xml'
-	    }
-	}
+        baseName = 'CommunityCommons'
+        contents {
+            into('/') {
+                from 'src/CommunityCommons'
+                exclude('**/proxies/*')
+                exclude('**/system/*')
+            }
+            into('/') {
+                from 'package.xml'
+            }
+        }
     }
 }
 
@@ -90,50 +95,33 @@ task packageXML {
     ext.interpolateFileElementXML = { resource ->
         return "<file path=\"${resource}\" />"
     }
-    
-    ext.buildRelativePath = { prefix, fileEntry, directory ->
-        return prefix + (fileEntry.absolutePath - directory.absolutePath).replace("/", "\\")
+
+    ext.buildRelativePath = { fileEntry, directory ->
+        return (fileEntry.absolutePath - directory.absolutePath).replace("/", "\\").substring(1)
     }
-    
-    ext.addFileElementToList = { sourceDir, String targetDir, entry, list ->
-        def resource = buildRelativePath(targetDir, entry, sourceDir)
-        list << interpolateFileElementXML(resource)
-    }
-    
+
     ext.getResources = {
         def list = []
-        def userLibDirectory = file(userLibDir)        
-        
-        sourceSets.main.java.srcDirs.each { dir ->
-	    def ignored = ["proxies", "system"]
-            dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                if (entry.toString().contains("proxies")) { return }
-		if (entry.toString().contains("system")) { return } // TODO: make more robust
-                addFileElementToList(dir, "javasource", entry, list)
-            }
+        def userLibDirectory = file(userLibDir)
+
+        def distributionCopySpec = distributions.main.contents.buildRootResolver().allSource
+
+        distributionCopySpec.each { f ->
+            list << interpolateFileElementXML(buildRelativePath(f, file("$projectDir/src/CommunityCommons")))
         }
-        sourceSets.main.resources.srcDirs.each { dir ->
-            dir.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-                addFileElementToList(dir, "resources", entry, list)
-            }
-        }        
-        userLibDirectory.eachFileRecurse (groovy.io.FileType.FILES) { entry ->
-            addFileElementToList(userLibDirectory, "userlib", entry, list)
-        }
-        
+
         return list
     }
-    
+
     doLast {
         def packageXMLResources = getResources()
-        def packageXMLTemplate = "$projectDir/package.xml.in"
-        def packageXML = new XmlParser().parse(packageXMLTemplate)
-                
-        packageXMLResources.each { resource -> 
+        def packageXML = new XmlParser().parseText(packageXMLTemplate)
+
+        packageXMLResources.each { resource ->
             def resourceXML = new XmlParser().parseText(resource)
             packageXML.modelerProject.files[0].append(resourceXML)
         }
-        
+
         String out = groovy.xml.XmlUtil.serialize( packageXML )
         new File("$projectDir/package.xml").write(out)
     }
