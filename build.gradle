@@ -5,6 +5,7 @@ sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 import groovy.util.XmlParser
+import groovy.xml.XmlUtil
 import org.gradle.api.internal.file.copy.CopySpecInternal
 
 def packageXMLTemplate =
@@ -122,7 +123,7 @@ task packageXML {
             packageXML.modelerProject.files[0].append(resourceXML)
         }
 
-        String out = groovy.xml.XmlUtil.serialize( packageXML )
+        String out = XmlUtil.serialize( packageXML )
         new File("$projectDir/package.xml").write(out)
     }
 
