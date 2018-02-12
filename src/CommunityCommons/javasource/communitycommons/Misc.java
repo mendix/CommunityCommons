@@ -1,12 +1,12 @@
 package communitycommons;
 
-import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -133,7 +133,7 @@ public class Misc
 		IOUtils.closeQuietly(conn.getOutputStream());
 
 		// Get the response
-		String result = "" + IOUtils.toString(conn.getInputStream(), Charsets.UTF_8);
+		String result = "" + IOUtils.toString(conn.getInputStream(), StandardCharsets.UTF_8);
 		IOUtils.closeQuietly(conn.getInputStream());
 		return result;
 	}
