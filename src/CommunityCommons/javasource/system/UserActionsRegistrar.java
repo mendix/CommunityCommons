@@ -87,6 +87,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.StringLeftPad.class);
     registrator.registerUserAction(communitycommons.actions.StringLength.class);
     registrator.registerUserAction(communitycommons.actions.StringRightPad.class);
+    registrator.registerUserAction(communitycommons.actions.StringSplit.class);
     registrator.registerUserAction(communitycommons.actions.StringToFile.class);
     registrator.registerUserAction(communitycommons.actions.StringTrim.class);
     registrator.registerUserAction(communitycommons.actions.SubstituteTemplate.class);
