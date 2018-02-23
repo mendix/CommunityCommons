@@ -18,10 +18,10 @@ def packageXMLTemplate =
     </modelerProject>
 </package>'''
 
-//def runtimeLibs = 'C:/Program Files/Mendix/7.11.0/runtime/bundles'
-def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
+def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
+//def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
-def version = '6.4.0'
+def version = '7.1.0'
 
 repositories {
     mavenCentral()
@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile fileTree(dir: "$runtimeLibs")
     compile group: 'org.owasp.antisamy', name: 'antisamy', version: '1.5.3'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.apache.pdfbox', name: 'pdfbox-app', version: '2.0.8'
