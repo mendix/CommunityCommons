@@ -39,6 +39,8 @@ import com.mendix.systemwideinterfaces.core.IUser;
 
 public class Misc {
 
+	static final ILogNode LOG = Core.getLogger("communitycommons");
+	
     public abstract static class IterateCallback<T1, T2> {
 
         boolean start = false;
@@ -199,7 +201,7 @@ public class Misc {
             throw new Exception("No document, filename or URL provided");
         }
 
-        final int MAX_REMOTE_FILESIZE = 1024 * 1024 * 200; //maxium of 200 MB
+        final int MAX_REMOTE_FILESIZE = 1024 * 200; //maxium of 200 MB
         URL imageUrl = new URL(url);
         URLConnection connection = imageUrl.openConnection();
         //we connect in 20 seconds or not at all
@@ -207,7 +209,9 @@ public class Misc {
         connection.setReadTimeout(20000);
         connection.connect();
 
-        //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image. 
+        //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image.
+        LOG.trace(String.format("Remote filesize: %d", connection.getContentLength()));
+
         if (connection.getContentLength() > MAX_REMOTE_FILESIZE) { //maximum of 200 mb 
             throw new IllegalArgumentException(String.format("Wrong filesize of remote url: %d (max: %d)", connection.getContentLength(), MAX_REMOTE_FILESIZE));
         }
@@ -225,6 +229,7 @@ public class Misc {
 
         connectionInputStream = connection.getInputStream();
         if (connection.getContentLength() < 0) {
+			LOG.trace(String.format("Unknown content length; limiting to %d", MAX_REMOTE_FILESIZE));
             byte[] outBytes = new byte[MAX_REMOTE_FILESIZE];
             IOUtils.read(connectionInputStream, outBytes, 0, MAX_REMOTE_FILESIZE);
             if (connectionInputStream.read() != -1) {
@@ -253,7 +258,7 @@ public class Misc {
                     size += i;
                 }
             } catch (IOException e) {
-                Core.getLogger("FileUtil").error(
+                LOG.error(
                         "Couldn't determine filesize of FileDocument '" + document.getId());
             } finally {
                 IOUtils.closeQuietly(inputStream);
@@ -347,8 +352,6 @@ public class Misc {
 
     //MWE: based on: http://download.oracle.com/javase/6/docs/api/java/util/concurrent/Executor.html
     static class MFSerialExecutor {
-
-        private static final ILogNode LOG = Core.getLogger("communitycommons");
 
         private static MFSerialExecutor _instance = new MFSerialExecutor();
 
@@ -543,7 +546,7 @@ public class Misc {
 
                     //no new objects found :)
                     if (objects.size() == 0) {
-                        Core.getLogger("communitycommons").debug("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
+                        LOG.debug("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
                         batchState.setState(1);
                     } else {
 
@@ -639,14 +642,13 @@ public class Misc {
      * @throws IOException
      */
     public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {
-        ILogNode logger = Core.getLogger("OverlayPdf");
-        logger.trace("Retrieve generated document");
+        LOG.trace("Retrieve generated document");
         PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 
-        logger.trace("Overlay PDF start, retrieve overlay PDF");
+        LOG.trace("Overlay PDF start, retrieve overlay PDF");
         PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 
-        logger.trace("Perform overlay");
+        LOG.trace("Perform overlay");
         Overlay overlay = new Overlay();
         overlay.setInputPDF(inputDoc);
         overlay.setDefaultOverlayPDF(overlayDoc);
@@ -656,21 +658,21 @@ public class Misc {
             overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
         }
 
-        logger.trace("Save result in output stream");
+        LOG.trace("Save result in output stream");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         overlay.overlay(new HashMap<Integer, String>()).save(baos);
 
-        logger.trace("Duplicate result in input stream");
+        LOG.trace("Duplicate result in input stream");
         InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
 
-        logger.trace("Store result in original document");
+        LOG.trace("Store result in original document");
         Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
 
-        logger.trace("Close PDFs");
+        LOG.trace("Close PDFs");
         overlayDoc.close();
         inputDoc.close();
 
-        logger.trace("Overlay PDF end");
+        LOG.trace("Overlay PDF end");
         return true;
     }
 }
