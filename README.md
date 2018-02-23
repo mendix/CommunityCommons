@@ -128,7 +128,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *ThrowException* - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.
 
-*ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
+*ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, a fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
 
 *GetDefaultLanguage* - Gets the Language object for the default language as defined in the model.
 

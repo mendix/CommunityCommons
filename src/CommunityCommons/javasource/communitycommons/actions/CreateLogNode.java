@@ -15,19 +15,19 @@ import communitycommons.Logging;
 
 public class CreateLogNode extends CustomJavaAction<java.lang.Boolean>
 {
-	private java.lang.String LogNode;
+	private java.lang.String logNode;
 
-	public CreateLogNode(IContext context, java.lang.String LogNode)
+	public CreateLogNode(IContext context, java.lang.String logNode)
 	{
 		super(context);
-		this.LogNode = LogNode;
+		this.logNode = logNode;
 	}
 
 	@Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		Logging.createLogNode(LogNode);
+		Logging.createLogNode(logNode);
 		return true;
 		// END USER CODE
 	}
