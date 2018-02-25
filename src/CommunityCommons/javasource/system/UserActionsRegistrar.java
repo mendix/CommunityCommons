@@ -37,6 +37,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_1.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_2.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowInBackground.class);
+    registrator.registerUserAction(communitycommons.actions.executeMicroflowInBatches.class);
     registrator.registerUserAction(communitycommons.actions.FileDocumentFromFile.class);
     registrator.registerUserAction(communitycommons.actions.FileFromFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.GenerateHMAC_SHA256_hash.class);
@@ -69,6 +70,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.RandomHash.class);
     registrator.registerUserAction(communitycommons.actions.RandomString.class);
     registrator.registerUserAction(communitycommons.actions.RandomStrongPassword.class);
+    registrator.registerUserAction(communitycommons.actions.recommitInBatches.class);
     registrator.registerUserAction(communitycommons.actions.refreshClass.class);
     registrator.registerUserAction(communitycommons.actions.refreshClassByObject.class);
     registrator.registerUserAction(communitycommons.actions.RegexQuote.class);
