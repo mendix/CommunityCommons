@@ -33,7 +33,7 @@ For more information on contributing to this repository visit [Contributing to a
  -  batik-ext-1.7.jar
  -  batik-util-1.7.jar
  -  ~~fontbox-1.8.5.jar~~
- -  jempbox-1.8.5.jar
+ -  ~~jempbox-1.8.5.jar~~
  -  ~~joda-time-1.6.2.jar~~
  -  joda-time-2.9.6.jar
  -  nekohtml-1.9.16.jar
