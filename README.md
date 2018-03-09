@@ -9,9 +9,9 @@ This module adds many reusable java methods to your project, which can be called
 The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
 ## _Important when updating_ :warning:
-In version 6.4.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
+In version 7.1.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
 Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder.
-Therefore, it is recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` by hand before importing the CommunityCommons-6.4.0.mpk module file in the Modeler.
+Therefore, it is recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` by hand before importing the CommunityCommons-7.1.0.mpk module file in the Modeler.
 
 To build the MPK, all you have to do is to execute: 
 ```
@@ -36,17 +36,18 @@ For more information on contributing to this repository visit [Contributing to a
  -  jempbox-1.8.5.jar
  -  ~~joda-time-1.6.2.jar~~
  -  joda-time-2.9.6.jar
- -  nekohtml.jar
- -  org.apache.commons.fileupload-1.2.1.jar
- -  org.apache.commons.io-2.3.0.jar
- -  org.apache.commons.lang3.jar
- -  org.apache.servicemix.bundles.batik.1.8_1.jar
+ -  nekohtml-1.9.16.jar
+ -  ~~org.apache.commons.fileupload-1.2.1.jar~~
+ -  commons.io-2.6.jar
+ -  commons.lang3-3.7.jar
+ -  ~~org.apache.servicemix.bundles.batik.1.8_1.jar~~
  -  ~~org.apache.servicemix.bundles.commons-codec-1.3.0.jar~~
- -  commons-codec-1.10.jar
+ -  commons-codec-1.2.jar
  -  ~~pdfbox-1.8.5.jar~~
- -  pdfbox-app-2.3.0.jar
- -  xml-apis-ext.jar
- -  xerces.xercesImpl.2.8.1.jar
+ -  pdfbox-app-2.0.8.jar
+ -  xml-apis-1.3.04.jar
+ -  xml-apis-ext-1.3.04.jar
+ -  xercesImpl-2.9.1.jar
 
 ## Usage
 

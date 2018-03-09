@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
@@ -24,7 +25,6 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.owasp.validator.html.AntiSamy;
@@ -37,6 +37,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 import communitycommons.proxies.XSSPolicy;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.util.function.Function;
 import system.proxies.FileDocument;
 
@@ -152,7 +154,7 @@ public class StringUtils
 	{
 		if (encoded == null)
 			return null;
-		return new String(Base64.decodeBase64(encoded.getBytes()));
+		return new String(Base64.getDecoder().decode(encoded.getBytes()));
 	}
 
 	public static void base64DecodeToFile(IContext context, String encoded, FileDocument targetFile) throws Exception
@@ -162,7 +164,7 @@ public class StringUtils
 		if (encoded == null)
 			throw new IllegalArgumentException("Source data is null");
 
-		byte [] decoded = Base64.decodeBase64(encoded.getBytes());
+		byte [] decoded = Base64.getDecoder().decode(encoded.getBytes());
 		Core.storeFileDocumentContent(context, targetFile.getMendixObject(), new ByteArrayInputStream(decoded));
 	}
 
@@ -170,7 +172,7 @@ public class StringUtils
 	{
 		if (value == null)
 			return null;
-		return new String(Base64.encodeBase64(value.getBytes()));
+		return Base64.getEncoder().encodeToString(value.getBytes());
 	}
 
 	public static String base64EncodeFile(IContext context, FileDocument file) throws IOException
@@ -180,7 +182,7 @@ public class StringUtils
 		if (!file.getHasContents())
 			throw new IllegalArgumentException("Source file has no contents!");
 		InputStream f = Core.getFileDocumentContent(context, file.getMendixObject());
-		return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));
+		return Base64.getEncoder().encodeToString(IOUtils.toByteArray(f));
 	}
 
 	public static String stringFromFile(IContext context, FileDocument source) throws IOException
@@ -332,7 +334,7 @@ public class StringUtils
 		byte[] encryptedData = c.doFinal(valueToEncrypt.getBytes());
 		byte[] iv = c.getIV();
 
-		return new String(Base64.encodeBase64(iv)) + ";" + new String(Base64.encodeBase64(encryptedData));
+		return Base64.getEncoder().encodeToString(iv) + ";" + Base64.getEncoder().encodeToString(encryptedData);
 	}
 
 	public static String decryptString(String key, String valueToDecrypt) throws Exception
@@ -348,8 +350,8 @@ public class StringUtils
 		String[] s = valueToDecrypt.split(";");
 		if (s.length < 2) //Not an encrypted string, just return the original value.
 			return valueToDecrypt;
-		byte[] iv = Base64.decodeBase64(s[0].getBytes());
-		byte[] encryptedData = Base64.decodeBase64(s[1].getBytes());
+		byte[] iv = Base64.getDecoder().decode(s[0].getBytes());
+		byte[] encryptedData = Base64.getDecoder().decode(s[1].getBytes());
 		c.init(Cipher.DECRYPT_MODE, k, new IvParameterSpec(iv));
 		return new String(c.doFinal(encryptedData));
 	}
@@ -363,9 +365,9 @@ public class StringUtils
 			mac.update(valueToEncrypt.getBytes("UTF-8"));
 			byte[] hmacData = mac.doFinal();
 
-            return new String(Base64.encodeBase64(hmacData));
+            return Base64.getEncoder().encodeToString(hmacData);
 		}
-		catch (Exception e) {
+		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
 			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}
