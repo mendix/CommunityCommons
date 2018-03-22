@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
+
+import communitycommons.proxies.constants.Constants;
 
 
 public class Misc
@@ -130,13 +133,21 @@ public class Misc
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		
 		if (postdata != null) {
-			IOUtils.copy(new ByteArrayInputStream(postdata.getBytes("UTF-8")), conn.getOutputStream());
+			try ( 
+				OutputStream os = conn.getOutputStream()
+			) {
+				IOUtils.copy(new ByteArrayInputStream(postdata.getBytes("UTF-8")), os);
+			}
 		}
-		IOUtils.closeQuietly(conn.getOutputStream());
-
-		// Get the response
-		String result = new String(IOUtils.toString(conn.getInputStream()));
-		IOUtils.closeQuietly(conn.getInputStream());
+	
+		String result;
+		try (
+			InputStream is = conn.getInputStream()
+		) {
+			// Get the response
+			result = new String(IOUtils.toString(is));
+		}
+		
 		return result;
 	}
 
@@ -146,25 +157,16 @@ public class Misc
             throw new Exception("No file to clone or to clone into provided");
 
          MendixBoolean hasContents = (MendixBoolean) toClone.getMember(context, FileDocument.MemberNames.HasContents.toString());
-     if (!hasContents.getValue(context))
-         return false;
+         
+        if (!hasContents.getValue(context))
+        	return false;
 
-        InputStream inputStream = Core.getFileDocumentContent(context, toClone); 
-
-        try {
+     	try (
+     		InputStream inputStream = Core.getFileDocumentContent(context, toClone)
+     	) {
             Core.storeFileDocumentContent(context, target, (String) toClone.getValue(context, system.proxies.FileDocument.MemberNames.Name.toString()),  inputStream); 
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        finally{
-            try {
-                if(inputStream != null)
-                inputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+     	
         return true;
     }
 
@@ -177,23 +179,12 @@ public class Misc
       if (!hasContents.getValue(context))
           return false;
 
-      InputStream inputStream = Core.getImage(context, toClone, false); 
-
-      try {
-        Core.storeImageDocumentContent(context, target, inputStream, thumbWidth, thumbHeight);
-
-          return true;
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-      finally {
-          try {
-            if(inputStream!= null)
-              inputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      try (
+		  InputStream inputStream = Core.getImage(context, toClone, false) 
+	  ) {
+    	  Core.storeImageDocumentContent(context, target, inputStream, thumbWidth, thumbHeight);
       }
+
       return true;
   }
 
@@ -210,22 +201,30 @@ public class Misc
         connection.setReadTimeout(20000);
         connection.connect();
 
-        //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image. 
-        if (connection.getContentLength() > MAX_REMOTE_FILESIZE) { //maximum of 200 mb 
-            throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url: " + connection.getContentLength()+ " (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
-        } else if (connection.getContentLength() < 0) {
-            // connection has not specified content length, wrap stream in a LimitedInputStream
-            LimitedInputStream limitStream = new LimitedInputStream(connection.getInputStream(), MAX_REMOTE_FILESIZE) {                
-                @Override
-                protected void raiseError(long pSizeMax, long pCount) throws IOException {
-                    throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");                    
-                }
-            };
-            Core.storeFileDocumentContent(context, __document, filename, limitStream);
-        } else {
-            // connection has specified correct content length, read the stream normally
-            //NB; stream is closed by the core
-            Core.storeFileDocumentContent(context, __document, filename, connection.getInputStream());
+        try (
+        	InputStream is = connection.getInputStream()
+    	) {
+        
+	        //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image. 
+	        if (connection.getContentLength() > MAX_REMOTE_FILESIZE) { //maximum of 200 mb 
+	            throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url: " + connection.getContentLength()+ " (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
+	        } else if (connection.getContentLength() < 0) {
+	            // connection has not specified content length, wrap stream in a LimitedInputStream
+	            try (
+		        	LimitedInputStream limitStream = new LimitedInputStream(is, MAX_REMOTE_FILESIZE) {                
+		                @Override
+		                protected void raiseError(long pSizeMax, long pCount) throws IOException {
+		                    throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");                    
+		                }
+		            }
+		        ) {
+	            	Core.storeFileDocumentContent(context, __document, filename, limitStream);
+	            }
+	        } else {
+	            // connection has specified correct content length, read the stream normally
+	            //NB; stream is closed by the core
+	            Core.storeFileDocumentContent(context, __document, filename, is);
+	        }
         }
         
         return true;
@@ -235,23 +234,21 @@ public class Misc
     {
         final int BUFFER_SIZE = 4096;
         long size = 0;
-
+        
         if (context != null) {
-            InputStream inputStream = null;
-            byte[] buffer = new byte[BUFFER_SIZE];
-            
-            try {
-                inputStream = Core.getFileDocumentContent(context, document);
-                int i;
-                while ((i = inputStream.read(buffer)) != -1) 
-                    size += i;
-            } catch (IOException e) {
-                Core.getLogger("FileUtil").error(
-                        "Couldn't determine filesize of FileDocument '" + document.getId()); 
-            } finally {
-                IOUtils.closeQuietly(inputStream);
-            }
-        }
+        	byte[] buffer = new byte[BUFFER_SIZE];
+	      
+        	try ( 
+    			InputStream inputStream = Core.getFileDocumentContent(context, document)
+			) {
+	          int i;
+	          while ((i = inputStream.read(buffer)) != -1) 
+	              size += i;
+        	} catch (IOException e) {
+	          Core.getLogger("FileUtil").error(
+	                  "Couldn't determine filesize of FileDocument '" + document.getId()); 
+        	} 
+	  }
         
         return size;
     }
@@ -602,30 +599,42 @@ public class Misc
 		return languageList.get(0);		
 	}
 	
-	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ){
-		int i = 0;
-		PDFMergerUtility  mergePdf = new  PDFMergerUtility();
-		for(i=0; i < documents.size(); i++)
-		{
-		    FileDocument file = documents.get(i);
-		    InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
-		    mergePdf.addSource(content);            
-		}
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		mergePdf.setDestinationStream(out);
-		try {
-			mergePdf.mergeDocuments(null);
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
-			
-		}
-		 
-		Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-
-		out.reset();
-		documents.clear();
+	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
+		if (Constants.getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= Constants.getMergeMultiplePdfs_MaxAtOnce()) { 
 		
-		return true;	
+			int i = 0;
+			PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+			for(i=0; i < documents.size(); i++)
+			{
+			    FileDocument file = documents.get(i);
+			    try (
+	    			InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())
+	    		) {
+			    	mergePdf.addSource(content);
+			    }
+			}
+			
+			try (
+				ByteArrayOutputStream out = new ByteArrayOutputStream()
+			) {
+				mergePdf.setDestinationStream(out);
+				try {
+					mergePdf.mergeDocuments(null);
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				}
+				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
+	
+				out.reset();
+			}
+			
+			documents.clear();
+			
+			return true;	
+		} else {
+            throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + Constants.getMergeMultiplePdfs_MaxAtOnce() + 
+            								   " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
+		}
 	}
 	
 
@@ -640,34 +649,32 @@ public class Misc
 	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {	
 		ILogNode logger = Core.getLogger("OverlayPdf"); 
 		logger.trace("Retrieve generated document");
-		PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+		try (
+			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
+		) {
+			logger.trace("Overlay PDF start, retrieve overlay PDF");
+							
+			logger.trace("Perform overlay");
+			Overlay overlay = new Overlay();
+			overlay.setInputPDF(inputDoc);
+			overlay.setDefaultOverlayPDF(overlayDoc);
+			if (onTopOfContent == true){
+				overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+			} else {
+				overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+			}
+			
+			logger.trace("Save result in output stream");
+			
+			overlay.overlay(new HashMap<Integer, String>()).save(baos);
 		
-		logger.trace("Overlay PDF start, retrieve overlay PDF");
-		PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
-				
-		logger.trace("Perform overlay");
-		Overlay overlay = new Overlay();
-		overlay.setInputPDF(inputDoc);
-		overlay.setDefaultOverlayPDF(overlayDoc);
-		if (onTopOfContent == true){
-			overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
-		} else {
-			overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+			logger.trace("Duplicate result in input stream");
+			logger.trace("Store result in original document");
+			Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
 		}
-		
-		logger.trace("Save result in output stream");
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		overlay.overlay(new HashMap<Integer, String>()).save(baos);
-		
-		logger.trace("Duplicate result in input stream");
-		InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
-		
-		logger.trace("Store result in original document");
-		Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
-		
-		logger.trace("Close PDFs");
-		overlayDoc.close();
-		inputDoc.close();
 		
 		logger.trace("Overlay PDF end");
 		return true;

@@ -169,7 +169,12 @@ public class StringUtils
 			throw new IllegalArgumentException("Source data is null");
 
 		byte [] decoded = Base64.decodeBase64(encoded.getBytes());
-		Core.storeFileDocumentContent(context, targetFile.getMendixObject(), new ByteArrayInputStream(decoded));
+		
+		try  (
+			ByteArrayInputStream bais = new ByteArrayInputStream(decoded);
+		) {
+			Core.storeFileDocumentContent(context, targetFile.getMendixObject(), bais);
+		}
 	}
 
 	public static String base64Encode(String value)
@@ -185,25 +190,37 @@ public class StringUtils
 			throw new IllegalArgumentException("Source file is null");
 		if (!file.getHasContents())
 			throw new IllegalArgumentException("Source file has no contents!");
-		InputStream f = Core.getFileDocumentContent(context, file.getMendixObject());
-		return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));
+		
+		try (
+			InputStream f = Core.getFileDocumentContent(context, file.getMendixObject())
+		) {
+			return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));
+		}
 	}
 
 	public static String stringFromFile(IContext context, FileDocument source) throws IOException
 	{
 		if (source == null)
 			return null;
-		InputStream f = Core.getFileDocumentContent(context, source.getMendixObject());
-		return org.apache.commons.io.IOUtils.toString(f);
+		try (
+			InputStream f = Core.getFileDocumentContent(context, source.getMendixObject());
+		) {
+			return org.apache.commons.io.IOUtils.toString(f);
+		}
 	}
 
-	public static void stringToFile(IContext context, String value, FileDocument destination)
+	public static void stringToFile(IContext context, String value, FileDocument destination) throws IOException
 	{
 		if (destination == null)
 			throw new IllegalArgumentException("Destination file is null");
 		if (value == null)
 			throw new IllegalArgumentException("Value to write is null");
-		Core.storeFileDocumentContent(context, destination.getMendixObject(), IOUtils.toInputStream(value));
+		
+		try (
+			InputStream is = IOUtils.toInputStream(value)
+		) {
+			Core.storeFileDocumentContent(context, destination.getMendixObject(), is);
+		}
 	}
 
 	public static String HTMLToPlainText(String html) throws IOException
