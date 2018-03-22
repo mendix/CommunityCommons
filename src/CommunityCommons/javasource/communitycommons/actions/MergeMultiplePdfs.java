@@ -15,7 +15,7 @@ import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
 
 /**
- * 
+ * Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files at once merge recursively instead or change the MergeMultiplePdfs_MaxAtOnce constant.
  */
 public class MergeMultiplePdfs extends CustomJavaAction<Boolean>
 {
