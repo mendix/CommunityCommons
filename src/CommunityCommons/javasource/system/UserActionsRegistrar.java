@@ -12,7 +12,6 @@ public class UserActionsRegistrar
   public void registerActions(IActionRegistrator registrator)
   {
     registrator.bundleComponentLoaded();
-    registrator.registerUserAction(communitycommons.actions.acquireLock.class);
     registrator.registerUserAction(communitycommons.actions.Base64Decode.class);
     registrator.registerUserAction(communitycommons.actions.Base64DecodeToFile.class);
     registrator.registerUserAction(communitycommons.actions.Base64Encode.class);
@@ -50,7 +49,6 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.GetImageDimensions.class);
     registrator.registerUserAction(communitycommons.actions.GetIntFromDateTime.class);
     registrator.registerUserAction(communitycommons.actions.getLastChangedByUser.class);
-    registrator.registerUserAction(communitycommons.actions.getLockOwner.class);
     registrator.registerUserAction(communitycommons.actions.getOriginalValueAsString.class);
     registrator.registerUserAction(communitycommons.actions.GetRuntimeVersion.class);
     registrator.registerUserAction(communitycommons.actions.getTypeAsString.class);
@@ -76,8 +74,6 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.RegexQuote.class);
     registrator.registerUserAction(communitycommons.actions.RegexReplaceAll.class);
     registrator.registerUserAction(communitycommons.actions.RegexTest.class);
-    registrator.registerUserAction(communitycommons.actions.releaseAllInactiveLocks.class);
-    registrator.registerUserAction(communitycommons.actions.releaseLock.class);
     registrator.registerUserAction(communitycommons.actions.retrieveURL.class);
     registrator.registerUserAction(communitycommons.actions.RunMicroflowAsyncInQueue.class);
     registrator.registerUserAction(communitycommons.actions.SimpleLog.class);
@@ -100,7 +96,6 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.ThrowWebserviceException.class);
     registrator.registerUserAction(communitycommons.actions.TimeMeasureEnd.class);
     registrator.registerUserAction(communitycommons.actions.TimeMeasureStart.class);
-    registrator.registerUserAction(communitycommons.actions.waitForLock.class);
     registrator.registerUserAction(communitycommons.actions.XSSSanitize.class);
     registrator.registerUserAction(communitycommons.actions.YearsBetween.class);
     registrator.registerUserAction(system.actions.VerifyPassword.class);
