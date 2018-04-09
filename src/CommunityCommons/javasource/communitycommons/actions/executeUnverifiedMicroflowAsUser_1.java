@@ -11,41 +11,35 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
-
 import communitycommons.Misc;
-
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 /**
- * Identical to executeMicroflowAsUser, but takes 2 arguments
+ * Identical to executeMicroflowAsUser, but takes 1 argument
  */
-public class executeMicroflowAsUser_2 extends CustomJavaAction<java.lang.String>
+public class executeUnverifiedMicroflowAsUser_1 extends CustomJavaAction<java.lang.String>
 {
-	private java.lang.String microflow;
+	private java.lang.String microflowName;
 	private java.lang.String username;
 	private java.lang.Boolean sudoContext;
 	private java.lang.String arg1name;
 	private IMendixObject arg1value;
-	private java.lang.String arg2name;
-	private IMendixObject arg2value;
 
-	public executeMicroflowAsUser_2(IContext context, java.lang.String microflow, java.lang.String username, java.lang.Boolean sudoContext, java.lang.String arg1name, IMendixObject arg1value, java.lang.String arg2name, IMendixObject arg2value)
+	public executeUnverifiedMicroflowAsUser_1(IContext context, java.lang.String microflowName, java.lang.String username, java.lang.Boolean sudoContext, java.lang.String arg1name, IMendixObject arg1value)
 	{
 		super(context);
-		this.microflow = microflow;
+		this.microflowName = microflowName;
 		this.username = username;
 		this.sudoContext = sudoContext;
 		this.arg1name = arg1name;
 		this.arg1value = arg1value;
-		this.arg2name = arg2name;
-		this.arg2value = arg2value;
 	}
 
 	@Override
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		Object res = Misc.executeMicroflowAsUser(getContext(), microflow, username, sudoContext, arg1name, arg1value, arg2name, arg2value);
+		Object res = Misc.executeMicroflowAsUser(getContext(), microflowName, username, sudoContext, arg1name, arg1value);
 		return res == null ? null : res.toString();
 		// END USER CODE
 	}
@@ -56,7 +50,7 @@ public class executeMicroflowAsUser_2 extends CustomJavaAction<java.lang.String>
 	@Override
 	public java.lang.String toString()
 	{
-		return "executeMicroflowAsUser_2";
+		return "executeUnverifiedMicroflowAsUser_1";
 	}
 
 	// BEGIN EXTRA CODE
