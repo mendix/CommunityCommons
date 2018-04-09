@@ -11,38 +11,35 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
-import com.mendix.systemwideinterfaces.core.IMendixObject;
+import communitycommons.Misc;
 
 /**
- * Identical to executeMicroflowAsUser, but takes 2 arguments
+ * Executes the given microflow as if the $currentuser is the provided user (delegation). Use sudoContext to determine if 'apply entity access' should be used 
+ * 
+ * - microflowName: the fully qualified microflow name, 'CommunityCommons.CreateUserIfNotExists'
+ * - username: The user that should be used to execute the microflow
+ * - sudoContext: whether entity access should be applied.
  */
-public class executeMicroflowAsUser_2 extends CustomJavaAction<java.lang.String>
+public class executeUnverifiedMicroflowAsUser extends CustomJavaAction<java.lang.String>
 {
-	private java.lang.String microflow;
+	private java.lang.String microflowName;
 	private java.lang.String username;
 	private java.lang.Boolean sudoContext;
-	private java.lang.String arg1name;
-	private IMendixObject arg1value;
-	private java.lang.String arg2name;
-	private IMendixObject arg2value;
 
-	public executeMicroflowAsUser_2(IContext context, java.lang.String microflow, java.lang.String username, java.lang.Boolean sudoContext, java.lang.String arg1name, IMendixObject arg1value, java.lang.String arg2name, IMendixObject arg2value)
+	public executeUnverifiedMicroflowAsUser(IContext context, java.lang.String microflowName, java.lang.String username, java.lang.Boolean sudoContext)
 	{
 		super(context);
-		this.microflow = microflow;
+		this.microflowName = microflowName;
 		this.username = username;
 		this.sudoContext = sudoContext;
-		this.arg1name = arg1name;
-		this.arg1value = arg1value;
-		this.arg2name = arg2name;
-		this.arg2value = arg2value;
 	}
 
 	@Override
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		throw new com.mendix.systemwideinterfaces.MendixRuntimeException("Java action was not implemented");
+		Object res = Misc.executeMicroflowAsUser(getContext(), microflowName, username, sudoContext);
+		return res == null ? null : res.toString();
 		// END USER CODE
 	}
 
@@ -52,7 +49,7 @@ public class executeMicroflowAsUser_2 extends CustomJavaAction<java.lang.String>
 	@Override
 	public java.lang.String toString()
 	{
-		return "executeMicroflowAsUser_2";
+		return "executeUnverifiedMicroflowAsUser";
 	}
 
 	// BEGIN EXTRA CODE

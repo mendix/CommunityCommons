@@ -37,6 +37,11 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_2.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowInBackground.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowInBatches.class);
+    registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser.class);
+    registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser_1.class);
+    registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser_2.class);
+    registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowInBackground.class);
+    registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowInBatches.class);
     registrator.registerUserAction(communitycommons.actions.FileDocumentFromFile.class);
     registrator.registerUserAction(communitycommons.actions.FileFromFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.GenerateHMAC_SHA256_hash.class);
