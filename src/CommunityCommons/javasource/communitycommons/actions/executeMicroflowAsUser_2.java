@@ -11,6 +11,9 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+
+import communitycommons.Misc;
+
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 /**
@@ -42,7 +45,8 @@ public class executeMicroflowAsUser_2 extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		throw new com.mendix.systemwideinterfaces.MendixRuntimeException("Java action was not implemented");
+		Object res = Misc.executeMicroflowAsUser(getContext(), microflow, username, sudoContext, arg1name, arg1value, arg2name, arg2value);
+		return res == null ? null : res.toString();
 		// END USER CODE
 	}
 
