@@ -13,7 +13,7 @@ def packageXMLTemplate =
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mendix.com/package/1.0/">
     <modelerProject xmlns="http://www.mendix.com/modelerProject/1.0/">
         <module name="''' + "${project.name}" + '''" />
-        <projectFile path="''' + "${project.name}.mpr" + '''" />
+        <projectFile path="project.mpr" />
         <files/>
     </modelerProject>
 </package>'''
@@ -23,8 +23,18 @@ def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 def version = '7.1.0'
 
+configurations {
+    tar
+}
+
 repositories {
     mavenCentral()
+    ivy {
+	url 'https://cdn.mendix.com/'
+	layout 'pattern', {
+	    artifact '/[organisation]/[module]-[revision].[ext]'
+	}
+    }
 }
 
 dependencies {
@@ -35,6 +45,8 @@ dependencies {
     compile group: 'org.apache.pdfbox', name: 'pdfbox-app', version: '2.0.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
+    
+    tar 'runtime:mxbuild:7.1.0@tar.gz'
 }
 
 sourceSets {
@@ -60,6 +72,16 @@ task copyToUserlib( type: Copy ) {
         def requiredLibFlag = new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib")
         requiredLibFlag.write ''
     }
+}
+
+task untarMxbuild( type: Copy) {
+    def outputDir = file("${buildDir}/unpacked/dist")
+    
+    configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
+	    from tarTree(resources.gzip(it))
+    }
+    
+    into 'build/mxbuild'
 }
 
 distributions {
