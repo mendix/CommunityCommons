@@ -653,7 +653,6 @@ public class Misc
 			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
 		) {
 			logger.trace("Overlay PDF start, retrieve overlay PDF");
 							
@@ -671,9 +670,13 @@ public class Misc
 			
 			overlay.overlay(new HashMap<Integer, String>()).save(baos);
 		
-			logger.trace("Duplicate result in input stream");
-			logger.trace("Store result in original document");
-			Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+			try (
+				InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
+			) {
+				logger.trace("Duplicate result in input stream");
+				logger.trace("Store result in original document");
+				Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+			}
 		}
 		
 		logger.trace("Overlay PDF end");
