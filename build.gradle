@@ -18,10 +18,9 @@ def packageXMLTemplate =
     </modelerProject>
 </package>'''
 
-def runtimeLibs = 'D:/Program Files/Mendix/7.11.0/runtime/bundles'
-//def runtimeLibs = '/home/reinout/Mendix/mxbuild-7.11.0/runtime/bundles'
+def runtimeLibs = "$buildDir/runtime/bundles"
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
-def version = '7.1.0'
+def version = '7.2.0'
 
 configurations {
     tar
@@ -74,14 +73,14 @@ task copyToUserlib( type: Copy ) {
     }
 }
 
-task untarMxbuild( type: Copy) {
-    def outputDir = file("${buildDir}/unpacked/dist")
+task untarMxbuild( type: Copy ) {    
     
     configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
 	    from tarTree(resources.gzip(it))
+	    into buildDir
+	    include('**/runtime/bundles/*')
+	    includeEmptyDirs = false
     }
-    
-    into 'build/mxbuild'
 }
 
 distributions {
@@ -106,7 +105,7 @@ distZip {
 
 
 task fullDist {
-    dependsOn 'clean', 'copyToUserlib', 'packageXML', 'distZip'
+    dependsOn 'clean', 'copyToUserlib', 'untarMxbuild', 'packageXML', 'distZip'
 }
 
 clean {
@@ -151,6 +150,7 @@ task packageXML {
         new File("$projectDir/package.xml").write(out)
     }
 
-    tasks.distZip.shouldRunAfter tasks.packageXML
-    tasks.packageXML.shouldRunAfter tasks.copyToUserlib
+    tasks.distZip.shouldRunAfter tasks.packageXML    
+    tasks.untarMxbuild.shouldRunAfter tasks.copyToUserlib
+    tasks.packageXML.shouldRunAfter tasks.untarMxbuild
 }
