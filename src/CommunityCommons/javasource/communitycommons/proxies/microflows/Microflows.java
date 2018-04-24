@@ -57,18 +57,6 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static void releaseOldLocksSE(IContext context)
-	{
-		try
-		{
-			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
-			Core.execute(context, "CommunityCommons.releaseOldLocksSE", params);
-		}
-		catch (CoreException e)
-		{
-			throw new MendixRuntimeException(e);
-		}
-	}
 	public static void updateUserHelper(IContext context, java.lang.String _username, java.lang.String _role, java.lang.String _password, boolean _webserviceUser, system.proxies.User _user)
 	{
 		try

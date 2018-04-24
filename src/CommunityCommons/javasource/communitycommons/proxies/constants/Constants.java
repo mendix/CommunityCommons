@@ -11,10 +11,12 @@ public class Constants
 	// These are the constants for the CommunityCommons module
 
 	/**
-	* If this constant is set to 'true', old locks will be released automatically. Set this constant to 'false' if community commons locking is not used. Use true in all other cases. 
+	* Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files increase the number here. Setting the value to <=0 means unlimited.
+	* 
+	* Note: We very strongly recommend to not increase the number for applications running in Mendix Cloud v4.
 	*/
-	public static boolean getenableReleaseLockEvent()
+	public static java.lang.Long getMergeMultiplePdfs_MaxAtOnce()
 	{
-		return (java.lang.Boolean)Core.getConfiguration().getConstantValue("CommunityCommons.enableReleaseLockEvent");
+		return (java.lang.Long)Core.getConfiguration().getConstantValue("CommunityCommons.MergeMultiplePdfs_MaxAtOnce");
 	}
 }
