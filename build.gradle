@@ -8,19 +8,22 @@ import groovy.util.XmlParser
 import groovy.xml.XmlUtil
 import org.gradle.api.internal.file.copy.CopySpecInternal
 
-def packageXMLTemplate =
-'''<?xml version="1.0" encoding="utf-8" ?>
-<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mendix.com/package/1.0/">
-    <modelerProject xmlns="http://www.mendix.com/modelerProject/1.0/">
-        <module name="''' + "${project.name}" + '''" />
-        <projectFile path="project.mpr" />
-        <files/>
-    </modelerProject>
-</package>'''
+project.ext {
+    PACKAGEXML_TEMPLATE = '''<?xml version="1.0" encoding="utf-8" ?>
+    <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mendix.com/package/1.0/">
+        <modelerProject xmlns="http://www.mendix.com/modelerProject/1.0/">
+            <module name="''' + "${project.name}" + '''" />
+            <projectFile path="project.mpr" />
+            <files/>
+        </modelerProject>
+    </package>'''
+
+    CC_VERSION = '7.2.0'
+    MXBUILD_VERSION = '7.1.0'
+}
 
 def runtimeLibs = "$buildDir/runtime/bundles"
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
-def version = '7.2.0'
 
 configurations {
     tar
@@ -44,8 +47,8 @@ dependencies {
     compile group: 'org.apache.pdfbox', name: 'pdfbox-app', version: '2.0.8'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
-    
-    tar 'runtime:mxbuild:7.1.0@tar.gz'
+
+    tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
 }
 
 sourceSets {
@@ -73,13 +76,13 @@ task copyToUserlib( type: Copy ) {
     }
 }
 
-task untarMxbuild( type: Copy ) {    
-    
+task untarMxbuild( type: Copy ) {
+    //TODO: don't re-download if bundles directory exists
     configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
-	    from tarTree(resources.gzip(it))
-	    into buildDir
-	    include('**/runtime/bundles/*')
-	    includeEmptyDirs = false
+        from tarTree(resources.gzip(it))
+        into buildDir
+        include('**/runtime/bundles/*')
+        includeEmptyDirs = false
     }
 }
 
@@ -100,7 +103,7 @@ distributions {
 }
 
 distZip {
-    archiveName "$baseName-$version" + ".mpk"
+    archiveName "$baseName-${project.CC_VERSION}" + ".mpk"
 }
 
 
@@ -139,7 +142,7 @@ task packageXML {
 
     doLast {
         def packageXMLResources = getResources()
-        def packageXML = new XmlParser().parseText(packageXMLTemplate)
+        def packageXML = new XmlParser().parseText(project.PACKAGEXML_TEMPLATE)
 
         packageXMLResources.each { resource ->
             def resourceXML = new XmlParser().parseText(resource)
@@ -150,7 +153,7 @@ task packageXML {
         new File("$projectDir/package.xml").write(out)
     }
 
-    tasks.distZip.shouldRunAfter tasks.packageXML    
+    tasks.distZip.shouldRunAfter tasks.packageXML
     tasks.untarMxbuild.shouldRunAfter tasks.copyToUserlib
     tasks.packageXML.shouldRunAfter tasks.untarMxbuild
 }
