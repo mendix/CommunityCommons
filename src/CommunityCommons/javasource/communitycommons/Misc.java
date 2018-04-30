@@ -602,34 +602,30 @@ public class Misc
 	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
 		if (Constants.getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= Constants.getMergeMultiplePdfs_MaxAtOnce()) { 
 		
-			int i = 0;
-			PDFMergerUtility  mergePdf = new  PDFMergerUtility();
-			for(i=0; i < documents.size(); i++)
-			{
-			    FileDocument file = documents.get(i);
-			    try (
-	    			InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())
-	    		) {
-			    	mergePdf.addSource(content);
-			    }
-			}
-			
 			try (
-				ByteArrayOutputStream out = new ByteArrayOutputStream()
-			) {
-				mergePdf.setDestinationStream(out);
-				try {
-					mergePdf.mergeDocuments(null);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+			) { 
+				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+				
+				for(int i=0; i < documents.size(); i++)
+				{
+					FileDocument file = documents.get(i);
+					mergePdf.addSource(Core.getFileDocumentContent(context, file.getMendixObject()));
 				}
+
+				mergePdf.setDestinationStream(out);
+				mergePdf.mergeDocuments(null);
+				
 				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-	
+				
 				out.reset();
+				documents.clear();
 			}
-			
-			documents.clear();
-			
+			catch (IOException e) 
+			{
+				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+			}
+		
 			return true;	
 		} else {
             throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + Constants.getMergeMultiplePdfs_MaxAtOnce() + 
