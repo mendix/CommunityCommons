@@ -10,6 +10,10 @@ The module adds functionality for working with Dates, Batches, Strings, Internet
 
 ## _Important when updating_ :warning:
 
+### Java 8
+This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries.
+This means that for upgrading, Java 8 is a minimum requirement!
+
 ### Gradle
 In version 7.2.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
 Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder.
