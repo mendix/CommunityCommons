@@ -636,6 +636,7 @@ public class Misc {
      * @param context
      * @param generatedDocumentMendixObject The document to overlay
      * @param overlayMendixObject The document containing the overlay
+	 * @param onTopOfContent if true, puts overlay position in the foreground, otherwise in the background
      * @return boolean
      * @throws IOException
      */
@@ -660,13 +661,11 @@ public class Misc {
 			
 			LOG.trace("Save result in output stream");
 			
-			overlay.overlay(new HashMap<Integer, String>()).save(baos);
+			overlay.overlay(new HashMap<>()).save(baos);
 
-      try (
-				InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
-			) {
-				logger.trace("Duplicate result in input stream");
-				logger.trace("Store result in original document");
+			LOG.trace("Duplicate result in input stream");
+			try ( InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray()) ) {
+				LOG.trace("Store result in original document");
 				Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
 			}
 		}
