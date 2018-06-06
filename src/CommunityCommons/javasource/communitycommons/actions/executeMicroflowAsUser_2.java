@@ -11,9 +11,7 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
-
 import communitycommons.Misc;
-
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 /**
