@@ -1,7 +1,6 @@
 package communitycommons;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -24,24 +23,44 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.owasp.validator.html.AntiSamy;
-import org.owasp.validator.html.CleanResults;
-import org.owasp.validator.html.Policy;
-
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-import communitycommons.proxies.XSSPolicy;
+import communitycommons.proxies.SanitizerPolicy;
+import static communitycommons.proxies.SanitizerPolicy.BLOCKS;
+import static communitycommons.proxies.SanitizerPolicy.FORMATTING;
+import static communitycommons.proxies.SanitizerPolicy.IMAGES;
+import static communitycommons.proxies.SanitizerPolicy.LINKS;
+import static communitycommons.proxies.SanitizerPolicy.STYLES;
+import static communitycommons.proxies.SanitizerPolicy.TABLES;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+
 import system.proxies.FileDocument;
 
 public class StringUtils
 {
+
+	static final Map<String, PolicyFactory> SANITIZER_POLICIES = new ImmutableMap.Builder<String, PolicyFactory>()
+		.put(BLOCKS.name(), Sanitizers.BLOCKS)
+		.put(FORMATTING.name(), Sanitizers.FORMATTING)
+		.put(IMAGES.name(), Sanitizers.IMAGES)
+		.put(LINKS.name(), Sanitizers.LINKS)
+		.put(STYLES.name(), Sanitizers.STYLES)
+		.put(TABLES.name(), Sanitizers.TABLES)
+		.build();
 
 	public static final String	HASH_ALGORITHM	= "SHA-256";
 
@@ -158,7 +177,7 @@ public class StringUtils
 	{
 		if (encoded == null)
 			return null;
-		return new String(Base64.decodeBase64(encoded.getBytes()));
+		return new String(Base64.getDecoder().decode(encoded.getBytes()));
 	}
 
 	public static void base64DecodeToFile(IContext context, String encoded, FileDocument targetFile) throws Exception
@@ -168,7 +187,7 @@ public class StringUtils
 		if (encoded == null)
 			throw new IllegalArgumentException("Source data is null");
 
-		byte [] decoded = Base64.decodeBase64(encoded.getBytes());
+		byte [] decoded = Base64.getDecoder().decode(encoded.getBytes());
 		
 		try  (
 			ByteArrayInputStream bais = new ByteArrayInputStream(decoded);
@@ -181,7 +200,7 @@ public class StringUtils
 	{
 		if (value == null)
 			return null;
-		return new String(Base64.encodeBase64(value.getBytes()));
+		return Base64.getEncoder().encodeToString(value.getBytes());
 	}
 
 	public static String base64EncodeFile(IContext context, FileDocument file) throws IOException
@@ -194,7 +213,7 @@ public class StringUtils
 		try (
 			InputStream f = Core.getFileDocumentContent(context, file.getMendixObject())
 		) {
-			return new String(Base64.encodeBase64(IOUtils.toByteArray(f)));
+			return Base64.getEncoder().encodeToString(IOUtils.toByteArray(f));
 		}
 	}
 
@@ -205,7 +224,7 @@ public class StringUtils
 		try (
 			InputStream f = Core.getFileDocumentContent(context, source.getMendixObject());
 		) {
-			return org.apache.commons.io.IOUtils.toString(f);
+			return IOUtils.toString(f, StandardCharsets.UTF_8);
 		}
 	}
 
@@ -217,7 +236,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Value to write is null");
 		
 		try (
-			InputStream is = IOUtils.toInputStream(value)
+			InputStream is = IOUtils.toInputStream(value, StandardCharsets.UTF_8)
 		) {
 			Core.storeFileDocumentContent(context, destination.getMendixObject(), is);
 		}
@@ -264,36 +283,18 @@ public class StringUtils
     return result.toString();
 	}
 
-	public static String XSSSanitize(String html, XSSPolicy policy)
-			throws Exception {
-		if (html == null)
-			return "";
-		// return HtmlSanitizer.sanitize(html);
-		String policyString = policy == null ? "tinymce" : policy.toString()
-				.toLowerCase();
-		return XSSSanitize(html, policyString);
+	public static String sanitizeHTML(String html, List<SanitizerPolicy> policyParams) {
+		PolicyFactory policyFactory = null;
+
+		for (SanitizerPolicy param : policyParams) {
+			policyFactory = (policyFactory == null) ? SANITIZER_POLICIES.get(param.name()) : policyFactory.and(SANITIZER_POLICIES.get(param.name()));
+		}
+
+		return sanitizeHTML(html, policyFactory);
 	}
 
-	public static String XSSSanitize(String html, String policyString)
-			throws Exception {
-		if (html == null)
-			return "";
-		if (policyString == null)
-			throw new Exception("Unable to perform XSS sanitization: policyString is null");
-
-		String filename = Core.getConfiguration().getResourcesPath() + File.separator
-				+ "communitycommons" + File.separator + "antisamy"
-				+ File.separator + "antisamy-" + policyString + "-1.4.4.xml";
-
-		AntiSamy as = new AntiSamy(); // Create AntiSamy object
-		Policy p = Policy.getInstance(filename);
-		try {
-			CleanResults cr = as.scan(html, p, AntiSamy.SAX);
-			return cr.getCleanHTML();
-		} catch (Exception e) {
-			throw new Exception("Unable to perform XSS sanitization: "
-					+ e.getMessage(), e);
-		}
+	public static String sanitizeHTML(String html, PolicyFactory policyFactory) {
+		return policyFactory.sanitize(html);
 	}
 
 	private static final String ALPHA_CAPS  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -355,7 +356,7 @@ public class StringUtils
 		byte[] encryptedData = c.doFinal(valueToEncrypt.getBytes());
 		byte[] iv = c.getIV();
 
-		return new String(Base64.encodeBase64(iv)) + ";" + new String(Base64.encodeBase64(encryptedData));
+		return Base64.getEncoder().encodeToString(iv) + ";" + Base64.getEncoder().encodeToString(encryptedData);
 	}
 
 	public static String decryptString(String key, String valueToDecrypt) throws Exception
@@ -371,8 +372,8 @@ public class StringUtils
 		String[] s = valueToDecrypt.split(";");
 		if (s.length < 2) //Not an encrypted string, just return the original value.
 			return valueToDecrypt;
-		byte[] iv = Base64.decodeBase64(s[0].getBytes());
-		byte[] encryptedData = Base64.decodeBase64(s[1].getBytes());
+		byte[] iv = Base64.getDecoder().decode(s[0].getBytes());
+		byte[] encryptedData = Base64.getDecoder().decode(s[1].getBytes());
 		c.init(Cipher.DECRYPT_MODE, k, new IvParameterSpec(iv));
 		return new String(c.doFinal(encryptedData));
 	}
@@ -386,9 +387,9 @@ public class StringUtils
 			mac.update(valueToEncrypt.getBytes("UTF-8"));
 			byte[] hmacData = mac.doFinal();
 
-            return new String(Base64.encodeBase64(hmacData));
+            return Base64.getEncoder().encodeToString(hmacData);
 		}
-		catch (Exception e) {
+		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
 			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}

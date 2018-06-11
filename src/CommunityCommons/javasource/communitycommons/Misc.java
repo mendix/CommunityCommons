@@ -17,8 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.Arrays;
 
-import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -188,46 +188,49 @@ public class Misc
       return true;
   }
 
-	public static Boolean storeURLToFileDocument(IContext context, String url, IMendixObject __document, String filename) throws Exception
-	{
-        if (__document == null || url == null || filename == null)
-            throw new Exception("No document, filename or URL provided");
-        
-        final int MAX_REMOTE_FILESIZE = 1024 * 1024 * 200; //maxium of 200 MB
-        URL imageUrl = new URL(url);
-        URLConnection connection = imageUrl.openConnection();
-        //we connect in 20 seconds or not at all
-        connection.setConnectTimeout(20000);
-        connection.setReadTimeout(20000);
-        connection.connect();
+	 public static Boolean storeURLToFileDocument(IContext context, String url, IMendixObject __document, String filename) throws IOException {
 
-        try (
-        	InputStream is = connection.getInputStream()
-    	) {
-        
-	        //check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image. 
-	        if (connection.getContentLength() > MAX_REMOTE_FILESIZE) { //maximum of 200 mb 
-	            throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url: " + connection.getContentLength()+ " (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");
-	        } else if (connection.getContentLength() < 0) {
-	            // connection has not specified content length, wrap stream in a LimitedInputStream
-	            try (
-		        	LimitedInputStream limitStream = new LimitedInputStream(is, MAX_REMOTE_FILESIZE) {                
-		                @Override
-		                protected void raiseError(long pSizeMax, long pCount) throws IOException {
-		                    throw new IllegalArgumentException("MxID: importing image, wrong filesize of remote url (max: " + String.valueOf(MAX_REMOTE_FILESIZE)+ ")");                    
-		                }
-		            }
-		        ) {
-	            	Core.storeFileDocumentContent(context, __document, filename, limitStream);
-	            }
-	        } else {
-	            // connection has specified correct content length, read the stream normally
-	            //NB; stream is closed by the core
-	            Core.storeFileDocumentContent(context, __document, filename, is);
-	        }
-        }
-        
-        return true;
+		ILogNode LOG = Core.getLogger("CommunityCommons");
+		if (__document == null || url == null || filename == null) {
+			throw new IllegalArgumentException("No document, filename or URL provided");
+		}
+
+		final int MAX_REMOTE_FILESIZE = 1024 * 1024 * 200; //maximum of 200 MB
+		try {
+			URL imageUrl = new URL(url);
+			URLConnection connection = imageUrl.openConnection();
+			//we connect in 20 seconds or not at all
+			connection.setConnectTimeout(20000);
+			connection.setReadTimeout(20000);
+			connection.connect();
+
+			int contentLength = connection.getContentLength();
+
+			//check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image.
+			LOG.trace(String.format("Remote filesize: %d", contentLength));
+
+			if (contentLength > MAX_REMOTE_FILESIZE) { //maximum of 200 mb
+				throw new IllegalArgumentException(String.format("Wrong filesize of remote url: %d (max: %d)", contentLength, MAX_REMOTE_FILESIZE));
+			}
+
+			InputStream fileContentIS;
+			try (InputStream connectionInputStream = connection.getInputStream()) {
+				if (contentLength >= 0) {
+					fileContentIS = connectionInputStream;
+				} else { // contentLength is negative or unknown
+					LOG.trace(String.format("Unknown content length; limiting to %d", MAX_REMOTE_FILESIZE));
+					byte[] outBytes = new byte[MAX_REMOTE_FILESIZE];
+					int actualLength = IOUtils.read(connectionInputStream, outBytes, 0, MAX_REMOTE_FILESIZE);
+					fileContentIS = new ByteArrayInputStream(Arrays.copyOf(outBytes, actualLength));
+				}
+				Core.storeFileDocumentContent(context, __document, filename, fileContentIS);
+			}
+		} catch (IOException ioe) {
+			LOG.error(String.format("A problem occurred while reading from URL %s: %s", url, ioe.getMessage()));
+			throw ioe;
+		}
+
+		return true;
 	}
 
     public static Long getFileSize(IContext context, IMendixObject document)

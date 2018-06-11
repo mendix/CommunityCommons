@@ -73,6 +73,7 @@ task untarMxbuild( type: Copy ) {
         include('**/runtime/bundles/integration.jar')
 	include('**/runtime/bundles/logging.jar')
         include('**/runtime/bundles/webui.jar')
+	include('**/runtime/bundles/m2ee-api.jar')
 	include('**/runtime/bundles/biz.aQute.bndlib.jar')
         include('**/runtime/bundles/osgi.cmpn.jar')
         includeEmptyDirs = false
