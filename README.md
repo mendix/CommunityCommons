@@ -28,7 +28,7 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 ### Breaking change to XSSSanitize
 
 In order to mitigate some security vulnerabilities in dependent libraries, the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
-This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty.
+This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value `empty`.
 Possible policy values are defined in the `SanitizerPolicy` enumeration. The meaning of the policies are defined in the [javadocs](https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html).
 
 _In version 6.1 several libraries (jar files in the userlib folder of your project) have been updated. pdfbox-1.8.5.jar currently causes a compile error in your project when it's still present. Make sure to remove old libraries from the userlib folder in your project!_
