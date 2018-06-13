@@ -605,41 +605,36 @@ public class Misc
 	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
 		if (Constants.getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= Constants.getMergeMultiplePdfs_MaxAtOnce()) { 
 		
-			int i = 0;
-			PDFMergerUtility  mergePdf = new  PDFMergerUtility();
-			for(i=0; i < documents.size(); i++)
-			{
-			    FileDocument file = documents.get(i);
-			    try (
-	    			InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())
-	    		) {
-			    	mergePdf.addSource(content);
-			    }
-			}
-			
 			try (
-				ByteArrayOutputStream out = new ByteArrayOutputStream()
-			) {
-				mergePdf.setDestinationStream(out);
-				try {
-					mergePdf.mergeDocuments(null);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+			) { 
+				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+				
+				for(int i=0; i < documents.size(); i++)
+				{
+					FileDocument file = documents.get(i);
+					mergePdf.addSource(Core.getFileDocumentContent(context, file.getMendixObject()));
 				}
+
+				mergePdf.setDestinationStream(out);
+				mergePdf.mergeDocuments(null);
+				
 				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-	
+				
 				out.reset();
+				documents.clear();
 			}
-			
-			documents.clear();
-			
+			catch (IOException e) 
+			{
+				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+			}
+		
 			return true;	
 		} else {
             throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + Constants.getMergeMultiplePdfs_MaxAtOnce() + 
             								   " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
 		}
-	}
-	
+	}	
 
 	/**
 	 * Overlay a generated PDF document with another PDF (containing the company stationary for example)
@@ -656,7 +651,6 @@ public class Misc
 			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
 		) {
 			logger.trace("Overlay PDF start, retrieve overlay PDF");
 							
@@ -674,9 +668,13 @@ public class Misc
 			
 			overlay.overlay(new HashMap<Integer, String>()).save(baos);
 		
-			logger.trace("Duplicate result in input stream");
-			logger.trace("Store result in original document");
-			Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+			try (
+				InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
+			) {
+				logger.trace("Duplicate result in input stream");
+				logger.trace("Store result in original document");
+				Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+			}
 		}
 		
 		logger.trace("Overlay PDF end");
