@@ -33,7 +33,7 @@ dependencies {
     testCompile fileTree(dir: "$runtimeLibs")
     compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20180219.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'org.apache.pdfbox', name: 'pdfbox-app', version: '2.0.9'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.11'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
 

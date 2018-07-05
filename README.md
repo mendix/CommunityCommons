@@ -23,27 +23,6 @@ In order to mitigate some security vulnerabilities in dependent libraries, the X
 This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value `empty`.
 Possible policy values are defined in the `SanitizerPolicy` enumeration. The meaning of the policies are defined in the [javadocs](https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html).
 
-## Contributing
-
-For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-project-management/contribute-to-a-github-repository)!
-
-### Gradle
-In version 7.2.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
-Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder.
-
-To download the dependencies and copy them to the `userlib/` folder, execute:
-```
-gradle prepareDeps
-``` 
-from the command line. Afterwards, you will be able to export a CommunityCommons.mpk module from the Community Commons main project. Select only the dependencies listed below as dependencies in userlib for the exported module.
-
-## Dependencies
- -  commons.io-2.6.jar
- -  commons.lang3-3.7.jar
- -  pdfbox-app-2.0.9.jar
- -  guava-19.0.jar
- -  owasp-java-html-sanitizer-20180219.1.jar
-
 ## Usage
 
 All functions in this package can be invoked using a microflow Java action call in a Microflow, our from your own java code by calling
@@ -54,6 +33,28 @@ for example : `commonitycommons.StringUtils.hash("Mendix", 20);`
 
 The module contains one constant: `CommunityCommons.MergeMultiplePdfs_MaxAtOnce`. It is used in the _MergeMultiplePdfs_ Java action to restrict the number of PDFs processed at the same time.
 Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files increase the number here. Setting the value to <= 0 means unlimited.
+
+## Contributing
+
+For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-project-management/contribute-to-a-github-repository)!
+
+### Gradle
+In version 7.2.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
+Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder when you import the Community Commons module into your app model.
+
+To download the dependencies and copy them to the `userlib/` folder of the Community Commons container project, execute:
+```
+gradle prepareDeps
+``` 
+from the command line. Afterwards, you will be able to export a CommunityCommons.mpk module from the Community Commons main project. Select only the dependencies listed below as dependencies in userlib for the exported module.
+
+## Dependencies
+ -  commons.io-2.6.jar
+ -  commons.lang3-3.7.jar
+ -  pdfbox-2.0.11.jar
+ -  fontbox-2.0.11.jar
+ -  guava-19.0.jar
+ -  owasp-java-html-sanitizer-20180219.1.jar
 
 ## Function list
 
