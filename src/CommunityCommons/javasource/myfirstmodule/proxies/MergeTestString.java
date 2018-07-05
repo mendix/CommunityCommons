@@ -4,16 +4,16 @@
 
 package myfirstmodule.proxies;
 
-public class MergeTest
+public class MergeTestString
 {
-	private final com.mendix.systemwideinterfaces.core.IMendixObject mergeTestMendixObject;
+	private final com.mendix.systemwideinterfaces.core.IMendixObject mergeTestStringMendixObject;
 
 	private final com.mendix.systemwideinterfaces.core.IContext context;
 
 	/**
 	 * Internal name of this entity
 	 */
-	public static final java.lang.String entityName = "MyFirstModule.MergeTest";
+	public static final java.lang.String entityName = "MyFirstModule.MergeTestString";
 
 	/**
 	 * Enum describing members of this entity
@@ -36,51 +36,51 @@ public class MergeTest
 		}
 	}
 
-	public MergeTest(com.mendix.systemwideinterfaces.core.IContext context)
+	public MergeTestString(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.MergeTest"));
+		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.MergeTestString"));
 	}
 
-	protected MergeTest(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mergeTestMendixObject)
+	protected MergeTestString(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mergeTestStringMendixObject)
 	{
-		if (mergeTestMendixObject == null)
+		if (mergeTestStringMendixObject == null)
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.MergeTest", mergeTestMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.MergeTest");
+		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.MergeTestString", mergeTestStringMendixObject.getType()))
+			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.MergeTestString");
 
-		this.mergeTestMendixObject = mergeTestMendixObject;
+		this.mergeTestStringMendixObject = mergeTestStringMendixObject;
 		this.context = context;
 	}
 
 	/**
-	 * @deprecated Use 'MergeTest.load(IContext, IMendixIdentifier)' instead.
+	 * @deprecated Use 'MergeTestString.load(IContext, IMendixIdentifier)' instead.
 	 */
 	@Deprecated
-	public static myfirstmodule.proxies.MergeTest initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
+	public static myfirstmodule.proxies.MergeTestString initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
-		return myfirstmodule.proxies.MergeTest.load(context, mendixIdentifier);
+		return myfirstmodule.proxies.MergeTestString.load(context, mendixIdentifier);
 	}
 
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
 	 */
-	public static myfirstmodule.proxies.MergeTest initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
+	public static myfirstmodule.proxies.MergeTestString initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		return new myfirstmodule.proxies.MergeTest(context, mendixObject);
+		return new myfirstmodule.proxies.MergeTestString(context, mendixObject);
 	}
 
-	public static myfirstmodule.proxies.MergeTest load(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
+	public static myfirstmodule.proxies.MergeTestString load(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		com.mendix.systemwideinterfaces.core.IMendixObject mendixObject = com.mendix.core.Core.retrieveId(context, mendixIdentifier);
-		return myfirstmodule.proxies.MergeTest.initialize(context, mendixObject);
+		return myfirstmodule.proxies.MergeTestString.initialize(context, mendixObject);
 	}
 
-	public static java.util.List<myfirstmodule.proxies.MergeTest> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
+	public static java.util.List<myfirstmodule.proxies.MergeTestString> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.MergeTest> result = new java.util.ArrayList<myfirstmodule.proxies.MergeTest>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.MergeTest" + xpathConstraint))
-			result.add(myfirstmodule.proxies.MergeTest.initialize(context, obj));
+		java.util.List<myfirstmodule.proxies.MergeTestString> result = new java.util.ArrayList<myfirstmodule.proxies.MergeTestString>();
+		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.MergeTestString" + xpathConstraint))
+			result.add(myfirstmodule.proxies.MergeTestString.initialize(context, obj));
 		return result;
 	}
 
@@ -156,7 +156,7 @@ public class MergeTest
 	 */
 	public final com.mendix.systemwideinterfaces.core.IMendixObject getMendixObject()
 	{
-		return mergeTestMendixObject;
+		return mergeTestStringMendixObject;
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class MergeTest
 
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
-			final myfirstmodule.proxies.MergeTest that = (myfirstmodule.proxies.MergeTest) obj;
+			final myfirstmodule.proxies.MergeTestString that = (myfirstmodule.proxies.MergeTestString) obj;
 			return getMendixObject().equals(that.getMendixObject());
 		}
 		return false;
@@ -192,7 +192,7 @@ public class MergeTest
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.MergeTest";
+		return "MyFirstModule.MergeTestString";
 	}
 
 	/**

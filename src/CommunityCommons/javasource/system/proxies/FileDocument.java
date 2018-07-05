@@ -71,6 +71,9 @@ public class FileDocument
 	 */
 	public static system.proxies.FileDocument initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
+		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.Base64EncodeFile", mendixObject.getType()))
+			return myfirstmodule.proxies.Base64EncodeFile.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("System.Image", mendixObject.getType()))
 			return system.proxies.Image.initialize(context, mendixObject);
 
@@ -79,6 +82,15 @@ public class FileDocument
 
 		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.PdfOverlay", mendixObject.getType()))
 			return myfirstmodule.proxies.PdfOverlay.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.StringFromFile", mendixObject.getType()))
+			return myfirstmodule.proxies.StringFromFile.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.StringToFile", mendixObject.getType()))
+			return myfirstmodule.proxies.StringToFile.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.URLToDocument", mendixObject.getType()))
+			return myfirstmodule.proxies.URLToDocument.initialize(context, mendixObject);
 
 		return new system.proxies.FileDocument(context, mendixObject);
 	}

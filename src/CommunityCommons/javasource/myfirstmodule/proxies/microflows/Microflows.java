@@ -28,6 +28,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static myfirstmodule.proxies.URLToDocument dS_URLToDocument(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.DS_URLToDocument", params);
+			return result == null ? null : myfirstmodule.proxies.URLToDocument.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static myfirstmodule.proxies.Container dSO_Container(IContext context)
 	{
 		try
@@ -67,7 +80,7 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static void iVK_CreateAndMerge(IContext context, java.util.List<myfirstmodule.proxies.MergeTest> _mergeTest)
+	public static void iVK_CreateAndMerge(IContext context, java.util.List<myfirstmodule.proxies.MergeTestString> _mergeTest)
 	{
 		try
 		{
@@ -76,7 +89,7 @@ public class Microflows
 			if (_mergeTest != null)
 			{
 				listparam_mergeTest = new java.util.ArrayList<IMendixObject>();
-				for (myfirstmodule.proxies.MergeTest obj : _mergeTest)
+				for (myfirstmodule.proxies.MergeTestString obj : _mergeTest)
 					listparam_mergeTest.add(obj.getMendixObject());
 			}
 			params.put("MergeTest", listparam_mergeTest);
@@ -139,12 +152,51 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static boolean iVK_StoreURLToFileDocument(IContext context, myfirstmodule.proxies.URLToDocument _inputURLToDocument)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.IVK_StoreURLToFileDocument", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void splitString(IContext context)
 	{
 		try
 		{
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			Core.execute(context, "MyFirstModule.SplitString", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static myfirstmodule.proxies.MergeDocument sUB_createPDFDocument_1(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.SUB_createPDFDocument_1", params);
+			return result == null ? null : myfirstmodule.proxies.MergeDocument.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static myfirstmodule.proxies.MergeDocument sUB_createPDFDocument_2(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.SUB_createPDFDocument_2", params);
+			return result == null ? null : myfirstmodule.proxies.MergeDocument.initialize(context, result);
 		}
 		catch (CoreException e)
 		{
@@ -171,6 +223,201 @@ public class Microflows
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			params.put("Entity", _entity == null ? null : _entity.getMendixObject());
 			Core.execute(context, "MyFirstModule.templatetest", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64Decode(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64Decode", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64DecodeToFile(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64DecodeToFile", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64DecodeToFile_getFileSize(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64DecodeToFile_getFileSize", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64Encode(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64Encode", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64EncodeToFile(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64EncodeToFile", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_Base64EncodeToFile_getFileSize(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_Base64EncodeToFile_getFileSize", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_CreateAndMerge(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_CreateAndMerge", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_EmptyName(IContext context, myfirstmodule.proxies.URLToDocument _inputURLToDocument)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_EmptyName", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_EncryptString(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_EncryptString", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_InvalidURL(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_InvalidURL", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_MaxFileSize(IContext context, myfirstmodule.proxies.URLToDocument _inputURLToDocument)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_MaxFileSize", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_StringFromFile(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringFromFile", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_StringFromFile_getFileSize(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringFromFile_getFileSize", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_StringToFile(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringToFile", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_URLToDocument_getFileSize(IContext context, myfirstmodule.proxies.URLToDocument _inputURLToDocument)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_URLToDocument_getFileSize", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_ValidURL(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_ValidURL", params);
 		}
 		catch (CoreException e)
 		{

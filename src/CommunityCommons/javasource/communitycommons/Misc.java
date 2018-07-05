@@ -144,7 +144,7 @@ public class Misc {
 			InputStream is = conn.getInputStream()
 		) {
 			// Get the response
-			result = new String(IOUtils.toString(is, StandardCharsets.UTF_8));
+			result = IOUtils.toString(is, StandardCharsets.UTF_8);
 		}
 		
         return result;

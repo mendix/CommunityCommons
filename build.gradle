@@ -51,7 +51,7 @@ sourceSets {
     }
     test {
         java {
-            srcDirs = ["src/CommunityCommons/test"]
+            srcDirs = ["src/test"]
         }
     }
 }

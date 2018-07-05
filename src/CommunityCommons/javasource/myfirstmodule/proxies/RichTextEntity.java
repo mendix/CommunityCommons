@@ -195,7 +195,7 @@ public class RichTextEntity
 	 * Set value of Policy
 	 * @param policy
 	 */
-	public final communitycommons.proxies.SanitizerPolicy getPolicy()
+	public final myfirstmodule.proxies.Enumeration getPolicy()
 	{
 		return getPolicy(getContext());
 	}
@@ -204,20 +204,20 @@ public class RichTextEntity
 	 * @param context
 	 * @return value of Policy
 	 */
-	public final communitycommons.proxies.SanitizerPolicy getPolicy(com.mendix.systemwideinterfaces.core.IContext context)
+	public final myfirstmodule.proxies.Enumeration getPolicy(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.Policy.toString());
 		if (obj == null)
 			return null;
 
-		return communitycommons.proxies.SanitizerPolicy.valueOf((java.lang.String) obj);
+		return myfirstmodule.proxies.Enumeration.valueOf((java.lang.String) obj);
 	}
 
 	/**
 	 * Set value of Policy
 	 * @param policy
 	 */
-	public final void setPolicy(communitycommons.proxies.SanitizerPolicy policy)
+	public final void setPolicy(myfirstmodule.proxies.Enumeration policy)
 	{
 		setPolicy(getContext(), policy);
 	}
@@ -227,7 +227,7 @@ public class RichTextEntity
 	 * @param context
 	 * @param policy
 	 */
-	public final void setPolicy(com.mendix.systemwideinterfaces.core.IContext context, communitycommons.proxies.SanitizerPolicy policy)
+	public final void setPolicy(com.mendix.systemwideinterfaces.core.IContext context, myfirstmodule.proxies.Enumeration policy)
 	{
 		if (policy != null)
 			getMendixObject().setValue(context, MemberNames.Policy.toString(), policy.toString());

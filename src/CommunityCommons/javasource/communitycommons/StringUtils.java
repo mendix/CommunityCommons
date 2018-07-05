@@ -282,7 +282,11 @@ public class StringUtils
     private static final String SPL_CHARS   = "!@#$%^&*_=+-/";
 	/**
 	 * Returns a random strong password containing at least one number, lowercase character, uppercase character and strange character
-	 * @param length
+	 * @param minLen Minimum length
+	 * @param maxLen Maximum length
+	 * @param noOfCAPSAlpha Number of capitals
+	 * @param noOfDigits Number of digits
+	 * @param noOfSplChars Number of special characters
 	 * @return
 	 */
 	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha,
