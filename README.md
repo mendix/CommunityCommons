@@ -34,6 +34,10 @@ for example : `commonitycommons.StringUtils.hash("Mendix", 20);`
 The module contains one constant: `CommunityCommons.MergeMultiplePdfs_MaxAtOnce`. It is used in the _MergeMultiplePdfs_ Java action to restrict the number of PDFs processed at the same time.
 Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files increase the number here. Setting the value to <= 0 means unlimited.
 
+## Testing
+
+The Community Commons container project contains a variety of predesigned unit tests. To be able to use these tests the UnitTesting module should be downloaded from the AppStore. Please refer to the UnitTesting documentation for further instruction regarding the implementation. The UnitTesting has a dependency to the ObjectHandling module, so that module should also be imported to this applicable project. 
+
 ## Contributing
 
 For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-project-management/contribute-to-a-github-repository)!
