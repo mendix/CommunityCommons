@@ -3,34 +3,25 @@
 This module adds a number reusable Java methods to your project, which can be called from Microflows or custom Java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project. The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Object Locking, Configuration etc. See the documentation or screenshot for a complete list of functions.
 
 ## Description
- 
-This module adds many reusable java methods to your project, which can be called from microflows or custom java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project. 
 
-The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
+This module adds many reusable java methods to your project, which can be called from microflows or custom java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project.
 
-## _Important when updating_ :warning:
-_In version 6.1 several libraries (jar files in the userlib folder of your project) have been updated. pdfbox-1.8.5.jar currently causes a compile error in your project when it's still present. Make sure to remove old libraries from the userlib folder in your project!_ 
+The module adds functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
-## Contributing
+## _Important when updating to v6.2.1_ :warning:
 
-For more information on contributing to this repository visit [Contributing to a GitHub repository](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository)!
+### Deleting obsolete dependencies first
+It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
 
-## Dependencies
- -  antisamy-1.5.3.jar
- -  com.google.guava-14.0.1.jar
- -  com.springsource.org.apache.batik.css-1.7.0.j
- -  ~~fontbox-1.8.5.jar~~
- -  jempbox-1.8.5.jar
- -  ~~joda-time-1.6.2.jar~~
- -  joda-time-2.9.6.jar
- -  nekohtml.jar
- -  org.apache.commons.fileupload-1.2.1.jar
- -  org.apache.commons.io-2.3.0.jar
- -  org.apache.commons.lang3.jar
- -  org.apache.servicemix.bundles.commons-codec-1.3.0.jar
- -  ~~pdfbox-1.8.5.jar~~
- -  pdfbox-app-2.3.0.jar
- -  xml-apis-ext.jar
+### Java 8
+This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries.
+This means that for upgrading, [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) is a minimum requirement! You can change your JDK directory in the Desktop Modeler under Edit > Preferences.
+
+### Breaking change to XSSSanitize
+
+In order to mitigate some security vulnerabilities in dependent libraries, the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
+This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value `empty`.
+Possible policy values are defined in the `SanitizerPolicy` enumeration. The meaning of the policies are defined in the [javadocs](https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html).
 
 ## Usage
 
@@ -40,7 +31,34 @@ All functions in this package can be invoked using a microflow Java action call 
 
 for example : `commonitycommons.StringUtils.hash("Mendix", 20);`
 
-The module contains one constant: CommunityCommons.enableReleaseLockEvent. If True, locks will automatically be released 5 minutes after the owning session ends, to avoid that Users maintain logout without releasing locks somehow. Use 'true' if you make use of the Communty Commons locking system. Otherwise 'false' is fine.
+The module contains one constant: `CommunityCommons.MergeMultiplePdfs_MaxAtOnce`. It is used in the _MergeMultiplePdfs_ Java action to restrict the number of PDFs processed at the same time.
+Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files increase the number here. Setting the value to <= 0 means unlimited.
+
+## Testing
+
+The Community Commons container project contains a variety of predesigned unit tests. To be able to use these tests the UnitTesting module should be downloaded from the AppStore. Please refer to the UnitTesting documentation for further instruction regarding the implementation. The UnitTesting has a dependency to the ObjectHandling module, so that module should also be imported to this project if you want to run the tests. 
+
+## Contributing
+
+For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-project-management/contribute-to-a-github-repository)!
+
+### Gradle
+In version 6.2.1, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
+Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' `userlib` folder when you import the Community Commons module into your app model.
+
+To download the dependencies and copy them to the `userlib/` folder of the Community Commons container project, execute:
+```
+gradle prepareDeps
+``` 
+from the command line. Afterwards, you will be able to export a CommunityCommons.mpk module from the Community Commons main project. Select only the dependencies listed below as dependencies in userlib for the exported module.
+
+## Dependencies
+ -  commons.io-2.6.jar
+ -  commons.lang3-3.7.jar
+ -  pdfbox-2.0.11.jar
+ -  fontbox-2.0.11.jar
+ -  guava-19.0.jar
+ -  owasp-java-html-sanitizer-20180219.1.jar
 
 ## Function list
 
@@ -63,7 +81,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *GetIntFromDateTime* - Extracts a part of a date (year, month or day) to an integer (new in 2.2).
 
-### Files  
+### Files
 
 *Base64DecodeToFile* - Stores an base 64 encoded string plain in the provided target file document.
 
@@ -83,18 +101,20 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 ### Logging
 
-*Log* - Prints a message to the Mendix log. 
+*CreateLogNode* - Initialize a log node without having a log line.
 
-*SimpleLog* - Logs a message to 'Community Commons' with loglevel 'Info'. 
+*Log* - Prints a message to the Mendix log.
 
-*TimeMeasureStart* - Start timing something, and print the result to the log. 
+*SimpleLog* - Logs a message to 'Community Commons' with loglevel 'Info'.
 
-*TimeMeasureEnd* - End timing something, and print the result to the log. 
+*TimeMeasureStart* - Start timing something, and print the result to the log.
+
+*TimeMeasureEnd* - End timing something, and print the result to the log.
 
 
 ### Misc
 
-*AssertTrue* - Shorthand for checking something, and throwing an error if that something is not true. Saves creating three microflow items for things that MUST be true. 
+*AssertTrue* - Shorthand for checking something, and throwing an error if that something is not true. Saves creating three microflow items for things that MUST be true.
 
 *CreateUserIfNotExists* - (Microflow) Create a user with predefined password an role. Useful during startup for integration purposes. Changed in 2.4: The user now always gets updated, if even the user already exists.
 
@@ -104,13 +124,11 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *GetRuntimeVersion* - Returns the runtime version of this application.
 
-*GetDTAPMode* - Returns the DTAP mode of this application instance.
-
-*RetrieveURL* - Retrieves data (such as an HTML page) from an URL using the HTTP protocol, and returns it as string. 
+*RetrieveURL* - Retrieves data (such as an HTML page) from an URL using the HTTP protocol, and returns it as string.
 
 *ThrowException* - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.
 
-*ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, an fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
+*ThrowWebserviceException* - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, a fault message will be generated in the output, instead of an '501 Internal server' error.  (Fixed/ updated in 2.2)
 
 *GetDefaultLanguage* - Gets the Language object for the default language as defined in the model.
 
@@ -125,7 +143,7 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 *executeMicroflowInBatches (Recommended!)* - Performs a batch operation on a large dataset, by invoking the microflow on small subsets of the data, each with its own database transaction.  (new in 2.2)
 *recommitInBatches* - Recommits (with events) all items returned by the xpath query. Useful in migration scenerios (new in 2.4)
 
-### ORM 
+### ORM
 
 *CommitWithoutEvents* - Commits an object, but without events.
 
@@ -150,6 +168,10 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *encryptMemberIfChanged* - Use this function to automatically encrypt attributes of an object during (for example) before commit. (new in 2.4)
 
+*EndTransaction* - Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested.
+
+*StartTransaction* - Start a transaction, if a transaction is already started for this context, a savepoint will be added.
+
 ### Regexes
 
 *EmailAddressRegex* - A, not too restrictive, email address regular expression.
@@ -160,25 +182,6 @@ The module contains one constant: CommunityCommons.enableReleaseLockEvent. If Tr
 
 *Identifier* - Identifier.
 
-### ORM - locking
-
-The following functions can be used to manage locks. Not that this locking functionality does not prevent changes at database level, so acquireLock(item) should be used in any Microflow manipulating the object! 
-
-Good practice might be to acquire the lock in a before commit, and abort the commit if the lock was not granted.
-
-From version *1.2* upward, locks are released automatically when a session expires. For further information about locks see the discussion at https://mxforum.mendix.com/questions/1865/Impact-of-using-database-record-locks
-
-*acquireLock* - Tries to acquire a lock. Returns true if granted, or if already locked by this session.
-
-*releaseLock* - Releases a lock.
-
-*waitForLock* - Identical to acquirelock, but on failure, waits until the lock can be obtained.
-
-*getLockOwner* - Returns the user.name of the lock owner, or empty if the item is not locked.
-
-*EndTransaction* - Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested.
-
-*StartTransaction* - Start a transaction, if a transaction is already started for this context, a savepoint will be added.
 
 ### StringUtils
 
@@ -196,7 +199,7 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *RegexTest* - Returns true if a value matches a regular expression.
 
-*StringLeftPad* - Pads a string on the left to a certain length. 
+*StringLeftPad* - Pads a string on the left to a certain length.
 
 *StringLength* - Returns -1 if the value is empty, the length otherwise.
 
@@ -210,7 +213,7 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *Base64Decode* - Converts a base64 encoded string to the plain, original string.
 
-*XSSSanitize* - Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users. It also transforms HTML into XHTML, nice for PDF export.
+*XSSSanitize* - Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users.
 
 *RandomStrongPassword* - Returns a random strong password containing at least one number, lowercase character,uppercase character and strange character.
 
@@ -218,6 +221,15 @@ From version *1.2* upward, locks are released automatically when a session expir
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
+
+*SubstringAfter* - Returns the substring of a string after the first occurence of a given separator.
+
+*SubstringAfterLast* - Returns the substring of a string after the last occurence of a given separator.
+
+*SubstringBefore* - Returns the substring of a string before the first occurence of a given separator.
+
+*SubstringBeforeLast* - Returns the substring of a string before the last occurence of a given separator.
+
 
 ## Thank you, community.
 
