@@ -36,7 +36,7 @@ Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to
 
 ## Testing
 
-The Community Commons container project contains a variety of predesigned unit tests. To be able to use these tests the UnitTesting module should be downloaded from the AppStore. Please refer to the UnitTesting documentation for further instruction regarding the implementation. The UnitTesting has a dependency to the ObjectHandling module, so that module should also be imported to this applicable project. 
+The Community Commons container project contains a variety of predesigned unit tests. To be able to use these tests the UnitTesting module should be downloaded from the AppStore. Please refer to the UnitTesting documentation for further instruction regarding the implementation. The UnitTesting has a dependency to the ObjectHandling module, so that module should also be imported to this project if you want to run the tests. 
 
 ## Contributing
 
