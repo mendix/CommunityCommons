@@ -39,12 +39,14 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
 
-import communitycommons.proxies.constants.Constants;
+import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
 
 
 public class Misc
 {
-	
+
+	static final ILogNode LOG = Core.getLogger("communitycommons");
+
 	public abstract static class IterateCallback<T1, T2>
   {
       boolean start = false;
@@ -603,42 +605,38 @@ public class Misc
 	}
 	
 	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
-		if (Constants.getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= Constants.getMergeMultiplePdfs_MaxAtOnce()) { 
-		
-			int i = 0;
-			PDFMergerUtility  mergePdf = new  PDFMergerUtility();
-			for(i=0; i < documents.size(); i++)
-			{
-			    FileDocument file = documents.get(i);
-			    try (
-	    			InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())
-	    		) {
-			    	mergePdf.addSource(content);
-			    }
-			}
-			
+		if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
+
 			try (
-				ByteArrayOutputStream out = new ByteArrayOutputStream()
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
 			) {
-				mergePdf.setDestinationStream(out);
-				try {
-					mergePdf.mergeDocuments(null);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+
+				for(int i=0; i < documents.size(); i++)
+				{
+					FileDocument file = documents.get(i);
+					mergePdf.addSource(Core.getFileDocumentContent(context, file.getMendixObject()));
 				}
+
+				mergePdf.setDestinationStream(out);
+				mergePdf.mergeDocuments(null);
+
 				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-	
+
 				out.reset();
+				documents.clear();
 			}
-			
-			documents.clear();
-			
-			return true;	
+			catch (IOException e)
+			{
+				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+			}
+
+			return true;
 		} else {
-            throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + Constants.getMergeMultiplePdfs_MaxAtOnce() + 
+            throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() +
             								   " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
 		}
-	}
+    }
 	
 
 	/**
@@ -649,18 +647,16 @@ public class Misc
 	 * @return boolean
 	 * @throws IOException
 	 */
-	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {	
-		ILogNode logger = Core.getLogger("OverlayPdf"); 
-		logger.trace("Retrieve generated document");
+	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {
+        LOG.trace("Retrieve generated document");
 		try (
 			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray());
 		) {
-			logger.trace("Overlay PDF start, retrieve overlay PDF");
-							
-			logger.trace("Perform overlay");
+			LOG.trace("Overlay PDF start, retrieve overlay PDF");
+
+			LOG.trace("Perform overlay");
 			Overlay overlay = new Overlay();
 			overlay.setInputPDF(inputDoc);
 			overlay.setDefaultOverlayPDF(overlayDoc);
@@ -669,17 +665,19 @@ public class Misc
 			} else {
 				overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
 			}
-			
-			logger.trace("Save result in output stream");
-			
-			overlay.overlay(new HashMap<Integer, String>()).save(baos);
-		
-			logger.trace("Duplicate result in input stream");
-			logger.trace("Store result in original document");
-			Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+
+			LOG.trace("Save result in output stream");
+
+			overlay.overlay(new HashMap<>()).save(baos);
+
+			LOG.trace("Duplicate result in input stream");
+			try ( InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray()) ) {
+				LOG.trace("Store result in original document");
+				Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+			}
 		}
-		
-		logger.trace("Overlay PDF end");
-		return true;
-	}
+
+        LOG.trace("Overlay PDF end");
+        return true;
+    }
 }
