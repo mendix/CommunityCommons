@@ -1,0 +1,87 @@
+apply plugin: 'java'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+import org.gradle.api.internal.file.copy.CopySpecInternal
+
+project.ext {
+
+    CC_VERSION = '7.2.0'
+    MXBUILD_VERSION = '7.1.0'
+}
+
+def runtimeLibs = "$buildDir/runtime/bundles"
+def userLibDir = "$projectDir/src/CommunityCommons/userlib"
+
+configurations {
+    tar
+}
+
+repositories {
+    mavenCentral()
+    ivy {
+	url 'https://cdn.mendix.com/'
+	layout 'pattern', {
+	    artifact '/[organisation]/[module]-[revision].[ext]'
+	}
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile fileTree(dir: "$runtimeLibs")
+    compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20180219.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.11'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compileOnly fileTree(dir: "$runtimeLibs")
+
+    tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/CommunityCommons/javasource"]
+        }
+        resources {
+            srcDirs = ["src/CommunityCommons/resources"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["src/test"]
+        }
+    }
+}
+
+task copyToUserlib( type: Copy ) {
+    into userLibDir
+    from configurations.runtime
+    eachFile { fileCopyDetails ->
+        def requiredLibFlag = new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib")
+        requiredLibFlag.write ''
+    }
+}
+
+task untarMxbuild( type: Copy ) {    
+    configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
+        from tarTree(resources.gzip(it))
+        into buildDir
+        include('**/runtime/bundles/com.mendix.public-api.jar')
+	include('**/runtime/bundles/com.mendix.logging-api.jar')
+	include('**/runtime/bundles/biz.aQute.bnd.bndlib.jar')
+        includeEmptyDirs = false
+    }
+}
+
+task prepareDeps {
+    dependsOn 'clean', 'copyToUserlib', 'untarMxbuild'
+}
+
+clean {
+    delete "$projectDir/src/CommunityCommons/userlib"
+}
+
+tasks.untarMxbuild.shouldRunAfter tasks.copyToUserlib
