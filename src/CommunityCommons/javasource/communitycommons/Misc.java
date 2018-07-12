@@ -615,7 +615,9 @@ public class Misc
 				for(int i=0; i < documents.size(); i++)
 				{
 					FileDocument file = documents.get(i);
-					mergePdf.addSource(Core.getFileDocumentContent(context, file.getMendixObject()));
+					try (InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())) {
+						mergePdf.addSource(content);
+					}
 				}
 
 				mergePdf.setDestinationStream(out);
@@ -633,10 +635,10 @@ public class Misc
 
 			return true;
 		} else {
-            throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() +
-            								   " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
+			throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() +
+								" PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
 		}
-    }
+	}
 	
 
 	/**
@@ -648,7 +650,7 @@ public class Misc
 	 * @throws IOException
 	 */
 	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {
-        LOG.trace("Retrieve generated document");
+		LOG.trace("Retrieve generated document");
 		try (
 			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
 			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
@@ -677,7 +679,7 @@ public class Misc
 			}
 		}
 
-        LOG.trace("Overlay PDF end");
-        return true;
-    }
+		LOG.trace("Overlay PDF end");
+		return true;
+	}
 }
