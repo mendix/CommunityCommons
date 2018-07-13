@@ -135,7 +135,7 @@ public class Misc {
 			try ( 
 				OutputStream os = conn.getOutputStream()
 			) {
-				IOUtils.copy(new ByteArrayInputStream(postdata.getBytes("UTF-8")), os);
+				IOUtils.copy(new ByteArrayInputStream(postdata.getBytes(StandardCharsets.UTF_8)), os);
 			}
         }
 	
@@ -600,12 +600,11 @@ public class Misc {
                     ) { 
                             PDFMergerUtility  mergePdf = new  PDFMergerUtility();
 
-                            for(int i=0; i < documents.size(); i++)
+                            for(FileDocument file: documents)
                             {
-                                    FileDocument file = documents.get(i);
-                                    try (InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())) {
-                                        mergePdf.addSource(content);
-                                    }
+								try (InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())) {
+									mergePdf.addSource(content);
+								}
                             }
 
                             mergePdf.setDestinationStream(out);
