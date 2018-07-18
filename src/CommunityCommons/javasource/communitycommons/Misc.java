@@ -40,6 +40,7 @@ import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
 
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
+import java.util.ArrayList;
 
 
 public class Misc
@@ -607,33 +608,31 @@ public class Misc
 	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
 		if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
 
-			try (
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-			) {
-				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+				List<InputStream> sources = new ArrayList<>();
+				try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+					PDFMergerUtility  mergePdf = new  PDFMergerUtility();
 
-				for(int i=0; i < documents.size(); i++)
-				{
-					FileDocument file = documents.get(i);
-					try (InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())) {
-						mergePdf.addSource(content);
+					for(FileDocument file: documents) {
+						InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
+						sources.add(content);
+					}
+					mergePdf.addSources(sources);
+					mergePdf.setDestinationStream(out);
+					mergePdf.mergeDocuments(null);
+
+					Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
+
+					out.reset();
+					documents.clear();
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				} finally { // We cannot use try-with-resources because streams would be prematurely closed
+					for (InputStream is : sources) {
+						is.close();
 					}
 				}
 
-				mergePdf.setDestinationStream(out);
-				mergePdf.mergeDocuments(null);
-
-				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-
-				out.reset();
-				documents.clear();
-			}
-			catch (IOException e)
-			{
-				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
-			}
-
-			return true;
+				return true;
 		} else {
 			throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() +
 								" PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
