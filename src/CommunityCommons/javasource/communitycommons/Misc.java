@@ -40,6 +40,7 @@ import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
 
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
+import java.util.ArrayList;
 
 public class Misc {
 
@@ -135,7 +136,7 @@ public class Misc {
 			try ( 
 				OutputStream os = conn.getOutputStream()
 			) {
-				IOUtils.copy(new ByteArrayInputStream(postdata.getBytes("UTF-8")), os);
+				IOUtils.copy(new ByteArrayInputStream(postdata.getBytes(StandardCharsets.UTF_8)), os);
 			}
         }
 	
@@ -592,39 +593,39 @@ public class Misc {
         return languageList.get(0);
     }
 
-	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
-		if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
-		
-			try (
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-			) { 
-				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
-				
-				for(int i=0; i < documents.size(); i++)
-				{
-					FileDocument file = documents.get(i);
-					mergePdf.addSource(Core.getFileDocumentContent(context, file.getMendixObject()));
+    public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
+            if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
+
+				List<InputStream> sources = new ArrayList<>();
+				try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+					PDFMergerUtility  mergePdf = new  PDFMergerUtility();
+
+					for(FileDocument file: documents) {
+						InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
+						sources.add(content);
+					}
+					mergePdf.addSources(sources);
+					mergePdf.setDestinationStream(out);
+					mergePdf.mergeDocuments(null);
+
+					Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
+
+					out.reset();
+					documents.clear();
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
+				} finally { // We cannot use try-with-resources because streams would be prematurely closed
+					for (InputStream is : sources) {
+						is.close();
+					}
 				}
 
-				mergePdf.setDestinationStream(out);
-				mergePdf.mergeDocuments(null);
-				
-				Core.storeFileDocumentContent(context, mergedDocument, new ByteArrayInputStream(out.toByteArray()));
-				
-				out.reset();
-				documents.clear();
-			}
-			catch (IOException e) 
-			{
-				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
-			}
-		
-			return true;	
-		} else {
-            throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() + 
-            								   " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
-		}
-    }
+				return true;
+            } else {
+                throw new IllegalArgumentException("MergeMultiplePDFs: you cannot merge more than " + getMergeMultiplePdfs_MaxAtOnce() + 
+                                                                       " PDF files at once. You are trying to merge " + documents.size() + " PDF files.");
+            }
+}
 
     /**
      * Overlay a generated PDF document with another PDF (containing the company
@@ -639,33 +640,32 @@ public class Misc {
      */
     public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {
         LOG.trace("Retrieve generated document");
-		try (
-			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
-			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		) {
-			LOG.trace("Overlay PDF start, retrieve overlay PDF");
-							
-			LOG.trace("Perform overlay");
-			Overlay overlay = new Overlay();
-			overlay.setInputPDF(inputDoc);
-			overlay.setDefaultOverlayPDF(overlayDoc);
-			if (onTopOfContent == true){
-				overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
-			} else {
-				overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
-			}
-			
-			LOG.trace("Save result in output stream");
-			
-			overlay.overlay(new HashMap<>()).save(baos);
+        try (
+                PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+                PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            LOG.trace("Overlay PDF start, retrieve overlay PDF");
 
-			LOG.trace("Duplicate result in input stream");
-			try ( InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray()) ) {
-				LOG.trace("Store result in original document");
-				Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
-			}
-		}
+            LOG.trace("Perform overlay");
+            Overlay overlay = new Overlay();
+            overlay.setInputPDF(inputDoc);
+            overlay.setDefaultOverlayPDF(overlayDoc);
+            if (onTopOfContent == true) {
+                overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+            } else {
+                overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+            }
+
+            LOG.trace("Save result in output stream");
+
+            overlay.overlay(new HashMap<>()).save(baos);
+
+            LOG.trace("Duplicate result in input stream");
+            try (InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray())) {
+                LOG.trace("Store result in original document");
+                Core.storeFileDocumentContent(context, generatedDocumentMendixObject, overlayedContent);
+            }
+        }
 
         LOG.trace("Overlay PDF end");
         return true;
