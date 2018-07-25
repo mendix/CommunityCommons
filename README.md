@@ -8,7 +8,7 @@ This module adds many reusable java methods to your project, which can be called
 
 The module adds functionality for working with Dates, Batches, Strings, Internet, Files, Configuration, locking etc. See the documentation or screenshot for a complete list of functions.
 
-## _Important when updating to v6.2.1_ :warning:
+## _Important when updating to v6.2.1+_ :warning:
 
 ### Deleting obsolete dependencies first
 It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
