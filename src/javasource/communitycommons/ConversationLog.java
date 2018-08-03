@@ -1,11 +1,9 @@
 package communitycommons;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.mendix.core.Core;
 import com.mendix.logging.ILogNode;
@@ -48,7 +46,7 @@ public class ConversationLog
 
 	private enum LogType { SECTION_START, NORMAL, SECTION_END, WARNING, ERROR }
 
-	private static final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("HH:mm:ss"); //DateTimeFormat is thread safe, simpleDateFormat is not!
+	private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss"); //DateTimeFormat is thread safe, simpleDateFormat is not!
 	
 	private static class LogLine {
 		final LogType	type;
@@ -89,7 +87,7 @@ public class ConversationLog
 	
 	/**
 	 * Create a new conversion
-	 * @param M2ee loglevel to report to
+	 * @param String loglevel to report to
 	 */
 	public ConversationLog(String lognode) {
 		this.log = Core.getLogger(lognode);
@@ -412,7 +410,7 @@ public class ConversationLog
 	{
 		String base = String.format("[%04d][%s]%s %s", 
 				this.getId(), 
-				dateFormat.print(line.time),  
+				dateFormat.(line.time),
 				StringUtils.leftPad("", line.level * 4L, " "), 
 				msg
 		);
