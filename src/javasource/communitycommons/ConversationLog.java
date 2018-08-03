@@ -1,12 +1,16 @@
 package communitycommons;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mendix.core.Core;
 import com.mendix.logging.ILogNode;
+import org.apache.poi.ss.usermodel.DataFormat;
 
 /**
  * 
@@ -46,7 +50,7 @@ public class ConversationLog
 
 	private enum LogType { SECTION_START, NORMAL, SECTION_END, WARNING, ERROR }
 
-	private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss"); //DateTimeFormat is thread safe, simpleDateFormat is not!
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); //DateTimeFormat is thread safe, simpleDateFormat is not!
 	
 	private static class LogLine {
 		final LogType	type;
@@ -408,9 +412,10 @@ public class ConversationLog
 	
 	private void writeToLog(LogLine line, String msg)
 	{
+		Date date=new Date(line.time);
 		String base = String.format("[%04d][%s]%s %s", 
-				this.getId(), 
-				dateFormat.(line.time),
+				this.getId(),
+				dateFormat.format(date),
 				StringUtils.leftPad("", line.level * 4L, " "), 
 				msg
 		);
