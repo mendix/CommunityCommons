@@ -21,11 +21,16 @@ src/*.mpr.lock
 src/*.mpr.bak
 src/*.mpr.left*
 src/*.mpr.right*
+src/userlib/*
 src/.settings
 src/deployment
 src/releases
 *.launch
 .classpath
 .project
+.gradle/*
+.idea/*
+out/*
+build/*
 src/javasource/system/actions/VerifyPassword.java
 src/javasource/system/UserActionsRegistrar.java
