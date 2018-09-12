@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * Removes all potiential dangerous HTML from a string so that it can be safely displayed in a browser. 
  * 
  * This function should be applied to all HTML which is displayed in the browser, and can be entered by (untrusted) users.
  * 
@@ -35,17 +36,28 @@ import java.util.stream.Collectors;
  *   
  *  For more information, visit:
  *   
+ *  http://javadoc.io/doc/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1
  */
 public class XSSSanitize extends CustomJavaAction<String>
 {
 	private String html;
 	private communitycommons.proxies.SanitizerPolicy policy1;
+	private communitycommons.proxies.SanitizerPolicy policy2;
+	private communitycommons.proxies.SanitizerPolicy policy3;
+	private communitycommons.proxies.SanitizerPolicy policy4;
+	private communitycommons.proxies.SanitizerPolicy policy5;
+	private communitycommons.proxies.SanitizerPolicy policy6;
 
-	public XSSSanitize(IContext context, String html, String policy1)
+	public XSSSanitize(IContext context, String html, String policy1, String policy2, String policy3, String policy4, String policy5, String policy6)
 	{
 		super(context);
 		this.html = html;
 		this.policy1 = policy1 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy1);
+		this.policy2 = policy2 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy2);
+		this.policy3 = policy3 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy3);
+		this.policy4 = policy4 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy4);
+		this.policy5 = policy5 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy5);
+		this.policy6 = policy6 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy6);
 	}
 
 	@Override
@@ -55,7 +67,7 @@ public class XSSSanitize extends CustomJavaAction<String>
 		if (StringUtils.isEmpty(html)) {
 			return "";
 		}
-		List<SanitizerPolicy> policyParams = Lists.newArrayList(policy1)
+		List<SanitizerPolicy> policyParams = Lists.newArrayList(policy1, policy2, policy3, policy4, policy5, policy6)
 				.stream()
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
@@ -63,7 +75,7 @@ public class XSSSanitize extends CustomJavaAction<String>
 			throw new MendixRuntimeException("At least one policy is required");
 		}
 		return communitycommons.StringUtils.sanitizeHTML(html, policyParams);
-		
+
 		// END USER CODE
 	}
 
