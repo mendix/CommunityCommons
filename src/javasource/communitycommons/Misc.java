@@ -478,7 +478,7 @@ public class Misc
 	}
 
 	public static Boolean executeMicroflowInBatches(String xpath, final String microflow, int batchsize, boolean waitUntilFinished, boolean asc) throws CoreException, InterruptedException {
-		Core.getLogger("communitycommons").info("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
+		Core.getLogger("communitycommons").debug("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
 
 		return executeInBatches(xpath, new BatchState(new IBatchItemHandler() {
 
@@ -494,7 +494,7 @@ public class Misc
 	public static Boolean recommitInBatches(String xpath, int batchsize,
 											boolean waitUntilFinished, Boolean asc) throws CoreException, InterruptedException
 	{
-		Core.getLogger("communitycommons").info("[ExecuteInBatches] Starting recommit batch...");
+		Core.getLogger("communitycommons").debug("[ExecuteInBatches] Starting recommit batch...");
 
 		return executeInBatches(xpath, new BatchState(new IBatchItemHandler() {
 
@@ -515,7 +515,7 @@ public class Misc
 		int loop = (int) Math.ceil(((float)count) / ((float)batchsize));
 
 
-		Core.getLogger("communitycommons").info(
+		Core.getLogger("communitycommons").debug(
 				"[ExecuteInBatches] Starting batch on ~ " + count + " objects divided over ~ " + loop + " batches. "
 						+ (waitUntilFinished ? "Waiting until the batch has finished..." : "")
 		);
@@ -552,7 +552,7 @@ public class Misc
 
 					//no new objects found :)
 					if (objects.size() == 0) {
-						Core.getLogger("communitycommons").info("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
+						Core.getLogger("communitycommons").debug("[ExecuteInBatches] Succesfully finished batch on ~" + count + " objects.");
 						batchState.setState(1);
 					}
 					else {
@@ -608,18 +608,20 @@ public class Misc
 		return languageList.get(0);
 	}
 
-	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ) throws IOException{
+	public static boolean mergePDF(IContext context,List<FileDocument> documents,  IMendixObject mergedDocument ){
 		if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
 
-			List<InputStream> sources = new ArrayList<>();
-			try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			try (
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+			) {
 				PDFMergerUtility  mergePdf = new  PDFMergerUtility();
 
-				for(FileDocument file: documents) {
-					InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
-					sources.add(content);
+				for (FileDocument file : documents) {
+					try (InputStream content = Core.getFileDocumentContent(context, file.getMendixObject())) {
+						mergePdf.addSource(content);
+					}
 				}
-				mergePdf.addSources(sources);
+
 				mergePdf.setDestinationStream(out);
 				mergePdf.mergeDocuments(null);
 
@@ -627,12 +629,10 @@ public class Misc
 
 				out.reset();
 				documents.clear();
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
-			} finally { // We cannot use try-with-resources because streams would be prematurely closed
-				for (InputStream is : sources) {
-					is.close();
-				}
 			}
 
 			return true;
