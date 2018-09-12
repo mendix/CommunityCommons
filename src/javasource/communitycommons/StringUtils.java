@@ -1,18 +1,17 @@
 package communitycommons;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.security.DigestException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-import java.util.UUID;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
+import com.mendix.core.Core;
+import com.mendix.systemwideinterfaces.MendixRuntimeException;
+import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
+import communitycommons.proxies.SanitizerPolicy;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+import system.proxies.FileDocument;
 
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
@@ -22,33 +21,18 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
-import com.mendix.core.Core;
-import com.mendix.systemwideinterfaces.MendixRuntimeException;
-import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.systemwideinterfaces.core.IMendixObject;
-
-import communitycommons.proxies.SanitizerPolicy;
-import static communitycommons.proxies.SanitizerPolicy.BLOCKS;
-import static communitycommons.proxies.SanitizerPolicy.FORMATTING;
-import static communitycommons.proxies.SanitizerPolicy.IMAGES;
-import static communitycommons.proxies.SanitizerPolicy.LINKS;
-import static communitycommons.proxies.SanitizerPolicy.STYLES;
-import static communitycommons.proxies.SanitizerPolicy.TABLES;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.DigestException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.owasp.html.PolicyFactory;
-import org.owasp.html.Sanitizers;
-
-import system.proxies.FileDocument;
+import static communitycommons.proxies.SanitizerPolicy.*;
 
 public class StringUtils
 {

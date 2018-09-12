@@ -1,8 +1,6 @@
 package communitycommons;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mendix.core.Core;
 import com.mendix.logging.ILogNode;
-import org.apache.poi.ss.usermodel.DataFormat;
 
 /**
  * 

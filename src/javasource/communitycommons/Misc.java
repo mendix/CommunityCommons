@@ -1,32 +1,5 @@
 package communitycommons;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.Arrays;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.pdfbox.multipdf.Overlay;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
-
-import system.proxies.FileDocument;
-import system.proxies.Language;
-
 import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
 import com.mendix.core.CoreException;
@@ -38,9 +11,27 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
+import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.multipdf.Overlay;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import system.proxies.FileDocument;
+import system.proxies.Language;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
-import java.util.ArrayList;
 
 
 public class Misc
@@ -204,12 +195,10 @@ public class Misc
 	}
 
 	public static Boolean storeURLToFileDocument(IContext context, String url, IMendixObject __document, String filename) throws IOException {
-
 		ILogNode LOG = Core.getLogger("CommunityCommons");
 		if (__document == null || url == null || filename == null) {
 			throw new IllegalArgumentException("No document, filename or URL provided");
 		}
-
 		final int MAX_REMOTE_FILESIZE = 1024 * 1024 * 200; //maximum of 200 MB
 		try {
 			URL imageUrl = new URL(url);
@@ -218,16 +207,12 @@ public class Misc
 			connection.setConnectTimeout(20000);
 			connection.setReadTimeout(20000);
 			connection.connect();
-
 			int contentLength = connection.getContentLength();
-
 			//check on forehand the size of the remote file, we don't want to kill the server by providing a 3 terabyte image.
 			LOG.trace(String.format("Remote filesize: %d", contentLength));
-
 			if (contentLength > MAX_REMOTE_FILESIZE) { //maximum of 200 mb
 				throw new IllegalArgumentException(String.format("Wrong filesize of remote url: %d (max: %d)", contentLength, MAX_REMOTE_FILESIZE));
 			}
-
 			InputStream fileContentIS;
 			try (InputStream connectionInputStream = connection.getInputStream()) {
 				if (contentLength >= 0) {
@@ -244,7 +229,6 @@ public class Misc
 			LOG.error(String.format("A problem occurred while reading from URL %s: %s", url, ioe.getMessage()));
 			throw ioe;
 		}
-
 		return true;
 	}
 
