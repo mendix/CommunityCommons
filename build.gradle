@@ -6,9 +6,8 @@ sourceCompatibility = '1.8'
 import org.gradle.api.internal.file.copy.CopySpecInternal
 
 project.ext {
-
-    CC_VERSION = '7.2.0'
-    MXBUILD_VERSION = '5.1.1'
+    CC_VERSION = '5.5.2'
+    MXBUILD_VERSION = '5.18.0'
 }
 
 
