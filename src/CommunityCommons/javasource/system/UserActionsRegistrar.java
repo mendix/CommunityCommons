@@ -61,6 +61,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.HTMLEncode.class);
     registrator.registerUserAction(communitycommons.actions.HTMLToPlainText.class);
     registrator.registerUserAction(communitycommons.actions.IsInDevelopment.class);
+    registrator.registerUserAction(communitycommons.actions.IsStringSimplified.class);
     registrator.registerUserAction(communitycommons.actions.Log.class);
     registrator.registerUserAction(communitycommons.actions.LongToDateTime.class);
     registrator.registerUserAction(communitycommons.actions.memberHasChanged.class);
@@ -88,6 +89,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.StringLeftPad.class);
     registrator.registerUserAction(communitycommons.actions.StringLength.class);
     registrator.registerUserAction(communitycommons.actions.StringRightPad.class);
+    registrator.registerUserAction(communitycommons.actions.StringSimplify.class);
     registrator.registerUserAction(communitycommons.actions.StringSplit.class);
     registrator.registerUserAction(communitycommons.actions.StringToFile.class);
     registrator.registerUserAction(communitycommons.actions.StringTrim.class);

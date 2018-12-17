@@ -230,6 +230,10 @@ GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 h
 
 *SubstringBeforeLast* - Returns the substring of a string before the last occurence of a given separator.
 
+*StringSimplify* - Removes diacritic characters to return a simplified version of the original string.
+
+*IsStringSimplified* - Returns true if the string can not be simplified by StringSimplify.
+
 
 ## Thank you, community.
 

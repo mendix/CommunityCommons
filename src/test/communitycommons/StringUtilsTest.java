@@ -61,7 +61,32 @@ public class StringUtilsTest {
 		PolicyFactory policyFactory = Sanitizers.FORMATTING;
 		String expResult = "link";
 		String result = StringUtils.sanitizeHTML(html, policyFactory);
-		assertEquals(expResult, result);	
+		assertEquals(expResult, result);
 	}
 
+	/**
+	 * Test of stringSimplify method, of class StringUtils.
+	 */
+	@Test
+	public void testStringSimplify() {
+		System.out.println("SimplifyString");
+		String value = "Special characters, e.g., é, ö, à, Ω, ω, etc. are supported in comments.";
+		String expResult = "Special characters, e.g., e, o, a, Ω, ω, etc. are supported in comments.";
+		String result = StringUtils.stringSimplify(value);
+		assertEquals(expResult, result);
+	}
+
+	/**
+	 * Test of isStringSimplified method, of class StringUtils.
+	 */
+	@Test
+	public void testIsSimplifiedString() {
+		System.out.println("SimplifyString");
+		String unsimplfiedString = "Special characters, e.g., é, ö, à, Ω, ω, etc. are supported in comments.";
+		String simplfiedString = "Special characters, e.g., e, o, a, Ω, ω, etc. are supported in comments.";
+		boolean result1 = StringUtils.isStringSimplified(unsimplfiedString);
+		assertEquals(false, result1);
+		boolean result2 = StringUtils.isStringSimplified(simplfiedString);
+		assertEquals(true, result2);
+	}
 }

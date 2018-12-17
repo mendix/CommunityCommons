@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Normalizer;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.MatchResult;
@@ -79,7 +80,7 @@ public class StringUtils
 	    if(hex.length() == 1) hexString.append('0');
 	        hexString.append(hex);
 	    }
-	    
+
 	    return hexString.toString();
 	}
 
@@ -181,7 +182,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Source data is null");
 
 		byte [] decoded = Base64.getDecoder().decode(encoded.getBytes());
-		
+
 		try  (
 			ByteArrayInputStream bais = new ByteArrayInputStream(decoded);
 		) {
@@ -202,7 +203,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Source file is null");
 		if (!file.getHasContents())
 			throw new IllegalArgumentException("Source file has no contents!");
-		
+
 		try (
 			InputStream f = Core.getFileDocumentContent(context, file.getMendixObject())
 		) {
@@ -227,7 +228,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Destination file is null");
 		if (value == null)
 			throw new IllegalArgumentException("Value to write is null");
-		
+
 		try (
 			InputStream is = IOUtils.toInputStream(value, StandardCharsets.UTF_8)
 		) {
@@ -408,7 +409,7 @@ public class StringUtils
 
 	public static String sanitizeHTML(String html, List<SanitizerPolicy> policyParams) {
 		PolicyFactory policyFactory = null;
-		
+
 		for (SanitizerPolicy param : policyParams) {
 			policyFactory = (policyFactory == null) ? SANITIZER_POLICIES.get(param.name()) : policyFactory.and(SANITIZER_POLICIES.get(param.name()));
 		}
@@ -418,5 +419,15 @@ public class StringUtils
 
 	public static String sanitizeHTML(String html, PolicyFactory policyFactory) {
 		return policyFactory.sanitize(html);
+	}
+
+	public static String stringSimplify(String value) {
+		String string = Normalizer.normalize(value, Normalizer.Form.NFD);
+		string = string.replaceAll("\\p{M}", "");
+		return string;
+	}
+
+	public static Boolean isStringSimplified(String value) {
+		return Normalizer.isNormalized(value, Normalizer.Form.NFD);
 	}
 }

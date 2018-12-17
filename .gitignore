@@ -35,3 +35,4 @@ package.xml
 /src/CommunityCommons/userlib/
 *.mda
 /nbproject/
+/bin/
