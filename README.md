@@ -118,7 +118,7 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 *CreateUserIfNotExists* - (Microflow) Create a user with predefined password an role. Useful during startup for integration purposes. Changed in 2.4: The user now always gets updated, if even the user already exists.
 
-*Delay* - Causes this request to sleep for a while. Useful to prevent brute force attacks or to simulate latency delays.
+*Delay* - Causes this request to sleep for a number of milliseconds. Useful to prevent brute force attacks or to simulate latency delays.
 
 *GetApplicationUrl* - Returns the runtime URL of this application.
 
