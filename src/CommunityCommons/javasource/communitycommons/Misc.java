@@ -670,4 +670,20 @@ public class Misc {
         LOG.trace("Overlay PDF end");
         return true;
     }
+    
+    /**
+	 * Get the Cloud Foundry Instance Index (0 for leader and >0 for slave)
+	 * @return CF_INSTANCE_INDEX environment variable if available, otherwise -1
+	 */
+	public static long getCFInstanceIndex() {
+		long cfInstanceIndex = -1L;
+		
+		try {
+			cfInstanceIndex = Long.parseLong(System.getenv("CF_INSTANCE_INDEX"));
+		} catch(Exception e) {
+			return cfInstanceIndex;
+		}
+		
+		return cfInstanceIndex;
+	}
 }
