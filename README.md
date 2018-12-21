@@ -40,7 +40,7 @@ The Community Commons container project contains a variety of predesigned unit t
 
 ## Contributing
 
-For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-project-management/contribute-to-a-github-repository)!
+For more information on contributing to this repository visit [Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-requirements-management/contribute-to-a-github-repository)!
 
 ### Gradle
 In version 7.2.0, we introduce a new way of dependency management using a [Gradle](https://gradle.org/install/) build file.
