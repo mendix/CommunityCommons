@@ -670,4 +670,24 @@ public class Misc {
         LOG.trace("Overlay PDF end");
         return true;
     }
+    
+    /**
+	 * Get the Cloud Foundry Instance Index (0 for leader and >0 for slave)
+	 * @return CF_INSTANCE_INDEX environment variable if available, otherwise -1
+	 */
+	public static long getCFInstanceIndex() {
+		long cfInstanceIndex = -1L;
+		
+		try {
+			cfInstanceIndex = Long.parseLong(System.getenv("CF_INSTANCE_INDEX"));
+		} catch(SecurityException securityException) {
+			LOG.info("GetCFInstanceIndex: Could not access environment variable CF_INSTANCE_INDEX, permission denied. Value of -1 is returned.");
+		} catch(NumberFormatException numberFormatException) {
+			LOG.info("GetCFInstanceIndex: Could not parse value of environment variable CF_INSTANCE_INDEX as Long. Value of -1 is returned.");
+		} catch(NullPointerException nullPointerException) {
+			LOG.info("GetCFInstanceIndex: Could not find value for environment variable CF_INSTANCE_INDEX. This could indicate a local deployment is running. Value of -1 is returned.");
+		}
+		
+		return cfInstanceIndex;
+	}
 }

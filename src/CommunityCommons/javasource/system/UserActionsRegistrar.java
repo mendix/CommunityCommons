@@ -46,6 +46,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.FileFromFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.GenerateHMAC_SHA256_hash.class);
     registrator.registerUserAction(communitycommons.actions.GetApplicationUrl.class);
+    registrator.registerUserAction(communitycommons.actions.GetCFInstanceIndex.class);
     registrator.registerUserAction(communitycommons.actions.getCreatedByUser.class);
     registrator.registerUserAction(communitycommons.actions.GetDefaultLanguage.class);
     registrator.registerUserAction(communitycommons.actions.GetFileContentsFromResource.class);
