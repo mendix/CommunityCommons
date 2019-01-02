@@ -680,10 +680,10 @@ public class Misc {
 		
 		try {
 			cfInstanceIndex = Long.parseLong(System.getenv("CF_INSTANCE_INDEX"));
-		} catch(SecurityException securityExcetion) {
-			LOG.info("GetCFInstanceIndex: Could not access environment variable CF_INSTANCE_INDEX. Value of -1 is returned.");
+		} catch(SecurityException securityException) {
+			LOG.info("GetCFInstanceIndex: Could not access environment variable CF_INSTANCE_INDEX, permission denied. Value of -1 is returned.");
 		} catch(NumberFormatException numberFormatException) {
-			LOG.info("GetCFInstanceIndex: Could parse value of environment variable CF_INSTANCE_INDEX as Long. Value of -1 is returned.");
+			LOG.info("GetCFInstanceIndex: Could not parse value of environment variable CF_INSTANCE_INDEX as Long. Value of -1 is returned.");
 		} catch(NullPointerException nullPointerException) {
 			LOG.info("GetCFInstanceIndex: Could not find value for environment variable CF_INSTANCE_INDEX. This could indicate a local deployment is running. Value of -1 is returned.");
 		}
