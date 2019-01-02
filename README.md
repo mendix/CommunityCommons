@@ -120,6 +120,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 *Delay* - Causes this request to sleep for a number of milliseconds. Useful to prevent brute force attacks or to simulate latency delays.
 
+*GetCFInstanceIndex* - Returns the Cloud Foundry Instance Index that is set during deployment of the application in a Cloud native environment. Returns 0 for the leader instance, 1 or higher for slave instances or -1 when the environment variable could not be read (when running locally or on premises).
+
 *GetApplicationUrl* - Returns the runtime URL of this application.
 
 *GetRuntimeVersion* - Returns the runtime version of this application.
@@ -191,6 +193,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 *HTMLToPlainText* - Use this function to convert HTML text to plain text. It will preserve linebreaks but strip all other markup. including html entity decoding.
 
+*IsStringSimplified* - Whether a string can be further simplified by removing diacritics
+
 *RandomString* - Generates a random alphanumeric string of the desired length.
 
 *RandomHash* - Generates a random hash, perfectly to use as random, unique identifier.
@@ -204,6 +208,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 *StringLength* - Returns -1 if the value is empty, the length otherwise.
 
 *StringRightPad* - Pads a string on the right to a certain length.
+
+*StringSimplify* - Removes all diacritics from a string
 
 *StringTrim* - Left and right trims a string (that is; removes all surrounding whitespace characters such as tabs, spaces and returns).
 
