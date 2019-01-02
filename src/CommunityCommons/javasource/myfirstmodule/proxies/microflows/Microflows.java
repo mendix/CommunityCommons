@@ -67,6 +67,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static myfirstmodule.proxies.Container dSO_StringSimplifyContainer(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.DSO_StringSimplifyContainer", params);
+			return result == null ? null : myfirstmodule.proxies.Container.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void hiMessage(IContext context, myfirstmodule.proxies.Entity _entity)
 	{
 		try
@@ -139,6 +152,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static void iVK_IsStringSimplified(IContext context, myfirstmodule.proxies.Container _container)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("Container", _container == null ? null : _container.getMendixObject());
+			Core.execute(context, "MyFirstModule.IVK_IsStringSimplified", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void iVK_SanitizeRichText(IContext context, myfirstmodule.proxies.RichTextEntity _richTextEntity)
 	{
 		try
@@ -159,6 +185,19 @@ public class Microflows
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
 			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.IVK_StoreURLToFileDocument", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static void iVK_StringSimplify(IContext context, myfirstmodule.proxies.Container _container)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("Container", _container == null ? null : _container.getMendixObject());
+			Core.execute(context, "MyFirstModule.IVK_StringSimplify", params);
 		}
 		catch (CoreException e)
 		{
