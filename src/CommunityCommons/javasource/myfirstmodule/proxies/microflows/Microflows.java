@@ -15,6 +15,19 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 public class Microflows
 {
 	// These are the microflows for the MyFirstModule module
+	public static myfirstmodule.proxies.ImageSpecialization createImage(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.CreateImage", params);
+			return result == null ? null : myfirstmodule.proxies.ImageSpecialization.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static system.proxies.Language dS_GetDefaultLanguage(IContext context)
 	{
 		try
@@ -74,6 +87,19 @@ public class Microflows
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.DSO_StringSimplifyContainer", params);
 			return result == null ? null : myfirstmodule.proxies.Container.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static void getDimensions(IContext context, myfirstmodule.proxies.ImageSpecialization _imageSpecialization)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("ImageSpecialization", _imageSpecialization == null ? null : _imageSpecialization.getMendixObject());
+			Core.execute(context, "MyFirstModule.GetDimensions", params);
 		}
 		catch (CoreException e)
 		{

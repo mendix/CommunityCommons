@@ -16,6 +16,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.ImageDimensions;
+import java.io.InputStream;
 
 public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 {
@@ -34,11 +35,14 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 		this.ImageParameter1 = __ImageParameter1 == null ? null : system.proxies.Image.initialize(getContext(), __ImageParameter1);
 
 		// BEGIN USER CODE
-		BufferedImage bimg = ImageIO.read(Core.getImage(getContext(), this.ImageParameter1.getMendixObject(), false));
-		ImageDimensions imageDimentions = new ImageDimensions(getContext());
-		imageDimentions.setHeight(bimg.getHeight());
-	    imageDimentions.setWidth(bimg.getWidth());
-		return imageDimentions.getMendixObject();
+		ImageDimensions imageDimensions = new ImageDimensions(getContext());
+		try (InputStream inputStream = Core.getImage(getContext(), this.ImageParameter1.getMendixObject(), false)) {
+			BufferedImage bimg = ImageIO.read(inputStream);
+			imageDimensions.setHeight(bimg.getHeight());
+			imageDimensions.setWidth(bimg.getWidth());
+		}
+
+		return imageDimensions.getMendixObject();
 		// END USER CODE
 	}
 

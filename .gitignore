@@ -33,6 +33,7 @@ src/javasource/system/UserActionsRegistrar.java
 private/cache/retriever/catalog.xml
 package.xml
 /src/CommunityCommons/userlib/
+/src/CommunityCommons/build/
 *.mda
 /nbproject/
 /.nb-gradle-properties
