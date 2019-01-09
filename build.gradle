@@ -5,6 +5,17 @@ sourceCompatibility = '1.8'
 
 import org.gradle.api.internal.file.copy.CopySpecInternal
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:4.0.1'
+    }
+}
+
+apply plugin: 'org.owasp.dependencycheck'
+
 project.ext {
 
     CC_VERSION = '7.2.0'
@@ -33,7 +44,7 @@ dependencies {
     testCompile fileTree(dir: "$runtimeLibs")
     compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20180219.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.11'
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
 
@@ -65,7 +76,7 @@ task copyToUserlib( type: Copy ) {
     }
 }
 
-task untarMxbuild( type: Copy ) {    
+task untarMxbuild( type: Copy ) {
     configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
         from tarTree(resources.gzip(it))
         into buildDir
