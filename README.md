@@ -11,7 +11,7 @@ The module adds functionality for working with Dates, Batches, Strings, Internet
 ## _Important when updating_ :warning:
 
 ### Deleting obsolete dependencies first
-It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
+It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 (or higher) module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
 
 ### Java 8
 This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries.
@@ -55,8 +55,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 ## Dependencies
  -  commons.io-2.6.jar
  -  commons.lang3-3.7.jar
- -  pdfbox-2.0.11.jar
- -  fontbox-2.0.11.jar
+ -  pdfbox-2.0.13.jar
+ -  fontbox-2.0.13.jar
  -  guava-19.0.jar
  -  owasp-java-html-sanitizer-20180219.1.jar
 
