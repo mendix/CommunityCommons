@@ -257,3 +257,4 @@ https://mxforum.mendix.com/questions/231/Refresh-class-in-microflow
 https://mxforum.mendix.com/questions/230/Refresh-object-in-microflow
 https://mxforum.mendix.com/questions/228/Navigating-associations-in-Java
 https://mxforum.mendix.com/questions/197/Logging-to-the-console-in-Java
+https://forum.mendixcloud.com/link/questions/92320
