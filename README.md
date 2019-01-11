@@ -19,7 +19,7 @@ This means that for upgrading, [Java 8](http://www.oracle.com/technetwork/java/j
 
 ### Breaking change to XSSSanitize
 
-In order to mitigate some security vulnerabilities in dependent libraries, the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
+In order to mitigate some security vulnerabilities in dependent libraries, in version 7.2.0 the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
 This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value `empty`.
 Possible policy values are defined in the `SanitizerPolicy` enumeration. The meaning of the policies are defined in the [javadocs](https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html).
 
