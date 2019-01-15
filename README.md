@@ -64,9 +64,7 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 ### Batches
 
-*AddToBatch* - Add an object to a batch.
-
-*CommitBatch* - Commit a batch.
+*RecommitInBatches* - Given an XPath and a batch size, commit all matching objects in batches of the given size.
 
 *DeleteAll* - Removes ALL instances of a certain domain object type using batches.
 
@@ -102,10 +100,6 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 ### Logging
 
 *CreateLogNode* - Initialize a log node without having a log line.
-
-*Log* - Prints a message to the Mendix log.
-
-*SimpleLog* - Logs a message to 'Community Commons' with loglevel 'Info'.
 
 *TimeMeasureStart* - Start timing something, and print the result to the log.
 
@@ -204,8 +198,6 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 *RegexTest* - Returns true if a value matches a regular expression.
 
 *StringLeftPad* - Pads a string on the left to a certain length.
-
-*StringLength* - Returns -1 if the value is empty, the length otherwise.
 
 *StringRightPad* - Pads a string on the right to a certain length.
 
