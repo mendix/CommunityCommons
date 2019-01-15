@@ -11,9 +11,10 @@ package communitycommons.actions;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import communitycommons.Logging;
+import java.text.ParseException;
 
 /**
  * This method parses a date from a string with a given pattern according to a specific timezone.
@@ -47,8 +48,8 @@ public class ParseDateTimeWithTimezone extends CustomJavaAction<java.util.Date>
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 			sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
 			return sdf.parse(date);
-		} catch (Exception e) {
-			Core.getLogger(this.getClass().getSimpleName()).warn("Unable to parse date " + date, e);
+		} catch (ParseException e) {
+			Logging.LOG.warn("Unable to parse date " + date, e);
 			return defaultValue;
 		}
 		// END USER CODE

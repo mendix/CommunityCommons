@@ -92,6 +92,9 @@ public class StringUtils
 		return matcher.replaceAll(replacement);
 	}
 
+	/**
+	 * @deprecated Use isMatch() expression instead
+	 */
 	public static boolean regexTest(String value, String regex)
 	{
 		return Pattern.matches(regex, value);

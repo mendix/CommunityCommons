@@ -14,6 +14,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
+ * DEPRECATED: use isMatch() expression instead
+ * 
  * Returns true if a value matches a regular expression. Matches the behavior of a Regexp validation rule.
  * 
  * For the regexp specification see:

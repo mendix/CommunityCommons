@@ -11,14 +11,10 @@ import communitycommons.proxies.LogLevel;
 public class Logging
 {
 	private static Map<String, Long> timers = new HashMap<String, Long>();
+	public static final ILogNode LOG = createLogNode("communitycommons");
 
-	public static void log(String lognode, LogLevel loglevel, String message)
-	{
-		log(lognode, loglevel, message, null);		
-	}
-	
 	public static void log(String lognode, LogLevel loglevel, String message, Throwable e) {
-		ILogNode logger = Core.getLogger(lognode);
+		ILogNode logger = createLogNode(lognode);
 		switch (loglevel) {
 		case Critical:
 			logger.critical(message,e);
@@ -41,20 +37,16 @@ public class Logging
 		}
 	}
 
-	public static void simpleLog(String message)
-	{
-		Core.getLogger("Community_Commons").info(message);		
-	}
-
 	
 	public static Long measureEnd(String timerName, LogLevel loglevel,
 			String message)
 	{
 		Long cur = new Date().getTime();
-		if (!timers.containsKey(timerName))
-			throw new IllegalArgumentException();
+		if (!timers.containsKey(timerName)) {
+			throw new IllegalArgumentException(String.format("Timer with key %s not found", timerName));
+		}
 		String time = String.format("%d", cur - timers.get(timerName));
-		log("Utility_log", loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message);
+		log("communitycommons", loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
 		return timers.get(timerName);
 	}
 
@@ -63,7 +55,7 @@ public class Logging
 		timers.put(timerName, new Date().getTime());
 	}
 	
-	public static void createLogNode(String logNode) {
-		Core.getLogger(logNode);
+	public static ILogNode createLogNode(String logNode) {
+		return Core.getLogger(logNode);
 	}
 }
