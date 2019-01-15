@@ -63,7 +63,6 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.HTMLToPlainText.class);
     registrator.registerUserAction(communitycommons.actions.IsInDevelopment.class);
     registrator.registerUserAction(communitycommons.actions.IsStringSimplified.class);
-    registrator.registerUserAction(communitycommons.actions.Log.class);
     registrator.registerUserAction(communitycommons.actions.LongToDateTime.class);
     registrator.registerUserAction(communitycommons.actions.memberHasChanged.class);
     registrator.registerUserAction(communitycommons.actions.MergeMultiplePdfs.class);
@@ -83,12 +82,10 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.RegexTest.class);
     registrator.registerUserAction(communitycommons.actions.retrieveURL.class);
     registrator.registerUserAction(communitycommons.actions.RunMicroflowAsyncInQueue.class);
-    registrator.registerUserAction(communitycommons.actions.SimpleLog.class);
     registrator.registerUserAction(communitycommons.actions.StartTransaction.class);
     registrator.registerUserAction(communitycommons.actions.storeURLToFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.StringFromFile.class);
     registrator.registerUserAction(communitycommons.actions.StringLeftPad.class);
-    registrator.registerUserAction(communitycommons.actions.StringLength.class);
     registrator.registerUserAction(communitycommons.actions.StringRightPad.class);
     registrator.registerUserAction(communitycommons.actions.StringSimplify.class);
     registrator.registerUserAction(communitycommons.actions.StringSplit.class);

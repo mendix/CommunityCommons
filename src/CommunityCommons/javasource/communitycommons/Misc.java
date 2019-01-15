@@ -33,7 +33,6 @@ import com.mendix.core.CoreException;
 import com.mendix.core.conf.RuntimeVersion;
 import com.mendix.core.objectmanagement.member.MendixBoolean;
 import com.mendix.integration.WebserviceException;
-import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
@@ -42,11 +41,11 @@ import com.mendix.systemwideinterfaces.core.IUser;
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
 import java.util.ArrayList;
 
+import static communitycommons.Logging.LOG;
+
 public class Misc {
 
 
-	static final ILogNode LOG = Core.getLogger("communitycommons");
-	
     public abstract static class IterateCallback<T1, T2> {
 
         boolean start = false;
@@ -458,7 +457,7 @@ public class Misc {
     }
 
     public static Boolean executeMicroflowInBatches(String xpath, final String microflow, int batchsize, boolean waitUntilFinished, boolean asc) throws CoreException, InterruptedException {
-        Core.getLogger("communitycommons").debug("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
+        LOG.debug("[ExecuteInBatches] Starting microflow batch '" + microflow + "...");
 
         return executeInBatches(xpath, new BatchState(new IBatchItemHandler() {
 

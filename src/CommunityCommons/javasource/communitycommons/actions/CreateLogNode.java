@@ -13,21 +13,24 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.Logging;
 
+/**
+ * Initializes a log node for later use. Useful to set logging to a more detailed log level before the first time a certain log action is executed.
+ */
 public class CreateLogNode extends CustomJavaAction<java.lang.Boolean>
 {
-	private java.lang.String logNode;
+	private java.lang.String logNodeParameter;
 
-	public CreateLogNode(IContext context, java.lang.String logNode)
+	public CreateLogNode(IContext context, java.lang.String logNodeParameter)
 	{
 		super(context);
-		this.logNode = logNode;
+		this.logNodeParameter = logNodeParameter;
 	}
 
 	@Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		Logging.createLogNode(logNode);
+		Logging.createLogNode(logNodeParameter);
 		return true;
 		// END USER CODE
 	}
