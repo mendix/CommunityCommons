@@ -11,7 +11,7 @@ The module adds functionality for working with Dates, Batches, Strings, Internet
 ## _Important when updating_ :warning:
 
 ### Deleting obsolete dependencies first
-It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
+It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 (or higher) module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
 
 ### Java 8
 This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries.
@@ -19,7 +19,7 @@ This means that for upgrading, [Java 8](http://www.oracle.com/technetwork/java/j
 
 ### Breaking change to XSSSanitize
 
-In order to mitigate some security vulnerabilities in dependent libraries, the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
+In order to mitigate some security vulnerabilities in dependent libraries, in version 7.2.0 the XSSSanitize action has been re-implemented using the [OWASP Java HTML Sanitizer](https://github.com/OWASP/java-html-sanitizer) library.
 This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value `empty`.
 Possible policy values are defined in the `SanitizerPolicy` enumeration. The meaning of the policies are defined in the [javadocs](https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html).
 
@@ -55,8 +55,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 ## Dependencies
  -  commons.io-2.6.jar
  -  commons.lang3-3.7.jar
- -  pdfbox-2.0.11.jar
- -  fontbox-2.0.11.jar
+ -  pdfbox-2.0.13.jar
+ -  fontbox-2.0.13.jar
  -  guava-19.0.jar
  -  owasp-java-html-sanitizer-20180219.1.jar
 
@@ -257,3 +257,4 @@ https://mxforum.mendix.com/questions/231/Refresh-class-in-microflow
 https://mxforum.mendix.com/questions/230/Refresh-object-in-microflow
 https://mxforum.mendix.com/questions/228/Navigating-associations-in-Java
 https://mxforum.mendix.com/questions/197/Logging-to-the-console-in-Java
+https://forum.mendixcloud.com/link/questions/92320
