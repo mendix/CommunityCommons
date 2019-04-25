@@ -18,7 +18,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 project.ext {
 
-    CC_VERSION = '7.3.1'
+    CC_VERSION = '7.4.0'
     MXBUILD_VERSION = '7.1.0'
 }
 
@@ -42,13 +42,24 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile fileTree(dir: "$runtimeLibs")
-    compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20180219.1'
+    compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20181114.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
 
     tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
+}
+
+// https://stackoverflow.com/a/48724412/412834
+configurations.each {
+    c -> c.resolutionStrategy.dependencySubstitution {
+        all { DependencySubstitution dependency ->
+            if (dependency.requested.group == 'com.google.guava') {
+                dependency.useTarget 'com.google.guava:guava:27.0-jre'
+            }
+        }
+    }
 }
 
 sourceSets {

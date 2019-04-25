@@ -28,6 +28,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static myfirstmodule.proxies.TimePeriod createTimePeriod(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.CreateTimePeriod", params);
+			return result == null ? null : myfirstmodule.proxies.TimePeriod.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static system.proxies.Language dS_GetDefaultLanguage(IContext context)
 	{
 		try
@@ -224,6 +237,19 @@ public class Microflows
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			params.put("Container", _container == null ? null : _container.getMendixObject());
 			Core.execute(context, "MyFirstModule.IVK_StringSimplify", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static void refreshView(IContext context, myfirstmodule.proxies.TimePeriod _timePeriod)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("TimePeriod", _timePeriod == null ? null : _timePeriod.getMendixObject());
+			Core.execute(context, "MyFirstModule.RefreshView", params);
 		}
 		catch (CoreException e)
 		{
@@ -483,6 +509,32 @@ public class Microflows
 		{
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_ValidURL", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static java.lang.Long vA_MonthsBetween(IContext context, myfirstmodule.proxies.TimePeriod _timePeriod)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("TimePeriod", _timePeriod == null ? null : _timePeriod.getMendixObject());
+			return (java.lang.Long)Core.execute(context, "MyFirstModule.VA_MonthsBetween", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static java.lang.Long vA_YearsBetween(IContext context, myfirstmodule.proxies.TimePeriod _timePeriod)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("TimePeriod", _timePeriod == null ? null : _timePeriod.getMendixObject());
+			return (java.lang.Long)Core.execute(context, "MyFirstModule.VA_YearsBetween", params);
 		}
 		catch (CoreException e)
 		{

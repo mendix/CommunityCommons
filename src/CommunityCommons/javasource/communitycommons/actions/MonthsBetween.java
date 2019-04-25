@@ -9,13 +9,19 @@
 
 package communitycommons.actions;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import communitycommons.DateTime;
+import communitycommons.Logging;
+import communitycommons.proxies.LogLevel;
+import communitycommons.proxies.LogNodes;
+import java.util.Date;
 
+/**
+ * Calculates the number of months between two dates. 
+ * - dateTime : the original (oldest) dateTime
+ * - compareDate: the second date. If EMPTY, the current datetime will be used. Effectively this means that the age of the dateTime is calculated.
+ */
 public class MonthsBetween extends CustomJavaAction<java.lang.Long>
 {
 	private java.util.Date date1;
@@ -32,16 +38,13 @@ public class MonthsBetween extends CustomJavaAction<java.lang.Long>
 	public java.lang.Long executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-	    LocalDate localDate1 = date1.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-	    LocalDate localDate2 = date2.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-	    YearMonth m1 = YearMonth.from(localDate1);
-	    YearMonth m2 = YearMonth.from(localDate2);
+		try {
+			return DateTime.periodBetween(date1, date2 == null ? new Date() : date2).toTotalMonths();
+		} catch (Exception e) {
 
-	    return m1.until(m2, ChronoUnit.MONTHS) + 1;
+			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
+			return -1L;
+		}
 		// END USER CODE
 	}
 

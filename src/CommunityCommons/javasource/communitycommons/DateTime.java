@@ -1,68 +1,65 @@
 package communitycommons;
 
-import java.util.Calendar;
+import communitycommons.proxies.DatePartSelector;
+import static communitycommons.proxies.DatePartSelector.day;
+import static communitycommons.proxies.DatePartSelector.month;
+import static communitycommons.proxies.DatePartSelector.year;
 import java.util.Date;
 
-import communitycommons.proxies.DatePartSelector;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Calendar;
 
-public class DateTime
-{
+public class DateTime {
+
 	/**
 	 * @author mwe
-	 * Berekent aantal jaar sinds een bepaalde datum. Als einddatum == null, het huidige tijdstip wordt gebruikt
-	 * Code is gebaseerd op http://stackoverflow.com/questions/1116123/how-do-i-calculate-someones-age-in-java 
+	 * @author res
+	 * @param firstDate The begin of the period
+	 * @param compareDate The end of the period
+	 * @return The period between the firstDate in the system default timezone, and the compareDate in the system
+	 * default timezone as a Java Period
+	 *
+	 * Code is based on http://stackoverflow.com/questions/1116123/how-do-i-calculate-someones-age-in-java
+	 *
+	 * Adjusted to Java 8 APIs (April, 2019)
 	 */
-	public static long yearsBetween(Date birthdate, Date comparedate) {
-		if (birthdate == null)
-			return -1L; 
-		
-		Calendar now = Calendar.getInstance();
-		if (comparedate != null)
-			now.setTime(comparedate);
-		Calendar dob = Calendar.getInstance();
-		dob.setTime(birthdate);
-		if (dob.after(now)) 
-			return -1L;
-		
-		int year1 = now.get(Calendar.YEAR);
-		int year2 = dob.get(Calendar.YEAR);
-		long age = year1 - year2;
-		int month1 = now.get(Calendar.MONTH);
-		int month2 = dob.get(Calendar.MONTH);
-		if (month2 > month1) {
-		  age--;
-		} else if (month1 == month2) {
-		  int day1 = now.get(Calendar.DAY_OF_MONTH);
-		  int day2 = dob.get(Calendar.DAY_OF_MONTH);
-		  if (day2 > day1) {
-		    age--;
-		  }
-		}
-		return age;		
+	public static Period periodBetween(Date firstDate, Date compareDate) {
+		return Period.between(toLocalDate(firstDate), toLocalDate(compareDate));
 	}
 
-	public static long dateTimeToLong(Date date)
-	{
-		return date.getTime();
+	private static LocalDate toLocalDate(Date someDate) {
+		return someDate.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate();
 	}
 
-	public static Date longToDateTime(Long value)
-	{
-		return new Date(value);
-	}
-	
-	public static long dateTimeToInteger(Date date, DatePartSelector selectorObj)
-	{
+	public static long dateTimeToInteger(Date date, DatePartSelector selectorObj) {
 		Calendar newDate = Calendar.getInstance();
 		newDate.setTime(date);
 		int value = -1;
 		switch (selectorObj) {
-			case year : value = newDate.get(Calendar.YEAR); break;
-			case month : value = newDate.get(Calendar.MONTH)+1; break; // Return starts at 0
-			case day : value = newDate.get(Calendar.DAY_OF_MONTH); break;
-			default : break;
+			case year:
+				value = newDate.get(Calendar.YEAR);
+				break;
+			case month:
+				value = newDate.get(Calendar.MONTH) + 1;
+				break; // Return starts at 0
+			case day:
+				value = newDate.get(Calendar.DAY_OF_MONTH);
+				break;
+			default:
+				break;
 		}
 		return value;
 	}
-		
+
+	public static long dateTimeToLong(Date date) {
+		return date.getTime();
+	}
+
+	public static Date longToDateTime(Long value) {
+		return new Date(value);
+	}
 }
