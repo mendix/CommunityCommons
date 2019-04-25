@@ -33,19 +33,20 @@ import com.mendix.core.CoreException;
 import com.mendix.core.conf.RuntimeVersion;
 import com.mendix.core.objectmanagement.member.MendixBoolean;
 import com.mendix.integration.WebserviceException;
+import com.mendix.logging.ILogNode;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.ISession;
 import com.mendix.systemwideinterfaces.core.IUser;
+import communitycommons.proxies.LogNodes;
 
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
 import java.util.ArrayList;
 
-import static communitycommons.Logging.LOG;
-
 public class Misc {
 
-
+	private static final ILogNode LOG = Core.getLogger(LogNodes.CommunityCommons.getCaption());
+	
     public abstract static class IterateCallback<T1, T2> {
 
         boolean start = false;

@@ -15,6 +15,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;
+import communitycommons.proxies.LogNodes;
 
 /**
  * Calculates the number of years between two dates. 
@@ -41,7 +42,7 @@ public class YearsBetween extends CustomJavaAction<java.lang.Long>
 			return new Long(DateTime.periodBetween(this.dateTime, compareDate == null ? new Date() : compareDate)
 									.getYears());
 		} catch (Exception e) {
-			Logging.log("Community_Commons", LogLevel.Warning, "DateTime calculation error, returning -1", e);
+			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
 			return -1L;
 		}
 		// END USER CODE

@@ -14,6 +14,7 @@ import com.mendix.webui.CustomJavaAction;
 import communitycommons.DateTime;
 import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;
+import communitycommons.proxies.LogNodes;
 import java.util.Date;
 
 /**
@@ -38,9 +39,10 @@ public class MonthsBetween extends CustomJavaAction<java.lang.Long>
 	{
 		// BEGIN USER CODE
 		try {
-			return new Long(DateTime.periodBetween(date1, date2 == null ? new Date() : date2).getMonths());
+			return DateTime.periodBetween(date1, date2 == null ? new Date() : date2).toTotalMonths();
 		} catch (Exception e) {
-			Logging.log("Community_Commons", LogLevel.Warning, "DateTime calculation error, returning -1", e);
+
+			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
 			return -1L;
 		}
 		// END USER CODE

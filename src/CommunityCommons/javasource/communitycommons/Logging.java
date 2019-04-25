@@ -7,11 +7,11 @@ import java.util.Map;
 import com.mendix.core.Core;
 import com.mendix.logging.ILogNode;
 import communitycommons.proxies.LogLevel;
+import communitycommons.proxies.LogNodes;
 
 public class Logging
 {
 	private static Map<String, Long> timers = new HashMap<String, Long>();
-	public static final ILogNode LOG = createLogNode("communitycommons");
 
 	public static void log(String lognode, LogLevel loglevel, String message, Throwable e) {
 		ILogNode logger = createLogNode(lognode);
@@ -46,7 +46,7 @@ public class Logging
 			throw new IllegalArgumentException(String.format("Timer with key %s not found", timerName));
 		}
 		String time = String.format("%d", cur - timers.get(timerName));
-		log("communitycommons", loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
+		log(LogNodes.CommunityCommons.getCaption(), loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
 		return timers.get(timerName);
 	}
 
