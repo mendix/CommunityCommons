@@ -77,6 +77,8 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 *YearsBetween* - Calculates the number of years between two dates.
 
+*MonthsBetween* - Calculates the number of months between two dates.
+
 *GetIntFromDateTime* - Extracts a part of a date (year, month or day) to an integer (new in 2.2).
 
 ### Files
