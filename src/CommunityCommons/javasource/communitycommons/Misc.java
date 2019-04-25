@@ -43,10 +43,12 @@ import communitycommons.proxies.LogNodes;
 import static communitycommons.proxies.constants.Constants.getMergeMultiplePdfs_MaxAtOnce;
 import java.util.ArrayList;
 
+import static communitycommons.Logging.LOG;
+
 public class Misc {
 
-	private static final ILogNode LOG = Core.getLogger(LogNodes.CommunityCommons.getCaption());
-	
+    private static final ILogNode LOG = Core.getLogger(LogNodes.CommunityCommons.getCaption());
+
     public abstract static class IterateCallback<T1, T2> {
 
         boolean start = false;

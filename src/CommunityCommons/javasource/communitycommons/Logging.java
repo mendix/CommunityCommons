@@ -12,6 +12,7 @@ import communitycommons.proxies.LogNodes;
 public class Logging
 {
 	private static Map<String, Long> timers = new HashMap<String, Long>();
+	public static final ILogNode LOG = createLogNode("communitycommons");
 
 	public static void log(String lognode, LogLevel loglevel, String message, Throwable e) {
 		ILogNode logger = createLogNode(lognode);
