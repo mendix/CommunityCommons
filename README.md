@@ -53,12 +53,18 @@ gradle prepareDeps
 from the command line. Afterwards, you will be able to export a CommunityCommons.mpk module from the Community Commons main project. Select only the dependencies listed below as dependencies in userlib for the exported module.
 
 ## Dependencies
+For security reasons, Guava was upgraded to version 27 in Community Commons v7.4.0. This unfortunately means a number of new required jars in the userlib folder.
+ -  animal-sniffer-annotations-1.17.jar
+ -  checker-qual-2.5.2.jar
  -  commons.io-2.6.jar
  -  commons.lang3-3.7.jar
+ -  error-prone-annotations-2.2.0.jar
+ -  j2objc-annotations-1.1.jar
+ -  jsr305-3.0.2.jar
  -  pdfbox-2.0.13.jar
  -  fontbox-2.0.13.jar
- -  guava-19.0.jar
- -  owasp-java-html-sanitizer-20180219.1.jar
+ -  guava-27.0-jre.jar
+ -  owasp-java-html-sanitizer-20181114.1.jar
 
 ## Function list
 
