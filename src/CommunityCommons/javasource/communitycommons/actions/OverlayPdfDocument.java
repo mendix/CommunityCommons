@@ -33,7 +33,7 @@ public class OverlayPdfDocument extends CustomJavaAction<java.lang.Boolean>
 		this.onTopOfContent = onTopOfContent;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		this.generatedDocument = __generatedDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __generatedDocument);
@@ -48,7 +48,7 @@ public class OverlayPdfDocument extends CustomJavaAction<java.lang.Boolean>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "OverlayPdfDocument";

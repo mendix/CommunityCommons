@@ -24,7 +24,8 @@ public class URLToDocument extends system.proxies.FileDocument
 		Name("Name"),
 		DeleteAfterDownload("DeleteAfterDownload"),
 		Contents("Contents"),
-		HasContents("HasContents");
+		HasContents("HasContents"),
+		Size("Size");
 
 		private java.lang.String metaName;
 
@@ -33,7 +34,7 @@ public class URLToDocument extends system.proxies.FileDocument
 			metaName = s;
 		}
 
-		@Override
+		@java.lang.Override
 		public java.lang.String toString()
 		{
 			return metaName;
@@ -55,7 +56,7 @@ public class URLToDocument extends system.proxies.FileDocument
 	/**
 	 * @deprecated Use 'URLToDocument.load(IContext, IMendixIdentifier)' instead.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public static myfirstmodule.proxies.URLToDocument initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		return myfirstmodule.proxies.URLToDocument.load(context, mendixIdentifier);
@@ -228,7 +229,7 @@ public class URLToDocument extends system.proxies.FileDocument
 		getMendixObject().setValue(context, MemberNames.FileSize.toString(), filesize);
 	}
 
-	@Override
+	@java.lang.Override
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -242,7 +243,7 @@ public class URLToDocument extends system.proxies.FileDocument
 		return false;
 	}
 
-	@Override
+	@java.lang.Override
 	public int hashCode()
 	{
 		return getMendixObject().hashCode();
@@ -260,8 +261,8 @@ public class URLToDocument extends system.proxies.FileDocument
 	 * @return String GUID from this object, format: ID_0000000000
 	 * @deprecated Use getMendixObject().getId().toLong() to get a unique identifier for this object.
 	 */
-	@Override
-	@Deprecated
+	@java.lang.Override
+	@java.lang.Deprecated
 	public java.lang.String getGUID()
 	{
 		return "ID_" + getMendixObject().getId().toLong();

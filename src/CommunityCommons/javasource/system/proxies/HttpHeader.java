@@ -31,7 +31,7 @@ public class HttpHeader
 			metaName = s;
 		}
 
-		@Override
+		@java.lang.Override
 		public java.lang.String toString()
 		{
 			return metaName;
@@ -57,7 +57,7 @@ public class HttpHeader
 	/**
 	 * @deprecated Use 'HttpHeader.load(IContext, IMendixIdentifier)' instead.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public static system.proxies.HttpHeader initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		return system.proxies.HttpHeader.load(context, mendixIdentifier);
@@ -184,7 +184,7 @@ public class HttpHeader
 	/**
 	 * @return value of HttpHeaders
 	 */
-	public final system.proxies.HttpResponse getHttpHeaders() throws com.mendix.core.CoreException
+	public final system.proxies.HttpMessage getHttpHeaders() throws com.mendix.core.CoreException
 	{
 		return getHttpHeaders(getContext());
 	}
@@ -193,12 +193,12 @@ public class HttpHeader
 	 * @param context
 	 * @return value of HttpHeaders
 	 */
-	public final system.proxies.HttpResponse getHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	public final system.proxies.HttpMessage getHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
-		system.proxies.HttpResponse result = null;
+		system.proxies.HttpMessage result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.HttpHeaders.toString());
 		if (identifier != null)
-			result = system.proxies.HttpResponse.load(context, identifier);
+			result = system.proxies.HttpMessage.load(context, identifier);
 		return result;
 	}
 
@@ -206,7 +206,7 @@ public class HttpHeader
 	 * Set value of HttpHeaders
 	 * @param httpheaders
 	 */
-	public final void setHttpHeaders(system.proxies.HttpResponse httpheaders)
+	public final void setHttpHeaders(system.proxies.HttpMessage httpheaders)
 	{
 		setHttpHeaders(getContext(), httpheaders);
 	}
@@ -216,7 +216,7 @@ public class HttpHeader
 	 * @param context
 	 * @param httpheaders
 	 */
-	public final void setHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.HttpResponse httpheaders)
+	public final void setHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.HttpMessage httpheaders)
 	{
 		if (httpheaders == null)
 			getMendixObject().setValue(context, MemberNames.HttpHeaders.toString(), null);
@@ -240,7 +240,7 @@ public class HttpHeader
 		return context;
 	}
 
-	@Override
+	@java.lang.Override
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -254,7 +254,7 @@ public class HttpHeader
 		return false;
 	}
 
-	@Override
+	@java.lang.Override
 	public int hashCode()
 	{
 		return getMendixObject().hashCode();
@@ -272,7 +272,7 @@ public class HttpHeader
 	 * @return String GUID from this object, format: ID_0000000000
 	 * @deprecated Use getMendixObject().getId().toLong() to get a unique identifier for this object.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public java.lang.String getGUID()
 	{
 		return "ID_" + getMendixObject().getId().toLong();

@@ -36,7 +36,7 @@ public class DuplicateFileDocument extends CustomJavaAction<java.lang.Boolean>
 		this.__cloneTarget = cloneTarget;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		this.fileToClone = __fileToClone == null ? null : system.proxies.FileDocument.initialize(getContext(), __fileToClone);
@@ -51,7 +51,7 @@ public class DuplicateFileDocument extends CustomJavaAction<java.lang.Boolean>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "DuplicateFileDocument";

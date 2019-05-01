@@ -29,7 +29,7 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 		this.__ImageParameter = ImageParameter;
 	}
 
-	@Override
+	@java.lang.Override
 	public IMendixObject executeAction() throws Exception
 	{
 		this.ImageParameter = __ImageParameter == null ? null : system.proxies.Image.initialize(getContext(), __ImageParameter);
@@ -49,7 +49,7 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "GetImageDimensions";

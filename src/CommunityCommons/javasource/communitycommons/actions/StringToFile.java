@@ -32,7 +32,7 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 		this.__destination = destination;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		this.destination = __destination == null ? null : system.proxies.FileDocument.initialize(getContext(), __destination);
@@ -46,7 +46,7 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "StringToFile";

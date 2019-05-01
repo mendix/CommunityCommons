@@ -24,7 +24,8 @@ public class FileDocument
 		Name("Name"),
 		DeleteAfterDownload("DeleteAfterDownload"),
 		Contents("Contents"),
-		HasContents("HasContents");
+		HasContents("HasContents"),
+		Size("Size");
 
 		private java.lang.String metaName;
 
@@ -33,7 +34,7 @@ public class FileDocument
 			metaName = s;
 		}
 
-		@Override
+		@java.lang.Override
 		public java.lang.String toString()
 		{
 			return metaName;
@@ -59,7 +60,7 @@ public class FileDocument
 	/**
 	 * @deprecated Use 'FileDocument.load(IContext, IMendixIdentifier)' instead.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public static system.proxies.FileDocument initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		return system.proxies.FileDocument.load(context, mendixIdentifier);
@@ -316,6 +317,42 @@ public class FileDocument
 	}
 
 	/**
+	 * @return value of Size
+	 */
+	public final java.lang.Long getSize()
+	{
+		return getSize(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of Size
+	 */
+	public final java.lang.Long getSize(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Long) getMendixObject().getValue(context, MemberNames.Size.toString());
+	}
+
+	/**
+	 * Set value of Size
+	 * @param size
+	 */
+	public final void setSize(java.lang.Long size)
+	{
+		setSize(getContext(), size);
+	}
+
+	/**
+	 * Set value of Size
+	 * @param context
+	 * @param size
+	 */
+	public final void setSize(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Long size)
+	{
+		getMendixObject().setValue(context, MemberNames.Size.toString(), size);
+	}
+
+	/**
 	 * @return the IMendixObject instance of this proxy for use in the Core interface.
 	 */
 	public final com.mendix.systemwideinterfaces.core.IMendixObject getMendixObject()
@@ -331,7 +368,7 @@ public class FileDocument
 		return context;
 	}
 
-	@Override
+	@java.lang.Override
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -345,7 +382,7 @@ public class FileDocument
 		return false;
 	}
 
-	@Override
+	@java.lang.Override
 	public int hashCode()
 	{
 		return getMendixObject().hashCode();
@@ -363,7 +400,7 @@ public class FileDocument
 	 * @return String GUID from this object, format: ID_0000000000
 	 * @deprecated Use getMendixObject().getId().toLong() to get a unique identifier for this object.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public java.lang.String getGUID()
 	{
 		return "ID_" + getMendixObject().getId().toLong();

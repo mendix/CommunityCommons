@@ -35,7 +35,7 @@ public class RegexReplaceAll extends CustomJavaAction<java.lang.String>
 		this.replacement = replacement;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
@@ -46,7 +46,7 @@ public class RegexReplaceAll extends CustomJavaAction<java.lang.String>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "RegexReplaceAll";
