@@ -19,7 +19,7 @@ apply plugin: 'org.owasp.dependencycheck'
 project.ext {
 
     CC_VERSION = '8.0.0'
-    MXBUILD_VERSION = '7.23.3'
+    MXBUILD_VERSION = '7.23.3.48173'
 }
 
 def runtimeLibs = "$buildDir/runtime/bundles"
