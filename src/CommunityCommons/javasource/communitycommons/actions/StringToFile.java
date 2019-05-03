@@ -11,12 +11,13 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.StringUtils;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Stores a string into the provided FileDocument, using the specified encoding
- * 
+ * Stores a string into the provided FileDocument, using the specified encoding.
  * Note that destination will be committed.
  */
 public class StringToFile extends CustomJavaAction<java.lang.Boolean>
@@ -24,14 +25,14 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 	private java.lang.String value;
 	private IMendixObject __destination;
 	private system.proxies.FileDocument destination;
-	private java.lang.String encoding;
+	private communitycommons.proxies.StandardEncodings encoding;
 
 	public StringToFile(IContext context, java.lang.String value, IMendixObject destination, java.lang.String encoding)
 	{
 		super(context);
 		this.value = value;
 		this.__destination = destination;
-		this.encoding = encoding;
+		this.encoding = encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(encoding);
 	}
 
 	@Override
@@ -40,7 +41,10 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 		this.destination = __destination == null ? null : system.proxies.FileDocument.initialize(getContext(), __destination);
 
 		// BEGIN USER CODE
-		StringUtils.stringToFile(getContext(), value, destination, encoding);
+		Charset charset = StandardCharsets.UTF_8;
+		if (this.encoding != null)
+			charset = Charset.forName(this.encoding.getCaption());
+		StringUtils.stringToFile(getContext(), value, destination, charset);
 		return true;
 		// END USER CODE
 	}
