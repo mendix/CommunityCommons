@@ -40,7 +40,7 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 		// BEGIN USER CODE
 		Charset charset = StandardCharsets.UTF_8;
 		if (this.encoding != null)
-			charset = Charset.forName(this.encoding.getCaption());
+			charset = Charset.forName(this.encoding.name().replace('_', '-'));
 		return StringUtils.stringFromFile(getContext(), source, charset);
 		// END USER CODE
 	}

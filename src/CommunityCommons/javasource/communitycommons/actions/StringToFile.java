@@ -43,7 +43,7 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 		// BEGIN USER CODE
 		Charset charset = StandardCharsets.UTF_8;
 		if (this.encoding != null)
-			charset = Charset.forName(this.encoding.getCaption());
+			charset = Charset.forName(this.encoding.name().replace('_', '-'));
 		StringUtils.stringToFile(getContext(), value, destination, charset);
 		return true;
 		// END USER CODE
