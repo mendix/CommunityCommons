@@ -265,7 +265,7 @@ public class Misc {
         }
 
         // Session does not have a user when it's a scheduled event.
-        if (context.getSession().getUser() != null && username.equals(context.getSession().getUser().getName())) {
+        if (username.equals(context.getSession().getUserName())) {
             return context;
         } else {
             ISession session = getSessionFor(context, username);
