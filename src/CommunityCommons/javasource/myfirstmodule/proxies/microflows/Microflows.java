@@ -480,18 +480,6 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static boolean test_StringFromFile(IContext context)
-	{
-		try
-		{
-			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
-			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringFromFile", params);
-		}
-		catch (CoreException e)
-		{
-			throw new MendixRuntimeException(e);
-		}
-	}
 	public static boolean test_StringFromFile_getFileSize(IContext context)
 	{
 		try
