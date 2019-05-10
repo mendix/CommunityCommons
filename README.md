@@ -87,9 +87,9 @@ from the command line. Afterwards, you will be able to export a CommunityCommons
 
 *Base64EncodeFile* - Converts an unencode file to a base 64 encoded string.
 
-*StringToFile* - Stores a string into the provides filedocument.
+*StringToFile* - Stores a string into the provides filedocument. Supports multiple encodings since 7.4.1.
 
-*StringFromFile* -  Reads the contents form the provided file document and return it as string.
+*StringFromFile* -  Reads the contents form the provided file document and return it as string. Supports multiple encodings since 7.4.1.
 
 *StoreURLToFileDocument* - Retrieve a document from an URL using a HTTP GET request.
 
