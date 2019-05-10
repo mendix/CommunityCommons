@@ -93,9 +93,9 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *Base64EncodeFile* - Converts an unencode file to a base 64 encoded string.
 
-*StringToFile* - Stores a string into the provides filedocument.
+*StringToFile* - Stores a string into the provides filedocument. Supports multiple encodings since 7.4.1.
 
-*StringFromFile* -  Reads the contents form the provided file document and return it as string.
+*StringFromFile* -  Reads the contents form the provided file document and return it as string. Supports multiple encodings since 7.4.1.
 
 *StoreURLToFileDocument* - Retrieve a document from an URL using a HTTP GET request.
 
