@@ -19,7 +19,7 @@ apply plugin: 'org.owasp.dependencycheck'
 project.ext {
 
     CC_VERSION = '8.0.0'
-    MXBUILD_VERSION = '7.23.3.48173'
+    MXBUILD_VERSION = '7.23.4.51030'
 }
 
 def runtimeLibs = "$buildDir/runtime/bundles"
@@ -65,10 +65,8 @@ configurations.each {
 sourceSets {
     main {
         java {
-            srcDirs = ["src/CommunityCommons/javasource"]
-        }
-        resources {
-            srcDirs = ["src/CommunityCommons/resources"]
+            srcDir 'src/CommunityCommons/javasource'
+            exclude 'unittesting/**'
         }
     }
     test {
@@ -93,7 +91,7 @@ task untarMxbuild( type: Copy ) {
         into buildDir
         include('**/runtime/bundles/com.mendix.public-api.jar')
 	include('**/runtime/bundles/com.mendix.logging-api.jar')
-	include('**/runtime/bundles/biz.aQute.bnd.bndlib.jar')
+//	include('**/runtime/bundles/biz.aQute.bnd.bndlib.jar')
         includeEmptyDirs = false
     }
 }
