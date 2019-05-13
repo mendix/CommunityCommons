@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestException;
 import java.security.MessageDigest;
@@ -216,16 +217,26 @@ public class StringUtils
 
 	public static String stringFromFile(IContext context, FileDocument source) throws IOException
 	{
+		return stringFromFile(context, source, StandardCharsets.UTF_8);
+	}
+	
+	public static String stringFromFile(IContext context, FileDocument source, Charset charset) throws IOException
+	{
 		if (source == null)
 			return null;
 		try (
 			InputStream f = Core.getFileDocumentContent(context, source.getMendixObject());
 		) {
-			return IOUtils.toString(f, StandardCharsets.UTF_8);
+			return IOUtils.toString(f, charset);
 		}
 	}
 
 	public static void stringToFile(IContext context, String value, FileDocument destination) throws IOException
+	{
+		stringToFile(context, value, destination, StandardCharsets.UTF_8);
+	}
+	
+	public static void stringToFile(IContext context, String value, FileDocument destination, Charset charset) throws IOException
 	{
 		if (destination == null)
 			throw new IllegalArgumentException("Destination file is null");
@@ -233,7 +244,7 @@ public class StringUtils
 			throw new IllegalArgumentException("Value to write is null");
 
 		try (
-			InputStream is = IOUtils.toInputStream(value, StandardCharsets.UTF_8)
+			InputStream is = IOUtils.toInputStream(value, charset)
 		) {
 			Core.storeFileDocumentContent(context, destination.getMendixObject(), is);
 		}

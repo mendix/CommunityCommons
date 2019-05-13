@@ -11,6 +11,8 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.StringUtils;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
@@ -36,7 +38,10 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 		this.source = __source == null ? null : system.proxies.FileDocument.initialize(getContext(), __source);
 
 		// BEGIN USER CODE
-		return StringUtils.stringFromFile(getContext(), source);
+		Charset charset = StandardCharsets.UTF_8;
+		if (this.encoding != null)
+			charset = Charset.forName(this.encoding.name().replace('_', '-'));
+		return StringUtils.stringFromFile(getContext(), source, charset);
 		// END USER CODE
 	}
 
