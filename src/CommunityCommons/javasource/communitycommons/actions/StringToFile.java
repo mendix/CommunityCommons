@@ -15,8 +15,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Stores a string into the provides filedocument
- * 
+ * Stores a string into the provided FileDocument, using the specified encoding.
  * Note that destination will be committed.
  */
 public class StringToFile extends CustomJavaAction<java.lang.Boolean>
@@ -24,12 +23,14 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 	private java.lang.String value;
 	private IMendixObject __destination;
 	private system.proxies.FileDocument destination;
+	private communitycommons.proxies.StandardEncodings encoding;
 
-	public StringToFile(IContext context, java.lang.String value, IMendixObject destination)
+	public StringToFile(IContext context, java.lang.String value, IMendixObject destination, java.lang.String encoding)
 	{
 		super(context);
 		this.value = value;
 		this.__destination = destination;
+		this.encoding = encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(encoding);
 	}
 
 	@java.lang.Override

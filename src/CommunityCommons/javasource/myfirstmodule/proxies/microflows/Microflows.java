@@ -41,6 +41,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static void downloadFileFromContentAsString(IContext context, myfirstmodule.proxies.StringFromFile _stringFromFile)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("StringFromFile", _stringFromFile == null ? null : _stringFromFile.getMendixObject());
+			Core.execute(context, "MyFirstModule.DownloadFileFromContentAsString", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static system.proxies.Language dS_GetDefaultLanguage(IContext context)
 	{
 		try
@@ -256,6 +269,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static void saveAsPdf(IContext context, myfirstmodule.proxies.StringFromFile _stringFromFile)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("StringFromFile", _stringFromFile == null ? null : _stringFromFile.getMendixObject());
+			Core.execute(context, "MyFirstModule.SaveAsPdf", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void splitString(IContext context)
 	{
 		try
@@ -454,18 +480,6 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static boolean test_StringFromFile(IContext context)
-	{
-		try
-		{
-			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
-			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringFromFile", params);
-		}
-		catch (CoreException e)
-		{
-			throw new MendixRuntimeException(e);
-		}
-	}
 	public static boolean test_StringFromFile_getFileSize(IContext context)
 	{
 		try
@@ -478,12 +492,36 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static boolean test_StringFromPDF_WithEncoding(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringFromPDF_WithEncoding", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static boolean test_StringToFile(IContext context)
 	{
 		try
 		{
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringToFile", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_StringToPDF_WithEncoding(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringToPDF_WithEncoding", params);
 		}
 		catch (CoreException e)
 		{

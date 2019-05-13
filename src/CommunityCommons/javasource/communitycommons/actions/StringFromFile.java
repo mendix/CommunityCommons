@@ -15,19 +15,19 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Reads the contents form the provided file document and return it as string
- * 
- * Note that this might give strange results when using with binary files. In that case, use the Base64 functions.
+ * Reads the contents form the provided file document, using the specified encoding, and returns it as string.
  */
 public class StringFromFile extends CustomJavaAction<java.lang.String>
 {
 	private IMendixObject __source;
 	private system.proxies.FileDocument source;
+	private communitycommons.proxies.StandardEncodings encoding;
 
-	public StringFromFile(IContext context, IMendixObject source)
+	public StringFromFile(IContext context, IMendixObject source, java.lang.String encoding)
 	{
 		super(context);
 		this.__source = source;
+		this.encoding = encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(encoding);
 	}
 
 	@java.lang.Override
