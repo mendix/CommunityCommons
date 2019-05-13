@@ -38,3 +38,4 @@ package.xml
 /nbproject/
 /.nb-gradle-properties
 *.bak
+*.orig
