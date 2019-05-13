@@ -264,10 +264,9 @@ public class Misc {
             throw new RuntimeException("Assertion: No username provided");
         }
 
-        // Session does not have a user when it's a scheduled event.
         if (username.equals(context.getSession().getUserName())) {
             return context;
-        } else {
+        } else { // when it is a scheduled event, then get the right session.
             ISession session = getSessionFor(context, username);
 
             IContext c = session.createContext();
