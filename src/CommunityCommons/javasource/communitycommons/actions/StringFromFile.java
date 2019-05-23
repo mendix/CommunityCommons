@@ -32,7 +32,7 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 		this.encoding = encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(encoding);
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
 		this.source = __source == null ? null : system.proxies.FileDocument.initialize(getContext(), __source);
@@ -48,7 +48,7 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "StringFromFile";

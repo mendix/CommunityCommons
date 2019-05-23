@@ -33,7 +33,7 @@ public class getFileSize extends CustomJavaAction<java.lang.Long>
 		this.__document = document;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.Long executeAction() throws Exception
 	{
 		this.document = __document == null ? null : system.proxies.FileDocument.initialize(getContext(), __document);
@@ -46,7 +46,7 @@ public class getFileSize extends CustomJavaAction<java.lang.Long>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "getFileSize";

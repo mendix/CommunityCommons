@@ -40,7 +40,7 @@ public class DuplicateImageDocument extends CustomJavaAction<java.lang.Boolean>
 		this.thumbHeight = thumbHeight;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		this.fileToClone = __fileToClone == null ? null : system.proxies.Image.initialize(getContext(), __fileToClone);
@@ -55,7 +55,7 @@ public class DuplicateImageDocument extends CustomJavaAction<java.lang.Boolean>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "DuplicateImageDocument";

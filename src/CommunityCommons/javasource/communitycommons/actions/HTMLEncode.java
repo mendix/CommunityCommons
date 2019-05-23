@@ -31,7 +31,7 @@ public class HTMLEncode extends CustomJavaAction<java.lang.String>
 		this.value = value;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
@@ -42,7 +42,7 @@ public class HTMLEncode extends CustomJavaAction<java.lang.String>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "HTMLEncode";

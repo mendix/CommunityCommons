@@ -29,7 +29,7 @@ public class getLastChangedByUser extends CustomJavaAction<IMendixObject>
 		this.thing = thing;
 	}
 
-	@Override
+	@java.lang.Override
 	public IMendixObject executeAction() throws Exception
 	{
 		// BEGIN USER CODE
@@ -40,7 +40,7 @@ public class getLastChangedByUser extends CustomJavaAction<IMendixObject>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "getLastChangedByUser";

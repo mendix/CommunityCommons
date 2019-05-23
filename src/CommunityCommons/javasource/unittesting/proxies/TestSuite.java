@@ -37,7 +37,7 @@ public class TestSuite
 			metaName = s;
 		}
 
-		@Override
+		@java.lang.Override
 		public java.lang.String toString()
 		{
 			return metaName;
@@ -63,7 +63,7 @@ public class TestSuite
 	/**
 	 * @deprecated Use 'TestSuite.load(IContext, IMendixIdentifier)' instead.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public static unittesting.proxies.TestSuite initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		return unittesting.proxies.TestSuite.load(context, mendixIdentifier);
@@ -471,7 +471,7 @@ public class TestSuite
 		return context;
 	}
 
-	@Override
+	@java.lang.Override
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -485,7 +485,7 @@ public class TestSuite
 		return false;
 	}
 
-	@Override
+	@java.lang.Override
 	public int hashCode()
 	{
 		return getMendixObject().hashCode();
@@ -503,7 +503,7 @@ public class TestSuite
 	 * @return String GUID from this object, format: ID_0000000000
 	 * @deprecated Use getMendixObject().getId().toLong() to get a unique identifier for this object.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public java.lang.String getGUID()
 	{
 		return "ID_" + getMendixObject().getId().toLong();

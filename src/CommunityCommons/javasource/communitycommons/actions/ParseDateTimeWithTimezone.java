@@ -38,7 +38,7 @@ public class ParseDateTimeWithTimezone extends CustomJavaAction<java.util.Date>
 		this.defaultValue = defaultValue;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.util.Date executeAction() throws Exception
 	{
 		// BEGIN USER CODE
@@ -60,7 +60,7 @@ public class ParseDateTimeWithTimezone extends CustomJavaAction<java.util.Date>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "ParseDateTimeWithTimezone";

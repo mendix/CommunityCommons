@@ -37,3 +37,5 @@ package.xml
 *.mda
 /nbproject/
 /.nb-gradle-properties
+*.bak
+*.orig

@@ -24,7 +24,8 @@ public class PdfOverlay extends system.proxies.FileDocument
 		Name("Name"),
 		DeleteAfterDownload("DeleteAfterDownload"),
 		Contents("Contents"),
-		HasContents("HasContents");
+		HasContents("HasContents"),
+		Size("Size");
 
 		private java.lang.String metaName;
 
@@ -33,7 +34,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 			metaName = s;
 		}
 
-		@Override
+		@java.lang.Override
 		public java.lang.String toString()
 		{
 			return metaName;
@@ -55,7 +56,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	/**
 	 * @deprecated Use 'PdfOverlay.load(IContext, IMendixIdentifier)' instead.
 	 */
-	@Deprecated
+	@java.lang.Deprecated
 	public static myfirstmodule.proxies.PdfOverlay initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixIdentifier mendixIdentifier) throws com.mendix.core.CoreException
 	{
 		return myfirstmodule.proxies.PdfOverlay.load(context, mendixIdentifier);
@@ -87,7 +88,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	/**
 	 * @return value of MarginTop
 	 */
-	public final java.lang.Double getMarginTop()
+	public final java.math.BigDecimal getMarginTop()
 	{
 		return getMarginTop(getContext());
 	}
@@ -96,16 +97,16 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @return value of MarginTop
 	 */
-	public final java.lang.Double getMarginTop(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getMarginTop(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.MarginTop.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.MarginTop.toString());
 	}
 
 	/**
 	 * Set value of MarginTop
 	 * @param margintop
 	 */
-	public final void setMarginTop(java.lang.Double margintop)
+	public final void setMarginTop(java.math.BigDecimal margintop)
 	{
 		setMarginTop(getContext(), margintop);
 	}
@@ -115,7 +116,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @param margintop
 	 */
-	public final void setMarginTop(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double margintop)
+	public final void setMarginTop(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal margintop)
 	{
 		getMendixObject().setValue(context, MemberNames.MarginTop.toString(), margintop);
 	}
@@ -123,7 +124,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	/**
 	 * @return value of MarginLeft
 	 */
-	public final java.lang.Double getMarginLeft()
+	public final java.math.BigDecimal getMarginLeft()
 	{
 		return getMarginLeft(getContext());
 	}
@@ -132,16 +133,16 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @return value of MarginLeft
 	 */
-	public final java.lang.Double getMarginLeft(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getMarginLeft(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.MarginLeft.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.MarginLeft.toString());
 	}
 
 	/**
 	 * Set value of MarginLeft
 	 * @param marginleft
 	 */
-	public final void setMarginLeft(java.lang.Double marginleft)
+	public final void setMarginLeft(java.math.BigDecimal marginleft)
 	{
 		setMarginLeft(getContext(), marginleft);
 	}
@@ -151,7 +152,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @param marginleft
 	 */
-	public final void setMarginLeft(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double marginleft)
+	public final void setMarginLeft(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal marginleft)
 	{
 		getMendixObject().setValue(context, MemberNames.MarginLeft.toString(), marginleft);
 	}
@@ -159,7 +160,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	/**
 	 * @return value of MarginRight
 	 */
-	public final java.lang.Double getMarginRight()
+	public final java.math.BigDecimal getMarginRight()
 	{
 		return getMarginRight(getContext());
 	}
@@ -168,16 +169,16 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @return value of MarginRight
 	 */
-	public final java.lang.Double getMarginRight(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getMarginRight(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.MarginRight.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.MarginRight.toString());
 	}
 
 	/**
 	 * Set value of MarginRight
 	 * @param marginright
 	 */
-	public final void setMarginRight(java.lang.Double marginright)
+	public final void setMarginRight(java.math.BigDecimal marginright)
 	{
 		setMarginRight(getContext(), marginright);
 	}
@@ -187,7 +188,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @param marginright
 	 */
-	public final void setMarginRight(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double marginright)
+	public final void setMarginRight(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal marginright)
 	{
 		getMendixObject().setValue(context, MemberNames.MarginRight.toString(), marginright);
 	}
@@ -195,7 +196,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 	/**
 	 * @return value of MarginBottom
 	 */
-	public final java.lang.Double getMarginBottom()
+	public final java.math.BigDecimal getMarginBottom()
 	{
 		return getMarginBottom(getContext());
 	}
@@ -204,16 +205,16 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @return value of MarginBottom
 	 */
-	public final java.lang.Double getMarginBottom(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.math.BigDecimal getMarginBottom(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.MarginBottom.toString());
+		return (java.math.BigDecimal) getMendixObject().getValue(context, MemberNames.MarginBottom.toString());
 	}
 
 	/**
 	 * Set value of MarginBottom
 	 * @param marginbottom
 	 */
-	public final void setMarginBottom(java.lang.Double marginbottom)
+	public final void setMarginBottom(java.math.BigDecimal marginbottom)
 	{
 		setMarginBottom(getContext(), marginbottom);
 	}
@@ -223,12 +224,12 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @param context
 	 * @param marginbottom
 	 */
-	public final void setMarginBottom(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double marginbottom)
+	public final void setMarginBottom(com.mendix.systemwideinterfaces.core.IContext context, java.math.BigDecimal marginbottom)
 	{
 		getMendixObject().setValue(context, MemberNames.MarginBottom.toString(), marginbottom);
 	}
 
-	@Override
+	@java.lang.Override
 	public boolean equals(Object obj)
 	{
 		if (obj == this)
@@ -242,7 +243,7 @@ public class PdfOverlay extends system.proxies.FileDocument
 		return false;
 	}
 
-	@Override
+	@java.lang.Override
 	public int hashCode()
 	{
 		return getMendixObject().hashCode();
@@ -260,8 +261,8 @@ public class PdfOverlay extends system.proxies.FileDocument
 	 * @return String GUID from this object, format: ID_0000000000
 	 * @deprecated Use getMendixObject().getId().toLong() to get a unique identifier for this object.
 	 */
-	@Override
-	@Deprecated
+	@java.lang.Override
+	@java.lang.Deprecated
 	public java.lang.String getGUID()
 	{
 		return "ID_" + getMendixObject().getId().toLong();

@@ -28,7 +28,7 @@ public class Base64EncodeFile extends CustomJavaAction<java.lang.String>
 		this.__file = file;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
 		this.file = __file == null ? null : system.proxies.FileDocument.initialize(getContext(), __file);
@@ -41,7 +41,7 @@ public class Base64EncodeFile extends CustomJavaAction<java.lang.String>
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "Base64EncodeFile";

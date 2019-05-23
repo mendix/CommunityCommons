@@ -34,7 +34,7 @@ public class executeUnverifiedMicroflowAsUser extends CustomJavaAction<java.lang
 		this.sudoContext = sudoContext;
 	}
 
-	@Override
+	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
@@ -46,7 +46,7 @@ public class executeUnverifiedMicroflowAsUser extends CustomJavaAction<java.lang
 	/**
 	 * Returns a string representation of this action
 	 */
-	@Override
+	@java.lang.Override
 	public java.lang.String toString()
 	{
 		return "executeUnverifiedMicroflowAsUser";
