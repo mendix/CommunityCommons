@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 import org.gradle.api.internal.file.copy.CopySpecInternal
@@ -18,7 +18,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 project.ext {
 
-    CC_VERSION = '8.0.0'
+    CC_VERSION = '8.0.1'
     MXBUILD_VERSION = '7.23.4.51030'
 }
 
@@ -67,6 +67,7 @@ sourceSets {
         java {
             srcDir 'src/CommunityCommons/javasource'
             exclude 'unittesting/**'
+            exclude 'system/UserActionsRegistrar.java'
         }
     }
     test {
