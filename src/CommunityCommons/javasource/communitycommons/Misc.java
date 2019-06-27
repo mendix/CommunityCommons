@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 public class Misc {
 
-    private static final ILogNode LOG = Core.getLogger(LogNodes.CommunityCommons.getCaption());
+    private static final ILogNode LOG = Core.getLogger(LogNodes.CommunityCommons.name());
 
     public abstract static class IterateCallback<T1, T2> {
 

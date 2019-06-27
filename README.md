@@ -10,12 +10,17 @@ The module adds functionality for working with Dates, Batches, Strings, Internet
 
 ## _Important when updating_ :warning:
 
+### Deprecated function removal
+The `RegexTest` function was already deprecated for some time because you can use the isMatch() function in microflow expressions instead.
+In version 8.0.1, we removed this function.
+
 ### Deleting obsolete dependencies first
 It is *highly* recommended that you remove all jars that have an accompanying `.CommunityCommons.RequiredLib` file from the `userlib` folder by hand before importing the CommunityCommons 7.2.0 (or higher) module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.
 
 ### Java 8
 This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries.
 This means that for upgrading, [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) is a minimum requirement! You can change your JDK directory in the Desktop Modeler under Edit > Preferences.
+For Mendix 8, [AdoptOpenJDK 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot) will be supported.
 
 ### Breaking change to XSSSanitize
 
@@ -201,9 +206,9 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *RandomHash* - Generates a random hash, perfectly to use as random, unique identifier.
 
-*RegexReplaceAll* - Performs a regular expression. Identical to the microflow expression funciton 'replaceAll'.
+*RegexReplaceAll* - DEPRECATED. Performs a regular expression replace. Identical to the microflow expression function 'replaceAll'.
 
-*RegexTest* - Returns true if a value matches a regular expression.
+*RegexQuote* - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example). 
 
 *StringLeftPad* - Pads a string on the left to a certain length.
 

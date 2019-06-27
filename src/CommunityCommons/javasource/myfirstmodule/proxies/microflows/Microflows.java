@@ -119,6 +119,18 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static void getApplicationURL(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			Core.execute(context, "MyFirstModule.GetApplicationURL", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void getDimensions(IContext context, myfirstmodule.proxies.ImageSpecialization _imageSpecialization)
 	{
 		try

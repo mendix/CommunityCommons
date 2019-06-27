@@ -6,7 +6,7 @@ package communitycommons.proxies;
 
 public enum LogNodes
 {
-	CommunityCommons(new java.lang.String[][] { new java.lang.String[] { "en_US", "CommunityCommons" } });
+	CommunityCommons(new java.lang.String[][] { new java.lang.String[] { "en_US", "CommunityCommons" }, new java.lang.String[] { "nl_NL", "CommunityCommons" } });
 
 	private java.util.Map<java.lang.String, java.lang.String> captions;
 

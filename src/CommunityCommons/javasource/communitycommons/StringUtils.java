@@ -85,20 +85,15 @@ public class StringUtils
 	    return hexString.toString();
 	}
 
-	public static String regexReplaceAll(String haystack, String needleRegex,
+        /** 
+         * @deprecated Use the replaceAll function in a microflow expression instead.
+         */
+	@Deprecated public static String regexReplaceAll(String haystack, String needleRegex,
 			String replacement)
 	{
 		Pattern pattern = Pattern.compile(needleRegex);
 		Matcher matcher = pattern.matcher(haystack);
 		return matcher.replaceAll(replacement);
-	}
-
-	/**
-	 * @deprecated Use isMatch() expression instead
-	 */
-	public static boolean regexTest(String value, String regex)
-	{
-		return Pattern.matches(regex, value);
 	}
 
 	public static String leftPad(String value, Long amount, String fillCharacter)
