@@ -6,6 +6,7 @@
 // - the code between BEGIN EXTRA CODE and END EXTRA CODE
 // Other code you write will be lost the next time you deploy the project.
 // Special characters, e.g., é, ö, à, etc. are supported in comments.
+
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
@@ -17,29 +18,31 @@ import communitycommons.proxies.LogNodes;
 import java.util.Date;
 
 /**
- * Calculates the number of years between two dates. - dateTime : the original (oldest) dateTime -
- * compareDate: the second date. If EMPTY, the current datetime will be used. Effectively this means
- * that the age of the dateTime is calculated.
+ * Calculates the number of years between two dates. 
+ * - dateTime : the original (oldest) dateTime
+ * - compareDate: the second date. If EMPTY, the current datetime will be used. Effectively this means that the age of the dateTime is calculated.
  */
-public class YearsBetween extends CustomJavaAction<java.lang.Long> {
-
+public class YearsBetween extends CustomJavaAction<java.lang.Long>
+{
 	private java.util.Date dateTime;
 	private java.util.Date compareDate;
 
-	public YearsBetween(IContext context, java.util.Date dateTime, java.util.Date compareDate) {
+	public YearsBetween(IContext context, java.util.Date dateTime, java.util.Date compareDate)
+	{
 		super(context);
 		this.dateTime = dateTime;
 		this.compareDate = compareDate;
 	}
 
 	@java.lang.Override
-	public java.lang.Long executeAction() throws Exception {
+	public java.lang.Long executeAction() throws Exception
+	{
 		// BEGIN USER CODE
 		try {
 			return Long.valueOf(DateTime.periodBetween(this.dateTime, compareDate == null ? new Date() : compareDate)
 				.getYears());
 		} catch (Exception e) {
-			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
+			Logging.log(LogNodes.CommunityCommons.name(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
 			return -1L;
 		}
 		// END USER CODE
@@ -49,7 +52,8 @@ public class YearsBetween extends CustomJavaAction<java.lang.Long> {
 	 * Returns a string representation of this action
 	 */
 	@java.lang.Override
-	public java.lang.String toString() {
+	public java.lang.String toString()
+	{
 		return "YearsBetween";
 	}
 

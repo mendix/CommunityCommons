@@ -42,7 +42,7 @@ public class MonthsBetween extends CustomJavaAction<java.lang.Long>
 			return DateTime.periodBetween(date1, date2 == null ? new Date() : date2).toTotalMonths();
 		} catch (Exception e) {
 
-			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
+			Logging.log(LogNodes.CommunityCommons.name(), LogLevel.Warning, "DateTime calculation error, returning -1", e);
 			return -1L;
 		}
 		// END USER CODE

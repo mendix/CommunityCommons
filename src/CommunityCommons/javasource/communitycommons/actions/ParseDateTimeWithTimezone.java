@@ -51,7 +51,7 @@ public class ParseDateTimeWithTimezone extends CustomJavaAction<java.util.Date>
 			sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
 			return sdf.parse(date);
 		} catch (ParseException e) {
-			Logging.log(LogNodes.CommunityCommons.getCaption(), LogLevel.Warning, "Unable to parse date " + date, e);
+			Logging.log(LogNodes.CommunityCommons.name(), LogLevel.Warning, "Unable to parse date " + date, e);
 			return defaultValue;
 		}
 		// END USER CODE

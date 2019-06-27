@@ -46,7 +46,7 @@ public class Logging
 			throw new IllegalArgumentException(String.format("Timer with key %s not found", timerName));
 		}
 		String time = String.format("%d", cur - timers.get(timerName));
-		log(LogNodes.CommunityCommons.getCaption(), loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
+		log(LogNodes.CommunityCommons.name(), loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
 		return timers.get(timerName);
 	}
 
