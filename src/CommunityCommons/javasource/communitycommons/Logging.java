@@ -45,16 +45,18 @@ public class Logging
 		if (!timers.containsKey(timerName)) {
 			throw new IllegalArgumentException(String.format("Timer with key %s not found", timerName));
 		}
-		String time = String.format("%d", cur - timers.get(timerName));
+		Long timeTaken = cur - timers.get(timerName);
+		String time = String.format("%d", timeTaken);
 		log(LogNodes.CommunityCommons.name(), loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
-		return timers.get(timerName);
+//		return timers.get(timerName);
+		return timeTaken;
 	}
 
 	public static void measureStart(String timerName)
 	{
 		timers.put(timerName, new Date().getTime());
 	}
-	
+
 	public static ILogNode createLogNode(String logNode) {
 		return Core.getLogger(logNode);
 	}
