@@ -232,7 +232,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 
-*GenerateHMAC_SHA256_hash - Generates a base64 encoded asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
+*GenerateHMAC_SHA256_hash - Generates a base64 encoded asymmetric hash using the HMAC_SHA256 hash algorithm.
 
 *GenerateHMAC_SHA256 - Generates a hexadecimal encoded asymmetric hash using the HMAC_SHA256 hash algorithm.
 
