@@ -564,6 +564,18 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static boolean test_TimerEnd(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_TimerEnd", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static boolean test_URLToDocument_getFileSize(IContext context, myfirstmodule.proxies.URLToDocument _inputURLToDocument)
 	{
 		try

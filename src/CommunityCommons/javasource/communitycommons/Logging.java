@@ -48,7 +48,6 @@ public class Logging
 		Long timeTaken = cur - timers.get(timerName);
 		String time = String.format("%d", timeTaken);
 		log(LogNodes.CommunityCommons.name(), loglevel, "Timer " + timerName + " finished in " + time + " ms. " + message, null);
-//		return timers.get(timerName);
 		return timeTaken;
 	}
 

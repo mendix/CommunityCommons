@@ -371,34 +371,29 @@ public class StringUtils
 		return new String(c.doFinal(encryptedData));
 	}
 
-	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt)
+	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt) throws UnsupportedEncodingException, IllegalStateException, InvalidKeyException, NoSuchAlgorithmException
 	{
-		try {
-			SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-			Mac mac = Mac.getInstance("HmacSHA256");
-			mac.init(secretKey);
-			mac.update(valueToEncrypt.getBytes("UTF-8"));
-			byte[] hmacData = mac.doFinal();
+		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+		Mac mac = Mac.getInstance("HmacSHA256");
+		mac.init(secretKey);
+		mac.update(valueToEncrypt.getBytes("UTF-8"));
+		byte[] hmacData = mac.doFinal();
 			
-			return hmacData;
-		}
-		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
+		return hmacData;
 	}
 	
 	public static String generateHmacSha256(String key, String valueToEncrypt)
 	{
 		try {
-            byte[] hash = generateHmacSha256Bytes(key, valueToEncrypt);
-    		StringBuffer result = new StringBuffer();
-    		for (byte b : hash) {
-    			result.append(String.format("%02x", b));
-    		}
-    		return result.toString();
+			byte[] hash = generateHmacSha256Bytes(key, valueToEncrypt);
+			StringBuilder result = new StringBuilder();
+			for (byte b : hash) {
+				result.append(String.format("%02x", b));
+			}
+			return result.toString();
 		}
-		catch (RuntimeException e) {
-			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
+		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
+			throw new RuntimeException("CommunityCommons::generateHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}
 
@@ -407,8 +402,8 @@ public class StringUtils
 		try {
             return Base64.getEncoder().encodeToString(generateHmacSha256Bytes(key, valueToEncrypt));
 		}
-		catch (RuntimeException e) {
-			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
+		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
+			throw new RuntimeException("CommunityCommons::generateHmacSha256Hash::Unable to encode: " + e.getMessage(), e);
 		}
 	}
 	
