@@ -18,8 +18,8 @@ apply plugin: 'org.owasp.dependencycheck'
 
 project.ext {
 
-    CC_VERSION = '8.0.1'
-    MXBUILD_VERSION = '7.23.4.51030'
+    CC_VERSION = '8.1.0'
+    MXBUILD_VERSION = '7.23.6.53654'
 }
 
 def runtimeLibs = "$buildDir/runtime/bundles"
@@ -43,13 +43,14 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.12' // For the Java test classes
     testCompile fileTree(dir: "$runtimeLibs")
     compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20181114.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compileOnly fileTree(dir: "$runtimeLibs")
+    compileOnly group: 'junit', name: 'junit', version: '4.12' // For the UnitTesting module classes
 
     tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
 }
@@ -94,8 +95,12 @@ task untarMxbuild( type: Copy ) {
         from tarTree(resources.gzip(it))
         into buildDir
         include('**/runtime/bundles/com.mendix.public-api.jar')
-	include('**/runtime/bundles/com.mendix.logging-api.jar')
-//	include('**/runtime/bundles/biz.aQute.bnd.bndlib.jar')
+        include('**/runtime/bundles/com.mendix.logging-api.jar')
+        include('**/runtime/bundles/com.mendix.m2ee-api.jar')
+        include('**/runtime/bundles/com.mendix.json.jar')
+        include('**/runtime/bundles/javax.servlet-api.servlet.jar')
+        include('**/runtime/bundles/org.apache.httpcomponents.httpclient.4.5.5.jar')
+        include('**/runtime/bundles/org.apache.httpcomponents.httpcore.4.4.9.jar')
         includeEmptyDirs = false
     }
 }

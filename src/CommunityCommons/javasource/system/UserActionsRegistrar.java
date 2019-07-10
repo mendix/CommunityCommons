@@ -39,6 +39,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowInBatches.class);
     registrator.registerUserAction(communitycommons.actions.FileDocumentFromFile.class);
     registrator.registerUserAction(communitycommons.actions.FileFromFileDocument.class);
+    registrator.registerUserAction(communitycommons.actions.GenerateHMAC_SHA256.class);
     registrator.registerUserAction(communitycommons.actions.GenerateHMAC_SHA256_hash.class);
     registrator.registerUserAction(communitycommons.actions.GetApplicationUrl.class);
     registrator.registerUserAction(communitycommons.actions.GetCFInstanceIndex.class);

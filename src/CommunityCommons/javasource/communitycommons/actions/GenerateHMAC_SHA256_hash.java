@@ -14,7 +14,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Generates and asymmetric hash using the HMAC_SHA256 hash algorithm
+ * Generates an asymmetric hash using the HMAC_SHA256 hash algorithm
  */
 public class GenerateHMAC_SHA256_hash extends CustomJavaAction<java.lang.String>
 {
