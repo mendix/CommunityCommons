@@ -26,6 +26,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.encryptMemberIfChanged.class);
     registrator.registerUserAction(communitycommons.actions.EncryptString.class);
     registrator.registerUserAction(communitycommons.actions.EndTransaction.class);
+    registrator.registerUserAction(communitycommons.actions.EnumerationFromString.class);
     registrator.registerUserAction(communitycommons.actions.EscapeHTML.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_1.class);

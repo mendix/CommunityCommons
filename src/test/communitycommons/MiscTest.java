@@ -56,14 +56,14 @@ public class MiscTest {
 	public void testEnumFromString_WithNonExistingValue() {
 		System.out.println("enumFromString_WithNonExistingValue");
 		Optional<SanitizerPolicy> result = Misc.enumFromString(SanitizerPolicy.class, "NOT_A_POLICY");
-		Assert.assertTrue(result.isEmpty());
+		Assert.assertFalse(result.isPresent());
 	}
 
 	@Test
 	public void testEnumFromString_WithNull() {
 		System.out.println("enumFromString_WithNull");
 		Optional<SanitizerPolicy> result = Misc.enumFromString(SanitizerPolicy.class, null);
-		Assert.assertTrue(result.isEmpty());
+		Assert.assertFalse(result.isPresent());
 	}
 
 }
