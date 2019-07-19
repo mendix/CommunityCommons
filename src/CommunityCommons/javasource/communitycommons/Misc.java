@@ -43,6 +43,16 @@ import system.proxies.Language;
 public class Misc {
 
 	private static final String LOGNODE = LogNodes.CommunityCommons.name();
+	private static boolean UNDER_TEST = false;
+
+	static {
+		try {
+			// if this succeeds, we have a runtime
+			Logging.createLogNode(LOGNODE);
+		} catch (NullPointerException npe) {
+			UNDER_TEST = true;
+		}
+	}
 
 	public abstract static class IterateCallback<T1, T2> {
 
@@ -98,15 +108,13 @@ public class Misc {
 	 */
 	public static <E extends Enum<E>> Optional<E> enumFromString(final Class<E> enumClass, final String value) {
 		try {
-			Optional<String> optionalValue = Optional.ofNullable(value);
-
-			if (optionalValue.isPresent()) {
-				return Optional.of(E.valueOf(enumClass, optionalValue.get()));
+			if (value != null) {
+				return Optional.of(E.valueOf(enumClass, value));
 			}
-
 		} catch (IllegalArgumentException iae) {
-			Logging.trace(LOGNODE, String.format("No enumeration with value %s found", value));
-			// No such enumeration value exists
+			if (!UNDER_TEST) {
+				Logging.warn(LOGNODE, String.format("No enumeration with value %s found", value));
+			}
 		}
 		return Optional.empty();
 	}
