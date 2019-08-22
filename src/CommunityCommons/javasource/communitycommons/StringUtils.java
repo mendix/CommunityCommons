@@ -436,6 +436,10 @@ public class StringUtils
 		return org.apache.commons.lang3.StringUtils.substringAfterLast(str, separator);
 	}
 
+	public static String removeEnd(String str, String toRemove) {
+		return org.apache.commons.lang3.StringUtils.removeEnd(str, toRemove);
+	}
+	
 	public static String sanitizeHTML(String html, List<SanitizerPolicy> policyParams) {
 		PolicyFactory policyFactory = null;
 

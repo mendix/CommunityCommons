@@ -76,6 +76,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.refreshClassByObject.class);
     registrator.registerUserAction(communitycommons.actions.RegexQuote.class);
     registrator.registerUserAction(communitycommons.actions.RegexReplaceAll.class);
+    registrator.registerUserAction(communitycommons.actions.RemoveEnd.class);
     registrator.registerUserAction(communitycommons.actions.retrieveURL.class);
     registrator.registerUserAction(communitycommons.actions.RunMicroflowAsyncInQueue.class);
     registrator.registerUserAction(communitycommons.actions.StartTransaction.class);

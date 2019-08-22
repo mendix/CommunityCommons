@@ -37,7 +37,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import static org.apache.commons.lang3.StringUtils.removeEnd;
 import system.proxies.FileDocument;
 import system.proxies.Language;
 
@@ -137,8 +136,8 @@ public class Misc {
 	}
 
 	public static String getApplicationURL() {
-		final String applicationURL = Core.getConfiguration().getApplicationRootUrl();
-		return removeEnd(applicationURL, "/");
+		final String applicationURL = UNDER_TEST ? "http://localhost:8080/" : Core.getConfiguration().getApplicationRootUrl();
+		return StringUtils.removeEnd(applicationURL, "/");
 	}
 
 	public static String getRuntimeVersion() {

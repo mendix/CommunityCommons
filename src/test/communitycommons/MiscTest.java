@@ -66,4 +66,10 @@ public class MiscTest {
 		Assert.assertFalse(result.isPresent());
 	}
 
+	@Test
+	public void getApplicationURL() {
+		System.out.println("getApplicationURL");
+		String result = Misc.getApplicationURL();
+		Assert.assertEquals("http://localhost:8080", result); // No trailing slash!
+	}
 }
