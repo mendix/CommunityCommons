@@ -129,7 +129,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *GetCFInstanceIndex* - Returns the Cloud Foundry Instance Index that is set during deployment of the application in a Cloud native environment. Returns 0 for the leader instance, 1 or higher for slave instances or -1 when the environment variable could not be read (when running locally or on premises).
 
-*GetApplicationUrl* - Returns the runtime URL of this application.
+*GetApplicationUrl* - Returns the runtime URL of this application (without trailing slash).
 
 *GetRuntimeVersion* - Returns the runtime version of this application.
 
@@ -209,6 +209,8 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 *RegexReplaceAll* - DEPRECATED. Performs a regular expression replace. Identical to the microflow expression function 'replaceAll'.
 
 *RegexQuote* - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example).
+
+*RemoveEnd* - Removes a string from the end of another string, if present
 
 *StringLeftPad* - Pads a string on the left to a certain length.
 
