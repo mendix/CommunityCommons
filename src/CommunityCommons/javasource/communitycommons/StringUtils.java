@@ -371,22 +371,42 @@ public class StringUtils
 		return new String(c.doFinal(encryptedData));
 	}
 
-	public static String generateHmacSha256Hash(String key, String valueToEncrypt)
+	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt) throws UnsupportedEncodingException, IllegalStateException, InvalidKeyException, NoSuchAlgorithmException
+	{
+		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+		Mac mac = Mac.getInstance("HmacSHA256");
+		mac.init(secretKey);
+		mac.update(valueToEncrypt.getBytes("UTF-8"));
+		byte[] hmacData = mac.doFinal();
+			
+		return hmacData;
+	}
+	
+	public static String generateHmacSha256(String key, String valueToEncrypt)
 	{
 		try {
-			SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-			Mac mac = Mac.getInstance("HmacSHA256");
-			mac.init(secretKey);
-			mac.update(valueToEncrypt.getBytes("UTF-8"));
-			byte[] hmacData = mac.doFinal();
-
-            return Base64.getEncoder().encodeToString(hmacData);
+			byte[] hash = generateHmacSha256Bytes(key, valueToEncrypt);
+			StringBuilder result = new StringBuilder();
+			for (byte b : hash) {
+				result.append(String.format("%02x", b));
+			}
+			return result.toString();
 		}
 		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
-			throw new RuntimeException("CommunityCommons::EncodeHmacSha256::Unable to encode: " + e.getMessage(), e);
+			throw new RuntimeException("CommunityCommons::generateHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}
 
+	public static String generateHmacSha256Hash(String key, String valueToEncrypt)
+	{
+		try {
+            return Base64.getEncoder().encodeToString(generateHmacSha256Bytes(key, valueToEncrypt));
+		}
+		catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
+			throw new RuntimeException("CommunityCommons::generateHmacSha256Hash::Unable to encode: " + e.getMessage(), e);
+		}
+	}
+	
 	public static String escapeHTML(String input) {
 		return input.replace("&", "&amp;")
 					.replace("<", "&lt;")
@@ -416,6 +436,10 @@ public class StringUtils
 		return org.apache.commons.lang3.StringUtils.substringAfterLast(str, separator);
 	}
 
+	public static String removeEnd(String str, String toRemove) {
+		return org.apache.commons.lang3.StringUtils.removeEnd(str, toRemove);
+	}
+	
 	public static String sanitizeHTML(String html, List<SanitizerPolicy> policyParams) {
 		PolicyFactory policyFactory = null;
 

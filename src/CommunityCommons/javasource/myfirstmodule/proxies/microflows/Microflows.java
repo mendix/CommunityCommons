@@ -467,6 +467,30 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static boolean test_generateHmacSha256(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_generateHmacSha256", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_generateHmacSha256_hash(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_generateHmacSha256_hash", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static boolean test_InvalidURL(IContext context)
 	{
 		try
@@ -534,6 +558,18 @@ public class Microflows
 		{
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_StringToPDF_WithEncoding", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static boolean test_TimerEnd(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			return (java.lang.Boolean)Core.execute(context, "MyFirstModule.Test_TimerEnd", params);
 		}
 		catch (CoreException e)
 		{

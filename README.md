@@ -116,7 +116,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *TimeMeasureStart* - Start timing something, and print the result to the log.
 
-*TimeMeasureEnd* - End timing something, and print the result to the log.
+*TimeMeasureEnd* - End timing something, print the result to the log, and return the time taken in milliseconds.
 
 
 ### Misc
@@ -129,7 +129,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *GetCFInstanceIndex* - Returns the Cloud Foundry Instance Index that is set during deployment of the application in a Cloud native environment. Returns 0 for the leader instance, 1 or higher for slave instances or -1 when the environment variable could not be read (when running locally or on premises).
 
-*GetApplicationUrl* - Returns the runtime URL of this application.
+*GetApplicationUrl* - Returns the runtime URL of this application (without trailing slash).
 
 *GetRuntimeVersion* - Returns the runtime version of this application.
 
@@ -208,7 +208,9 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *RegexReplaceAll* - DEPRECATED. Performs a regular expression replace. Identical to the microflow expression function 'replaceAll'.
 
-*RegexQuote* - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example). 
+*RegexQuote* - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example).
+
+*RemoveEnd* - Removes a string from the end of another string, if present
 
 *StringLeftPad* - Pads a string on the left to a certain length.
 
@@ -231,7 +233,10 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 *EncryptString* - Decrypts an AES encrypted string. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 
 *DecryptString* - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
-GenerateHMAC_SHA256_hash - Generates and asymmetric hash using the HMAC_SHA256 hash algorithm (New in 2.4)
+
+*GenerateHMAC_SHA256_hash - Generates a base64 encoded asymmetric hash using the HMAC_SHA256 hash algorithm.
+
+*GenerateHMAC_SHA256 - Generates a hexadecimal encoded asymmetric hash using the HMAC_SHA256 hash algorithm.
 
 *SubstringAfter* - Returns the substring of a string after the first occurence of a given separator.
 

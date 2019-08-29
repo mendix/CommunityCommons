@@ -9,19 +9,19 @@
 
 package communitycommons.actions;
 
-import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import communitycommons.StringUtils;
 
 /**
- * Generates an asymmetric hash using the HMAC_SHA256 hash algorithm
+ * Generates and asymmetric hexadecimal hash using the HMAC_SHA256 hash algorithm
  */
-public class GenerateHMAC_SHA256_hash extends CustomJavaAction<java.lang.String>
+public class GenerateHMAC_SHA256 extends CustomJavaAction<java.lang.String>
 {
 	private java.lang.String key;
 	private java.lang.String valueToEncrypt;
 
-	public GenerateHMAC_SHA256_hash(IContext context, java.lang.String key, java.lang.String valueToEncrypt)
+	public GenerateHMAC_SHA256(IContext context, java.lang.String key, java.lang.String valueToEncrypt)
 	{
 		super(context);
 		this.key = key;
@@ -32,7 +32,7 @@ public class GenerateHMAC_SHA256_hash extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return StringUtils.generateHmacSha256Hash(key, valueToEncrypt);
+		return StringUtils.generateHmacSha256(key, valueToEncrypt);
 		// END USER CODE
 	}
 
@@ -42,7 +42,7 @@ public class GenerateHMAC_SHA256_hash extends CustomJavaAction<java.lang.String>
 	@java.lang.Override
 	public java.lang.String toString()
 	{
-		return "GenerateHMAC_SHA256_hash";
+		return "GenerateHMAC_SHA256";
 	}
 
 	// BEGIN EXTRA CODE
