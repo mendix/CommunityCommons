@@ -26,7 +26,7 @@ def runtimeLibs = "$buildDir/runtime/bundles"
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 def homePath = System.properties['user.home']
 def mxUtilPath = "$homePath/Mendix/mxbuild/${project.MXBUILD_VERSION}/modeler"
-def monoPath = "C:\\Program Files\\Mono\\bin"
+def monoPath = "/usr/bin"
 
 configurations {
     tar
@@ -90,7 +90,7 @@ task extractModule( type: Exec ) {
 		executable "$mxUtilPath/mxutil.exe"
 		args "create-module-package", "--filter-required-libs", "$projectDir/src/CommunityCommons/CommunityCommons.mpr", "CommunityCommons"
 	} else {
-		executable "$monoPath/mono.exe"
+		executable "$monoPath/mono"
 		args "$mxUtilPath/mxutil.exe", "create-module-package", "--filter-required-libs", "$projectDir/src/CommunityCommons/CommunityCommons.mpr", "CommunityCommons"
 	}
 	
