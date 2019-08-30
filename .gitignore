@@ -40,4 +40,5 @@ package.xml
 *.bak
 *.orig
 GPUCache
+*.mpk
 

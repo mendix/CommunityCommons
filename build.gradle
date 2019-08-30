@@ -24,6 +24,9 @@ project.ext {
 
 def runtimeLibs = "$buildDir/runtime/bundles"
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
+def homePath = System.properties['user.home']
+def mxUtilPath = "$homePath/Mendix/mxbuild/${project.MXBUILD_VERSION}/modeler"
+def monoPath = "C:\\Program Files\\Mono\\bin"
 
 configurations {
     tar
@@ -79,6 +82,18 @@ sourceSets {
             srcDirs = ["src/test"]
         }
     }
+}
+
+task extractModule( type: Exec ) {
+	workingDir mxUtilPath
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		executable "$mxUtilPath/mxutil.exe"
+		args "create-module-package", "--filter-required-libs", "$projectDir/src/CommunityCommons/CommunityCommons.mpr", "CommunityCommons"
+	} else {
+		executable "$monoPath/mono.exe"
+		args "$mxUtilPath/mxutil.exe", "create-module-package", "--filter-required-libs", "$projectDir/src/CommunityCommons/CommunityCommons.mpr", "CommunityCommons"
+	}
+	
 }
 
 task copyToUserlib( type: Copy ) {
