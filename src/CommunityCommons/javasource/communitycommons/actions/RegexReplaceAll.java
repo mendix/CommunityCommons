@@ -14,9 +14,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Deprecated.
+ * Performs a regular expression. Similar to the replaceAll microflow function, but supports more advanced usages such as capture variables.
  * 
- * Performs a regular expression. Identical to the microflow expression funciton 'replaceAll'.
  * For the regexp specification see:
  * https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
  * 

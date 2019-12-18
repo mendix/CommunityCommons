@@ -59,8 +59,10 @@ public class StringUtils {
 		.put(TABLES.name(), Sanitizers.TABLES)
 		.build();
 
-	private static class RandomHolder {
+	private static final class RandomHolder {
 
+		// Initialization-on-demand holder idiom in order to prevent potential exceptions
+		// when using StringUtils functionality which doesn't need a Random at all.
 		static final Random RND;
 
 		static {
@@ -99,9 +101,14 @@ public class StringUtils {
 	}
 
 	/**
-	 * @deprecated Use the replaceAll function in a microflow expression instead.
+	 * The default replaceAll microflow function doesn't support capture variables such as $1, $2
+	 * etc. so for that reason we do not deprecate this method.
+	 *
+	 * @param haystack The string to replace patterns in
+	 * @param needleRegex The regular expression pattern
+	 * @param replacement The string that should come in place of the pattern matches.
+	 * @return
 	 */
-	@Deprecated
 	public static String regexReplaceAll(String haystack, String needleRegex,
 		String replacement) {
 		Pattern pattern = Pattern.compile(needleRegex);
