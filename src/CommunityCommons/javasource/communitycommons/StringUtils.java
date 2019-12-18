@@ -23,17 +23,17 @@ import java.security.DigestException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.text.Normalizer;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.spec.IvParameterSpec;
@@ -43,6 +43,7 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
@@ -59,24 +60,6 @@ public class StringUtils {
 		.put(TABLES.name(), Sanitizers.TABLES)
 		.build();
 
-	private static final class RandomHolder {
-
-		// Initialization-on-demand holder idiom in order to prevent potential exceptions
-		// when using StringUtils functionality which doesn't need a Random at all.
-		static final Random RND;
-
-		static {
-			try {
-				RND = SecureRandom.getInstanceStrong();
-			} catch (NoSuchAlgorithmException ex) {
-				throw new MendixRuntimeException("Could not initialize SecureRandom", ex);
-			}
-		}
-	}
-
-	private static Random getRandom() {
-		return RandomHolder.RND;
-	}
 	public static final String HASH_ALGORITHM = "SHA-256";
 
 	public static String hash(String value, int length) throws NoSuchAlgorithmException, DigestException {
@@ -107,7 +90,7 @@ public class StringUtils {
 	 * @param haystack The string to replace patterns in
 	 * @param needleRegex The regular expression pattern
 	 * @param replacement The string that should come in place of the pattern matches.
-	 * @return
+	 * @return The resulting string, where all matches have been replaced by the replacement.
 	 */
 	public static String regexReplaceAll(String haystack, String needleRegex,
 		String replacement) {
@@ -299,14 +282,9 @@ public class StringUtils {
 		return result.toString();
 	}
 
-	private static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	private static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
-	private static final String NUM = "0123456789";
-	private static final String SPL_CHARS = "!@#$%^&*_=+-/";
-
 	/**
-	 * Returns a random strong password containing at least one number, lowercase character,
-	 * uppercase character and strange character
+	 * Returns a random strong password containing a specified minimum number of digits, uppercase
+	 * and special characters.
 	 *
 	 * @param minLen Minimum length
 	 * @param maxLen Maximum length
@@ -315,41 +293,35 @@ public class StringUtils {
 	 * @param noOfSplChars Number of special characters
 	 * @return
 	 */
-	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha,
-		int noOfDigits, int noOfSplChars) {
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfDigits, int noOfSplChars) {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
 		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
 			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
 		}
-		int len = getRandom().nextInt(maxLen - minLen + 1) + minLen;
-		char[] pswd = new char[len];
-		int index = 0;
-		for (int i = 0; i < noOfCAPSAlpha; i++) {
-			index = getNextIndex(getRandom(), len, pswd);
-			pswd[index] = ALPHA_CAPS.charAt(getRandom().nextInt(ALPHA_CAPS.length()));
-		}
-		for (int i = 0; i < noOfDigits; i++) {
-			index = getNextIndex(getRandom(), len, pswd);
-			pswd[index] = NUM.charAt(getRandom().nextInt(NUM.length()));
-		}
-		for (int i = 0; i < noOfSplChars; i++) {
-			index = getNextIndex(getRandom(), len, pswd);
-			pswd[index] = SPL_CHARS.charAt(getRandom().nextInt(SPL_CHARS.length()));
-		}
-		for (int i = 0; i < len; i++) {
-			if (pswd[i] == 0) {
-				pswd[i] = ALPHA.charAt(getRandom().nextInt(ALPHA.length()));
-			}
-		}
-		return String.valueOf(pswd);
+		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
 	}
 
-	private static int getNextIndex(Random rnd, int len, char[] pswd) {
-		int index = rnd.nextInt(len);
-		while (pswd[index = rnd.nextInt(len)] != 0);
-		return index;
+	// https://www.baeldung.com/java-generate-secure-password (under MIT license)
+	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+		String upperCaseLetters = RandomStringUtils.random(noOfCapsAlpha, 65, 90, true, true);
+		String numbers = RandomStringUtils.randomNumeric(noOfDigits);
+		String specialChar = RandomStringUtils.random(noOfSplChars, 33, 47, false, false);
+		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars;
+		String totalChars = RandomStringUtils.randomAlphanumeric(minLen - fixedNumber, maxLen - fixedNumber);
+		String combinedChars = upperCaseLetters
+			.concat(numbers)
+			.concat(specialChar)
+			.concat(totalChars);
+		List<Character> pwdChars = combinedChars.chars()
+			.mapToObj(c -> (char) c)
+			.collect(Collectors.toList());
+		Collections.shuffle(pwdChars);
+		String password = pwdChars.stream()
+			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+			.toString();
+		return password;
 	}
 
 	public static String encryptString(String key, String valueToEncrypt) throws Exception {
