@@ -9,12 +9,12 @@
 
 package communitycommons.actions;
 
-import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import communitycommons.StringUtils;
 
 /**
- * Returns a random strong password containing a specified number of digits, uppercase and special characters.
+ * Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
  * 
  * Note:Minimumlength should be equal or larger than NrOfCapitalizedCharacters, NrOfDigits and NrOfSpecialCharacters
  */
@@ -40,7 +40,7 @@ public class RandomStrongPassword extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return StringUtils.randomStrongPassword(safeLongToInt(this.MinLength), safeLongToInt(this.MaxLength),safeLongToInt(this.NrOfCapitalizedCharacters), safeLongToInt(NrOfDigits), safeLongToInt(NrOfSpecialCharacters));
+		return StringUtils.randomStrongPassword(safeLongToInt(this.MinLength), safeLongToInt(this.MaxLength), safeLongToInt(this.NrOfCapitalizedCharacters), safeLongToInt(NrOfDigits), safeLongToInt(NrOfSpecialCharacters));
 		// END USER CODE
 	}
 
@@ -55,11 +55,10 @@ public class RandomStrongPassword extends CustomJavaAction<java.lang.String>
 
 	// BEGIN EXTRA CODE
 	public static int safeLongToInt(long l) {
-	    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-	        throw new IllegalArgumentException
-	            (l + " cannot be cast to int without changing its value.");
-	    }
-	    return (int) l;
+		if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+		}
+		return (int) l;
 	}
 	// END EXTRA CODE
 }
