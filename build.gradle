@@ -18,7 +18,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 project.ext {
 
-    CC_VERSION = '8.1.0'
+    CC_VERSION = '8.2.0'
     MXBUILD_VERSION = '7.23.6.53654'
 }
 
