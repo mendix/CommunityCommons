@@ -147,10 +147,11 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *RunMicroflowAsyncInQueue* - Runs a microflow asynchronous, that is, this action immediately returns but schedules the microflow to be run in the near future. The queue guarantees a first come first serve order of the microflows, and only one action is served at a time. The microflow is run with system rights in its own transaction, and is very useful to run heavy microflows on the background.
 
-*executeMicroflowInBackground* - Similar to RunMicroflowAsyncInQueue, but accepts one argument as parameter. (new in 2.2)
+*executeMicroflowInBackground* - Similar to RunMicroflowAsyncInQueue, but accepts one argument as parameter. 
 
-*executeMicroflowInBatches (Recommended!)* - Performs a batch operation on a large dataset, by invoking the microflow on small subsets of the data, each with its own database transaction.  (new in 2.2)
-*recommitInBatches* - Recommits (with events) all items returned by the xpath query. Useful in migration scenerios (new in 2.4)
+*executeMicroflowInBatches (Recommended!)* - Performs a batch operation on a large dataset, by invoking the microflow on small subsets of the data, each with its own database transaction. 
+
+*recommitInBatches* - Recommits (with events) all items returned by the xpath query. Useful in migration scenerios.
 
 ### ORM
 
@@ -172,8 +173,9 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *refreshClassByObject* - Refreshes a certain domain object type in the client. Useful to enforce a datagrid to refresh for example.
 
-*getLastChangedByUser* -  Returns the user that last changed an object as System.User (new in 2.2).
-*getCreatedByUser* - Returns the user that created an object (new in 2.2).
+*getLastChangedByUser* -  Returns the user that last changed an object as System.User.
+
+*getCreatedByUser* - Returns the user that created an object.
 
 *encryptMemberIfChanged* - Use this function to automatically encrypt attributes of an object during (for example) before commit. (new in 2.4)
 
@@ -206,7 +208,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *RandomHash* - Generates a random hash, perfectly to use as random, unique identifier.
 
-*RegexReplaceAll* - DEPRECATED. Performs a regular expression replace. Identical to the microflow expression function 'replaceAll'.
+*RegexReplaceAll* - Performs a regular expression replace. Works similarly to the microflow expression function 'replaceAll' but supports more constructs.
 
 *RegexQuote* - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example).
 
@@ -228,7 +230,7 @@ For security reasons, Guava was upgraded to version 27 in Community Commons v7.4
 
 *XSSSanitize* - Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users.
 
-*RandomStrongPassword* - Returns a random strong password containing at least one number, lowercase character,uppercase character and strange character.
+*RandomStrongPassword* - Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
 
 *EncryptString* - Decrypts an AES encrypted string. The keylength should exactly be 16 characters (128 bit). (New in 2.4)
 

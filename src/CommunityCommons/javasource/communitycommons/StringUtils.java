@@ -303,7 +303,8 @@ public class StringUtils {
 		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
 	}
 
-	// https://www.baeldung.com/java-generate-secure-password (under MIT license)
+	// See https://www.baeldung.com/java-generate-secure-password
+	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
 	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
 		String upperCaseLetters = RandomStringUtils.random(noOfCapsAlpha, 65, 90, true, true);
 		String numbers = RandomStringUtils.randomNumeric(noOfDigits);
