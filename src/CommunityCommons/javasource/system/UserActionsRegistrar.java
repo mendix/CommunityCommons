@@ -28,11 +28,13 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.EndTransaction.class);
     registrator.registerUserAction(communitycommons.actions.EnumerationFromString.class);
     registrator.registerUserAction(communitycommons.actions.EscapeHTML.class);
+    registrator.registerUserAction(communitycommons.actions.executeMicroflowAsSystemUser.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_1.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowAsUser_2.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowInBackground.class);
     registrator.registerUserAction(communitycommons.actions.executeMicroflowInBatches.class);
+    registrator.registerUserAction(communitycommons.actions.executeMicroflowInSeparateTransaction.class);
     registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser.class);
     registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser_1.class);
     registrator.registerUserAction(communitycommons.actions.executeUnverifiedMicroflowAsUser_2.class);
