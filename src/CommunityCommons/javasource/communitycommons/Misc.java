@@ -145,6 +145,10 @@ public class Misc {
 		return runtimeVersion.toString();
 	}
 
+	public static String getModelVersion() {
+		return Core.getModelVersion();
+	}
+
 	public static void throwException(String message) throws UserThrownException {
 		throw new UserThrownException(message);
 	}
