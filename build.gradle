@@ -99,8 +99,6 @@ task untarMxbuild( type: Copy ) {
         include('**/runtime/bundles/com.mendix.m2ee-api.jar')
         include('**/runtime/bundles/com.mendix.json.jar')
         include('**/runtime/bundles/javax.servlet-api.servlet.jar')
-        include('**/runtime/bundles/org.apache.httpcomponents.httpclient.4.5.5.jar')
-        include('**/runtime/bundles/org.apache.httpcomponents.httpcore.4.4.9.jar')
         includeEmptyDirs = false
     }
 }

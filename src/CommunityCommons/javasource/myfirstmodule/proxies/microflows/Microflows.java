@@ -80,6 +80,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static myfirstmodule.proxies.VersionInfo dS_VersionInfo(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "MyFirstModule.DS_VersionInfo", params);
+			return result == null ? null : myfirstmodule.proxies.VersionInfo.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static myfirstmodule.proxies.Container dSO_Container(IContext context)
 	{
 		try
@@ -601,6 +614,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static java.lang.String vA_ModelVersion(IContext context, myfirstmodule.proxies.VersionInfo _versionInfo)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("VersionInfo", _versionInfo == null ? null : _versionInfo.getMendixObject());
+			return (java.lang.String)Core.execute(context, "MyFirstModule.VA_ModelVersion", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static java.lang.Long vA_MonthsBetween(IContext context, myfirstmodule.proxies.TimePeriod _timePeriod)
 	{
 		try
@@ -608,6 +634,19 @@ public class Microflows
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			params.put("TimePeriod", _timePeriod == null ? null : _timePeriod.getMendixObject());
 			return (java.lang.Long)Core.execute(context, "MyFirstModule.VA_MonthsBetween", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static java.lang.String vA_RuntimeVersion(IContext context, myfirstmodule.proxies.VersionInfo _versionInfo)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("VersionInfo", _versionInfo == null ? null : _versionInfo.getMendixObject());
+			return (java.lang.String)Core.execute(context, "MyFirstModule.VA_RuntimeVersion", params);
 		}
 		catch (CoreException e)
 		{

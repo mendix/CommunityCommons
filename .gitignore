@@ -41,3 +41,4 @@ package.xml
 *.orig
 GPUCache
 
+/src/CommunityCommons/*.mpk
