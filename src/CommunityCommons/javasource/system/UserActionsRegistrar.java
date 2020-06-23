@@ -61,6 +61,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.HTMLToPlainText.class);
     registrator.registerUserAction(communitycommons.actions.IsInDevelopment.class);
     registrator.registerUserAction(communitycommons.actions.IsStringSimplified.class);
+    registrator.registerUserAction(communitycommons.actions.ListTop.class);
     registrator.registerUserAction(communitycommons.actions.LongToDateTime.class);
     registrator.registerUserAction(communitycommons.actions.memberHasChanged.class);
     registrator.registerUserAction(communitycommons.actions.MergeMultiplePdfs.class);

@@ -6,6 +6,7 @@
 package communitycommons;
 
 import communitycommons.proxies.SanitizerPolicy;
+import java.util.List;
 import java.util.Optional;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -71,5 +72,13 @@ public class MiscTest {
 		System.out.println("getApplicationURL");
 		String result = Misc.getApplicationURL();
 		Assert.assertEquals("http://localhost:8080", result); // No trailing slash!
+	}
+
+	@Test
+	public void testListTop() {
+		System.out.println("ListTop");
+		List<Integer> objects = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+		List<Integer> result = Misc.listTop(objects, 3);
+		Assert.assertEquals(result, List.of(1, 2, 3));
 	}
 }
