@@ -17,7 +17,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.thirdparty.org.json.JSONArray;
 import com.mendix.thirdparty.org.json.JSONObject;
 
-import objecthandling.XPath;
+import communitycommons.XPath;
 import unittesting.proxies.TestSuite;
 import unittesting.proxies.UnitTest;
 import unittesting.proxies.UnitTestResult;

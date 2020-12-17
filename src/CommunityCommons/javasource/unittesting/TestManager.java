@@ -32,7 +32,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IDataType;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-import objecthandling.XPath;
+import communitycommons.XPath;
 import unittesting.proxies.TestSuite;
 import unittesting.proxies.UnitTest;
 import unittesting.proxies.UnitTestResult;
