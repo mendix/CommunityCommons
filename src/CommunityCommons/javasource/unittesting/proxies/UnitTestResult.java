@@ -6,9 +6,9 @@ package unittesting.proxies;
 
 public enum UnitTestResult
 {
-	_1_Running(new java.lang.String[][] { new java.lang.String[] { "en_US", "Running" } }),
-	_2_Failed(new java.lang.String[][] { new java.lang.String[] { "en_US", "Failed" } }),
-	_3_Success(new java.lang.String[][] { new java.lang.String[] { "en_US", "Success" } });
+	_1_Running(new java.lang.String[][] { new java.lang.String[] { "en_US", "Running" }, new java.lang.String[] { "nl_NL", "Uitvoeren" } }),
+	_2_Failed(new java.lang.String[][] { new java.lang.String[] { "en_US", "Failed" }, new java.lang.String[] { "nl_NL", "mislukt" } }),
+	_3_Success(new java.lang.String[][] { new java.lang.String[] { "en_US", "Success" }, new java.lang.String[] { "nl_NL", "Succes" } });
 
 	private java.util.Map<java.lang.String, java.lang.String> captions;
 
