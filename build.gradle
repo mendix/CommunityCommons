@@ -47,19 +47,16 @@ dependencies {
     testCompile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
     testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     testCompile fileTree(dir: "$runtimeLibs")
+
+    compileOnly group: 'junit', name: 'junit', version: '4.12' // For the UnitTesting module classes
+    compileOnly group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
+    compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    compileOnly fileTree(dir: "$runtimeLibs")
+
     compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20181114.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-    compileOnly fileTree(dir: "$runtimeLibs")
-    compileOnly group: 'junit', name: 'junit', version: '4.12' // For the UnitTesting module classes
-    compileOnly group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
-    compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-
-    // remove the following later!
-    compile group: 'junit', name: 'junit', version: '4.12' // For the UnitTesting module classes
-    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
     tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
 }
