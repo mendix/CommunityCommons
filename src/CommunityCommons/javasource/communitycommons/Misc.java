@@ -362,7 +362,7 @@ public class Misc {
 
 		IContext c = getContextFor(context, username, sudoContext);
 
-		return Core.execute(c, microflowName, params);
+		return Core.microflowCall(microflowName).withParams(params).execute(c);
 	}
 
 	//MWE: based on: http://download.oracle.com/javase/6/docs/api/java/util/concurrent/Executor.html
