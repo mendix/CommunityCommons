@@ -288,6 +288,7 @@ public class StringUtils {
 	 *
 	 * @param minLen Minimum length
 	 * @param maxLen Maximum length
+	 * @param noOfLowerAlpha Number of lowercase
 	 * @param noOfCAPSAlpha Number of capitals
 	 * @param noOfDigits Number of digits
 	 * @param noOfSplChars Number of special characters
