@@ -22,15 +22,17 @@ public class RandomStrongPassword extends CustomJavaAction<java.lang.String>
 {
 	private java.lang.Long MinLength;
 	private java.lang.Long MaxLength;
+	private java.lang.Long NrOfLowercaseCharacters;
 	private java.lang.Long NrOfCapitalizedCharacters;
 	private java.lang.Long NrOfDigits;
 	private java.lang.Long NrOfSpecialCharacters;
 
-	public RandomStrongPassword(IContext context, java.lang.Long MinLength, java.lang.Long MaxLength, java.lang.Long NrOfCapitalizedCharacters, java.lang.Long NrOfDigits, java.lang.Long NrOfSpecialCharacters)
+	public RandomStrongPassword(IContext context, java.lang.Long MinLength, java.lang.Long MaxLength, java.lang.Long NrOfLowercaseCharacters, java.lang.Long NrOfCapitalizedCharacters, java.lang.Long NrOfDigits, java.lang.Long NrOfSpecialCharacters)
 	{
 		super(context);
 		this.MinLength = MinLength;
 		this.MaxLength = MaxLength;
+		this.NrOfLowercaseCharacters = NrOfLowercaseCharacters;
 		this.NrOfCapitalizedCharacters = NrOfCapitalizedCharacters;
 		this.NrOfDigits = NrOfDigits;
 		this.NrOfSpecialCharacters = NrOfSpecialCharacters;
@@ -40,7 +42,7 @@ public class RandomStrongPassword extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return StringUtils.randomStrongPassword(safeLongToInt(this.MinLength), safeLongToInt(this.MaxLength), safeLongToInt(this.NrOfCapitalizedCharacters), safeLongToInt(NrOfDigits), safeLongToInt(NrOfSpecialCharacters));
+		return StringUtils.randomStrongPassword(safeLongToInt(this.MinLength), safeLongToInt(this.MaxLength), safeLongToInt(this.NrOfLowercaseCharacters), safeLongToInt(this.NrOfCapitalizedCharacters), safeLongToInt(NrOfDigits), safeLongToInt(NrOfSpecialCharacters));
 		// END USER CODE
 	}
 

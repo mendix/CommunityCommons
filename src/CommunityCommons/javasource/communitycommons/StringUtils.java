@@ -293,25 +293,27 @@ public class StringUtils {
 	 * @param noOfSplChars Number of special characters
 	 * @return
 	 */
-	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfDigits, int noOfSplChars) {
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfLowerAlpha, int noOfCAPSAlpha, int noOfDigits, int noOfSplChars) {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
-		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
-			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
+		if ((noOfLowerAlpha + noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
+			throw new IllegalArgumentException("Min. Length should be at least sum of (LOWER, CAPS, DIGITS, SPL CHARS) Length!");
 		}
-		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
+		return generateCommonLangPassword(minLen, maxLen, noOfLowerAlpha, noOfCAPSAlpha, noOfDigits, noOfSplChars);
 	}
 
 	// See https://www.baeldung.com/java-generate-secure-password
 	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
-	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfLowerAlpha, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+		String lowerCaseLetters = RandomStringUtils.random(noOfLowerAlpha, 97, 122, true, true);
 		String upperCaseLetters = RandomStringUtils.random(noOfCapsAlpha, 65, 90, true, true);
 		String numbers = RandomStringUtils.randomNumeric(noOfDigits);
 		String specialChar = RandomStringUtils.random(noOfSplChars, 33, 47, false, false);
-		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars;
+		final int fixedNumber = noOfLowerAlpha + noOfCapsAlpha + noOfDigits + noOfSplChars;
 		String totalChars = RandomStringUtils.randomAlphanumeric(minLen - fixedNumber, maxLen - fixedNumber);
 		String combinedChars = upperCaseLetters
+			.concat(lowerCaseLetters)
 			.concat(numbers)
 			.concat(specialChar)
 			.concat(totalChars);
