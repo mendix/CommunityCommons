@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -143,6 +144,10 @@ public class Misc {
 	public static String getRuntimeVersion() {
 		RuntimeVersion runtimeVersion = RuntimeVersion.getInstance();
 		return runtimeVersion.toString();
+	}
+
+	public static String getModelVersion() {
+		return Core.getModelVersion();
 	}
 
 	public static void throwException(String message) throws UserThrownException {
@@ -357,7 +362,7 @@ public class Misc {
 
 		IContext c = getContextFor(context, username, sudoContext);
 
-		return Core.execute(c, microflowName, params);
+		return Core.microflowCall(microflowName).withParams(params).execute(c);
 	}
 
 	//MWE: based on: http://download.oracle.com/javase/6/docs/api/java/util/concurrent/Executor.html
@@ -711,5 +716,20 @@ public class Misc {
 		}
 
 		return cfInstanceIndex;
+	}
+
+	/**
+	 * Returns the top n items of a List
+	 *
+	 * @param <T> the type of the list elements
+	 * @param objects the list to take the top n items from
+	 * @param top the number of items to take
+	 * @return the sublist of <pre>objects</pre> with max
+	 * <pre>top</pre> elements
+	 */
+	public static <T> List<T> listTop(List<T> objects, int top) {
+		return objects.stream()
+			.limit(top)
+			.collect(Collectors.toList());
 	}
 }
