@@ -102,8 +102,11 @@ public class ORM {
 					List<IMendixIdentifier> res = new ArrayList<IMendixIdentifier>();
 					for (IMendixIdentifier item : rs.getValue(ctx)) {
 						IMendixObject o = Core.retrieveId(ctx, item);
-						IMendixIdentifier refObj = getCloneOfObject(ctx, o, toskip, tokeep, revAssoc, skipEntities, skipModules, mappedObjects);
-						res.add(refObj);
+						// Do not try to clone a non-existing object
+						if (null != o) {
+							IMendixIdentifier refObj = getCloneOfObject(ctx, o, toskip, tokeep, revAssoc, skipEntities, skipModules, mappedObjects);
+							res.add(refObj);
+						}
 					}
 					tar.setValue(ctx, key, res);
 				} else if (m instanceof MendixAutoNumber) //skip autonumbers! Ticket 14893
