@@ -3,73 +3,36 @@ apply plugin: 'java'
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-import org.gradle.api.internal.file.copy.CopySpecInternal
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.owasp:dependency-check-gradle:6.0.3'
-    }
-}
-
-apply plugin: 'org.owasp.dependencycheck'
-
 project.ext {
-
-    CC_VERSION = '8.3.0'
-    MXBUILD_VERSION = '8.12.0.2541'
+    CC_VERSION = '8.4.0'
+    mendixVersion = '8.12.7'
 }
 
-def runtimeLibs = "$buildDir/runtime/bundles"
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
 
-configurations {
-    tar
-}
-
 repositories {
-    mavenCentral()
-    ivy {
-		url 'https://cdn.mendix.com/'
-		layout 'pattern', {
-			artifact '/[organisation]/[module]-[revision].[ext]'
-		}
-		metadataSources {
-			artifact()
-		}
+    maven {
+        url 'https://nexus.rnd.mendix.com/repository/repo1-proxy/'
     }
+    maven {
+        url 'https://nexus.rnd.mendix.com/repository/maven-hosted/'
+    }    
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12' // For the Java test classes
-    testCompile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
-    testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-    testCompile fileTree(dir: "$runtimeLibs")
 
-    compileOnly group: 'junit', name: 'junit', version: '4.12' // For the UnitTesting module classes
-    compileOnly group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
-    compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-    compileOnly fileTree(dir: "$runtimeLibs")
+    testImplementation(
+        [group: 'junit', name: 'junit', version: '4.13.2']
+    )
 
-    compile group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20181114.1'
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-
-    tar "runtime:mxbuild:${project.MXBUILD_VERSION}@tar.gz"
-}
-
-// https://stackoverflow.com/a/48724412/412834
-configurations.each {
-    c -> c.resolutionStrategy.dependencySubstitution {
-        all { DependencySubstitution dependency ->
-            if (dependency.requested.group == 'com.google.guava') {
-                dependency.useTarget 'com.google.guava:guava:27.0-jre'
-            }
-        }
-    }
+    implementation(
+        [group: 'com.mendix', name: 'public-api', version: "$mendixVersion"],
+        [group: 'com.google.guava', name: 'guava', version: '30.0-jre'],
+        [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20200713.1'],
+        [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
+        [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.23'],
+        [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
+    )
 }
 
 sourceSets {
@@ -88,33 +51,16 @@ sourceSets {
 }
 
 task copyToUserlib( type: Copy ) {
+    from configurations.compileClasspath
+    exclude "public-api-${mendixVersion}.jar", "json-${mendixVersion}.jar", "logging-api-${mendixVersion}.jar", "m2ee-api-${mendixVersion}.jar"
     into userLibDir
-    from configurations.runtime
-    eachFile { fileCopyDetails ->
-        def requiredLibFlag = new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib")
-        requiredLibFlag.write ''
-    }
-}
-
-task untarMxbuild( type: Copy ) {
-    configurations.tar.findAll{it.name.endsWith('tar.gz')}.each {
-        from tarTree(resources.gzip(it))
-        into buildDir
-        include('**/runtime/bundles/com.mendix.public-api.jar')
-        include('**/runtime/bundles/com.mendix.logging-api.jar')
-        include('**/runtime/bundles/com.mendix.m2ee-api.jar')
-        include('**/runtime/bundles/com.mendix.json.jar')
-        include('**/runtime/bundles/javax.servlet-api.servlet.jar')
-        includeEmptyDirs = false
-    }
+    eachFile { fileCopyDetails -> new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
 task prepareDeps {
-    dependsOn 'clean', 'copyToUserlib', 'untarMxbuild'
+    dependsOn 'clean', 'copyToUserlib'
 }
 
 clean {
     delete "$projectDir/src/CommunityCommons/userlib"
 }
-
-tasks.untarMxbuild.shouldRunAfter tasks.copyToUserlib
