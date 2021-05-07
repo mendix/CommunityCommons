@@ -22,7 +22,9 @@ repositories {
 dependencies {
 
     testImplementation(
-        [group: 'junit', name: 'junit', version: '4.13.2']
+        [group: 'junit', name: 'junit', version: '4.13.2'],
+        [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
+        [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
     )
 
     implementation(
@@ -45,20 +47,23 @@ sourceSets {
     }
     test {
         java {
-            srcDirs = ["src/test"]
+            srcDirs = ["src/test", "src/CommunityCommons/javasource"]
         }
     }
 }
 
-task copyToUserlib( type: Copy ) {
-    from configurations.compileClasspath
+task copyAllToUserlib( type: Copy ) {
+    from configurations.testCompileClasspath
     exclude "public-api-${mendixVersion}.jar", "json-${mendixVersion}.jar", "logging-api-${mendixVersion}.jar", "m2ee-api-${mendixVersion}.jar"
     into userLibDir
     eachFile { fileCopyDetails -> new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
-task prepareDeps {
-    dependsOn 'clean', 'copyToUserlib'
+task copyRuntimeToUserlib( type: Copy ) {
+    from configurations.compileClasspath
+    exclude "public-api-${mendixVersion}.jar", "json-${mendixVersion}.jar", "logging-api-${mendixVersion}.jar", "m2ee-api-${mendixVersion}.jar"
+    into userLibDir
+    eachFile { fileCopyDetails -> new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
 clean {
