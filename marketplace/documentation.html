@@ -1,0 +1,242 @@
+<div>
+<h1>CommunityCommons</h1>
+
+<p>This module adds a number reusable Java methods to your project, which can be called from Microflows or custom Java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project. The module addes functionality for working with Dates, Batches, Strings, Internet, Files, Configuration etc. See the documentation or screenshot for a complete list of functions.</p>
+
+<h2>Description</h2>
+
+<p>This module adds many reusable java methods to your project, which can be called from microflows or custom java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project.</p>
+
+<p>The module adds functionality for working with Dates, Batches, Strings, Internet, Files, Configuration etc. See the documentation or screenshot for a complete list of functions.</p>
+
+<h2><em>Important when updating</em> ⚠️</h2>
+
+<h3>Deprecated function removal</h3>
+
+<p>The RegexTest function was already deprecated for some time because you can use the isMatch() function in microflow expressions instead. In version 8.0.1, we removed this function.</p>
+
+<h3>Deleting obsolete dependencies first</h3>
+
+<p>It is <em>highly</em> recommended that you remove all jars that have an accompanying .CommunityCommons.RequiredLib file from the userlib folder by hand before importing the CommunityCommons 7.2.0 (or higher) module in the Modeler. Otherwise you may encounter strange compilation or runtime errors.</p>
+
+<h3>Java 8</h3>
+
+<p>This release utilizes some Java 8 native APIs that replace functionality that was previously imported from external libraries. This means that for upgrading, <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" rel="nofollow">Java 8</a> is a minimum requirement! You can change your JDK directory in the Desktop Modeler under Edit &gt; Preferences. For Mendix 8, <a href="https://adoptopenjdk.net/?variant=openjdk11&amp;jvmVariant=hotspot" rel="nofollow">AdoptOpenJDK 11</a> will be supported.</p>
+
+<h3>Breaking change to XSSSanitize</h3>
+
+<p>In order to mitigate some security vulnerabilities in dependent libraries, in version 7.2.0 the XSSSanitize action has been re-implemented using the <a href="https://github.com/OWASP/java-html-sanitizer" rel="nofollow">OWASP Java HTML Sanitizer</a> library. This means that any usage of this action in your app needs to be reconfigured. It now takes six policy parameters, of which at least one must be non-empty. Make sure that the non applicable policy parameters are explicitly filled in with the value empty. Possible policy values are defined in the SanitizerPolicy enumeration. The meaning of the policies are defined in the <a href="https://static.javadoc.io/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1/org/owasp/html/Sanitizers.html" rel="nofollow">javadocs</a>.</p>
+
+<h2>Usage</h2>
+
+<p>All functions in this package can be invoked using a microflow Java action call in a Microflow, our from your own java code by calling</p>
+
+<p>communitycommons..;</p>
+
+<p>for example : commonitycommons.StringUtils.hash("Mendix", 20);</p>
+
+<p>The module contains one constant: CommunityCommons.MergeMultiplePdfs_MaxAtOnce. It is used in the <em>MergeMultiplePdfs</em> Java action to restrict the number of PDFs processed at the same time. Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files increase the number here. Setting the value to &lt;= 0 means unlimited.</p>
+
+<h2>Testing</h2>
+
+<p>The Community Commons container project contains a variety of predesigned unit tests. To be able to use these tests the UnitTesting module should be downloaded from the AppStore. Please refer to the UnitTesting documentation for further instruction regarding the implementation. The UnitTesting has a dependency to the ObjectHandling module, so that module should also be imported to this project if you want to run the tests.</p>
+
+<h2>Contributing</h2>
+
+<p>For more information on contributing to this repository visit <a href="https://docs.mendix.com/howto/collaboration-requirements-management/contribute-to-a-github-repository" rel="nofollow">Contributing to a GitHub repository</a>!</p>
+
+<h3>Gradle</h3>
+
+<p>In version 7.2.0, we introduce a new way of dependency management using a <a href="https://gradle.org/install/" rel="nofollow">Gradle</a> build file. Unfortunately, this doesn't mean that obsoleted jars are automatically deleted from your projects' userlib folder when you import the Community Commons module into your app model.</p>
+
+<p>To download the dependencies and copy them to the userlib/ folder of the Community Commons container project, execute:</p>
+gradle prepareDeps
+
+<p>from the command line. Afterwards, you will be able to export a CommunityCommons.mpk module from the Community Commons main project. Select only the dependencies listed below as dependencies in userlib for the exported module.</p>
+
+<h2>Dependencies</h2>
+
+<p>For security reasons, Guava was upgraded to version 27 in Community Commons v7.4.0. This unfortunately means a number of new required jars in the userlib folder.</p>
+
+<ul><li>animal-sniffer-annotations-1.17.jar</li><li>checker-qual-2.5.2.jar</li><li>commons.io-2.6.jar</li><li>commons.lang3-3.7.jar</li><li>error-prone-annotations-2.2.0.jar</li><li>j2objc-annotations-1.1.jar</li><li>jsr305-3.0.2.jar</li><li>pdfbox-2.0.13.jar</li><li>fontbox-2.0.13.jar</li><li>guava-27.0-jre.jar</li><li>owasp-java-html-sanitizer-20181114.1.jar</li></ul>
+
+<h2>Function list</h2>
+
+<h3>Batches</h3>
+
+<p><em>RecommitInBatches</em> - Given an XPath and a batch size, commit all matching objects in batches of the given size.</p>
+
+<p><em>DeleteAll</em> - Removes ALL instances of a certain domain object type using batches.</p>
+
+<h3>DateTime</h3>
+
+<p><em>DateTimeToLong</em> - Converts a DateTime to a Unix timestamps (Milliseconds since 1-1-1970).</p>
+
+<p><em>LongToDateTime</em> - Converts a Unix timestamp(ms) to a dateTime object.</p>
+
+<p><em>YearsBetween</em> - Calculates the number of years between two dates.</p>
+
+<p><em>MonthsBetween</em> - Calculates the number of months between two dates.</p>
+
+<p><em>GetIntFromDateTime</em> - Extracts a part of a date (year, month or day) to an integer (new in 2.2).</p>
+
+<h3>Files</h3>
+
+<p><em>Base64DecodeToFile</em> - Stores an base 64 encoded string plain in the provided target file document.</p>
+
+<p><em>Base64EncodeFile</em> - Converts an unencode file to a base 64 encoded string.</p>
+
+<p><em>StringToFile</em> - Stores a string into the provides filedocument. Supports multiple encodings since 7.4.1.</p>
+
+<p><em>StringFromFile</em> - Reads the contents form the provided file document and return it as string. Supports multiple encodings since 7.4.1.</p>
+
+<p><em>StoreURLToFileDocument</em> - Retrieve a document from an URL using a HTTP GET request.</p>
+
+<p><em>DuplicateFileDocument</em> - Clones the contents of one file document into another.</p>
+
+<p><em>GetFileSize</em> - Returns the filesize of a file document in bytes.</p>
+
+<p><em>OverlayPdfDocument</em> - Overlay a generated PDF document with another PDF (containing the company stationary for example)</p>
+
+<h3>Logging</h3>
+
+<p><em>CreateLogNode</em> - Initialize a log node without having a log line.</p>
+
+<p><em>TimeMeasureStart</em> - Start timing something, and print the result to the log.</p>
+
+<p><em>TimeMeasureEnd</em> - End timing something, print the result to the log, and return the time taken in milliseconds.</p>
+
+<h3>Misc</h3>
+
+<p><em>AssertTrue</em> - Shorthand for checking something, and throwing an error if that something is not true. Saves creating three microflow items for things that MUST be true.</p>
+
+<p><em>CreateUserIfNotExists</em> - (Microflow) Create a user with predefined password an role. Useful during startup for integration purposes. Changed in 2.4: The user now always gets updated, if even the user already exists.</p>
+
+<p><em>Delay</em> - Causes this request to sleep for a number of milliseconds. Useful to prevent brute force attacks or to simulate latency delays.</p>
+
+<p><em>GetCFInstanceIndex</em> - Returns the Cloud Foundry Instance Index that is set during deployment of the application in a Cloud native environment. Returns 0 for the leader instance, 1 or higher for slave instances or -1 when the environment variable could not be read (when running locally or on premises).</p>
+
+<p><em>GetApplicationUrl</em> - Returns the runtime URL of this application (without trailing slash).</p>
+
+<p><em>GetRuntimeVersion</em> - Returns the runtime version of this application.</p>
+
+<p><em>RetrieveURL</em> - Retrieves data (such as an HTML page) from an URL using the HTTP protocol, and returns it as string.</p>
+
+<p><em>ThrowException</em> - This action always throws an exception (of type communityutils.UserThrownError), which is, in combination with custom error handling, quite useful to end a microflow prematurely or to bail out to the calling action/ microflow.</p>
+
+<p><em>ThrowWebserviceException</em> - Throws an exception. This is very useful if the microflow is called by a webservice. If you throw this kind of exceptions, a fault message will be generated in the output, instead of an '501 Internal server' error. (Fixed/ updated in 2.2)</p>
+
+<p><em>GetDefaultLanguage</em> - Gets the Language object for the default language as defined in the model.</p>
+
+<h3>Execute Microflow</h3>
+
+<p><em>executeMicroflowAsUser</em> - Executes the given microflow as if the $currentuser is the provided user (delegation).</p>
+
+<p><em>RunMicroflowAsyncInQueue</em> - Runs a microflow asynchronous, that is, this action immediately returns but schedules the microflow to be run in the near future. The queue guarantees a first come first serve order of the microflows, and only one action is served at a time. The microflow is run with system rights in its own transaction, and is very useful to run heavy microflows on the background.</p>
+
+<p><em>executeMicroflowInBackground</em> - Similar to RunMicroflowAsyncInQueue, but accepts one argument as parameter.</p>
+
+<p><em>executeMicroflowInBatches (Recommended!)</em> - Performs a batch operation on a large dataset, by invoking the microflow on small subsets of the data, each with its own database transaction.</p>
+
+<p><em>recommitInBatches</em> - Recommits (with events) all items returned by the xpath query. Useful in migration scenerios.</p>
+
+<h3>ORM</h3>
+
+<p><em>CommitWithoutEvents</em> - Commits an object, but without events.</p>
+
+<p><em>Clone</em> - Clones objects</p>
+
+<p><em>DeepClone</em> - Clones objects, their associations and even referred objects.</p>
+
+<p><em>GetGUID</em> - returns the Global Unique Identifier (GUID, or id) of an object.</p>
+
+<p><em>GetOriginalValueAsString</em> - Returns the original value of an object member, that is, the last committed value.</p>
+
+<p><em>GetTypeAsString</em> - Returns the actual type of an Entity. Useful as alternative way to split upon inheritance, or as input of other functions in this module.</p>
+
+<p><em>MemberHasChanged</em> - Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.</p>
+
+<p><em>RefreshClass</em> - Refreshes a certain domain object type in the client. Useful to enforce a datagrid to refresh for example.</p>
+
+<p><em>refreshClassByObject</em> - Refreshes a certain domain object type in the client. Useful to enforce a datagrid to refresh for example.</p>
+
+<p><em>getLastChangedByUser</em> - Returns the user that last changed an object as System.User.</p>
+
+<p><em>getCreatedByUser</em> - Returns the user that created an object.</p>
+
+<p><em>encryptMemberIfChanged</em> - Use this function to automatically encrypt attributes of an object during (for example) before commit. (new in 2.4)</p>
+
+<p><em>EndTransaction</em> - Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested.</p>
+
+<p><em>StartTransaction</em> - Start a transaction, if a transaction is already started for this context, a savepoint will be added.</p>
+
+<h3>Regexes</h3>
+
+<p><em>EmailAddressRegex</em> - A, not too restrictive, email address regular expression.</p>
+
+<p><em>GUIDOrEmpty</em> - Same as GUIDRegex, but accepts empty string as well.</p>
+
+<p><em>GUIDRegex</em> - Supports alphanumeric characters, dash and underscore.</p>
+
+<p><em>Identifier</em> - Identifier.</p>
+
+<h3>StringUtils</h3>
+
+<p><em>Hash</em> - Hashes a value using the SHA-256 hash algorithm.</p>
+
+<p><em>HTMLEncode</em> - Encodes a string to HTML Entities, so that they can be displayed in the browser without breaking any layout.</p>
+
+<p><em>HTMLToPlainText</em> - Use this function to convert HTML text to plain text. It will preserve linebreaks but strip all other markup. including html entity decoding.</p>
+
+<p><em>IsStringSimplified</em> - Whether a string can be further simplified by removing diacritics</p>
+
+<p><em>RandomString</em> - Generates a random alphanumeric string of the desired length.</p>
+
+<p><em>RandomHash</em> - Generates a random hash, perfectly to use as random, unique identifier.</p>
+
+<p><em>RegexReplaceAll</em> - Performs a regular expression replace. Works similarly to the microflow expression function 'replaceAll' but supports more constructs.</p>
+
+<p><em>RegexQuote</em> - Escapes a string value so that it can be used literally with Mendix built-in regex replacement functions. (Otherwise the dollar sign would be interpreted as back reference to a match for example).</p>
+
+<p><em>RemoveEnd</em> - Removes a string from the end of another string, if present</p>
+
+<p><em>StringLeftPad</em> - Pads a string on the left to a certain length.</p>
+
+<p><em>StringRightPad</em> - Pads a string on the right to a certain length.</p>
+
+<p><em>StringSimplify</em> - Removes all diacritics from a string</p>
+
+<p><em>StringTrim</em> - Left and right trims a string (that is; removes all surrounding whitespace characters such as tabs, spaces and returns).</p>
+
+<p><em>SubstituteTemplate</em> - Given an object and a template, substitutes all fields in the template. Supports attributes, references, referencesets and constants. (updated in 2.2: Enums are now displayed using their caption instead of key)</p>
+
+<p><em>Base64Encode</em> - Converts a plain string to a base64 encoded string.</p>
+
+<p><em>Base64Decode</em> - Converts a base64 encoded string to the plain, original string.</p>
+
+<p><em>XSSSanitize</em> - Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. This function should be applied to all HTML which is displayed in the browser and can be entered by (untrusted) users.</p>
+
+<p><em>RandomStrongPassword</em> - Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.</p>
+
+<p><em>EncryptString</em> - Decrypts an AES encrypted string. The keylength should exactly be 16 characters (128 bit). (New in 2.4)</p>
+
+<p><em>DecryptString</em> - Applies AES encryption to the value string using a symmetric key. The keylength should exactly be 16 characters (128 bit). (New in 2.4)</p>
+
+<p>*GenerateHMAC_SHA256_hash - Generates a base64 encoded asymmetric hash using the HMAC_SHA256 hash algorithm.</p>
+
+<p>*GenerateHMAC_SHA256 - Generates a hexadecimal encoded asymmetric hash using the HMAC_SHA256 hash algorithm.</p>
+
+<p><em>SubstringAfter</em> - Returns the substring of a string after the first occurence of a given separator.</p>
+
+<p><em>SubstringAfterLast</em> - Returns the substring of a string after the last occurence of a given separator.</p>
+
+<p><em>SubstringBefore</em> - Returns the substring of a string before the first occurence of a given separator.</p>
+
+<p><em>SubstringBeforeLast</em> - Returns the substring of a string before the last occurence of a given separator.</p>
+
+<h2>Thank you, community.</h2>
+
+<p>The contents of this package has been based upon, among others, those forum threads:</p>
+
+<p><a href="https://mxforum.mendix.com/questions/1108/Java-XPath-Query-How-do-I-retrieve-all-orderlines-related-to-an-order" rel="nofollow">https://mxforum.mendix.com/questions/1108/Java-XPath-Query-How-do-I-retrieve-all-orderlines-related-to-an-order</a> <a href="https://mxforum.mendix.com/questions/1097/Regex-help" rel="nofollow">https://mxforum.mendix.com/questions/1097/Regex-help</a> <a href="https://mxforum.mendix.com/questions/1096/Years-between-function" rel="nofollow">https://mxforum.mendix.com/questions/1096/Years-between-function</a> <a href="https://mxforum.mendix.com/questions/330/Best-way-to-deal-with-a-huge-list-in-microflows" rel="nofollow">https://mxforum.mendix.com/questions/330/Best-way-to-deal-with-a-huge-list-in-microflows</a> <a href="https://mxforum.mendix.com/questions/330/Best-way-to-deal-with-a-huge-list-in-microflows" rel="nofollow">https://mxforum.mendix.com/questions/330/Best-way-to-deal-with-a-huge-list-in-microflows</a> <a href="https://mxforum.mendix.com/questions/743/Removing-nonnumeric-characters-" rel="nofollow">https://mxforum.mendix.com/questions/743/Removing-nonnumeric-characters-</a> <a href="https://mxforum.mendix.com/questions/733/How-to-retrieve-the-GUID-id-of-an-object-in-a-Microflow" rel="nofollow">https://mxforum.mendix.com/questions/733/How-to-retrieve-the-GUID-id-of-an-object-in-a-Microflow</a> <a href="https://mxforum.mendix.com/questions/713/Parsing-input-format-zipcode" rel="nofollow">https://mxforum.mendix.com/questions/713/Parsing-input-format-zipcode</a> <a href="https://mxforum.mendix.com/questions/703/IMendixObjectMembergetOriginalValue" rel="nofollow">https://mxforum.mendix.com/questions/703/IMendixObjectMembergetOriginalValue</a> <a href="https://mxforum.mendix.com/questions/657/Get-Mendix-Version-at-runtime" rel="nofollow">https://mxforum.mendix.com/questions/657/Get-Mendix-Version-at-runtime</a> <a href="https://mxforum.mendix.com/questions/387/How-to-set-an-enum-value-based-on-a-string-value" rel="nofollow">https://mxforum.mendix.com/questions/387/How-to-set-an-enum-value-based-on-a-string-value</a> <a href="https://mxforum.mendix.com/questions/383/Can-I-check-the-length-of-a-string-in-Microflow" rel="nofollow">https://mxforum.mendix.com/questions/383/Can-I-check-the-length-of-a-string-in-Microflow</a> <a href="https://mxforum.mendix.com/questions/231/Refresh-class-in-microflow" rel="nofollow">https://mxforum.mendix.com/questions/231/Refresh-class-in-microflow</a> <a href="https://mxforum.mendix.com/questions/230/Refresh-object-in-microflow" rel="nofollow">https://mxforum.mendix.com/questions/230/Refresh-object-in-microflow</a> <a href="https://mxforum.mendix.com/questions/228/Navigating-associations-in-Java" rel="nofollow">https://mxforum.mendix.com/questions/228/Navigating-associations-in-Java</a> <a href="https://mxforum.mendix.com/questions/197/Logging-to-the-console-in-Java" rel="nofollow">https://mxforum.mendix.com/questions/197/Logging-to-the-console-in-Java</a> <a href="https://forum.mendixcloud.com/link/questions/92320" rel="nofollow">https://forum.mendixcloud.com/link/questions/92320</a></p>
+</div>

@@ -1,1 +1,19 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://nexus.rnd.mendix.com/repository/repo1-proxy/'
+        }
+        maven {
+            url 'https://gitlab.rnd.mendix.com/api/v4/projects/2078/packages/maven'
+            credentials(HttpHeaderCredentials) {
+                name = 'Private-Token'
+                value = 'Secret'
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
+}
+
 rootProject.name = 'CommunityCommons'

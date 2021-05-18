@@ -1,4 +1,7 @@
-apply plugin: 'java'
+plugins {
+    id 'java'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.0-SNAPSHOT'
+}
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -6,6 +9,10 @@ sourceCompatibility = '1.8'
 project.ext {
     CC_VERSION = '8.4.0'
     mendixVersion = '8.12.7'
+}
+
+mxMarketplace {
+    mxProjectDirectory = "src/CommunityCommons"
 }
 
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
