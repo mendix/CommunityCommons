@@ -1,3 +1,3 @@
-This module adds a number reusable Java methods to your project, which can be called from Microflows or custom Java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and investigating several project.
+This module adds a number of reusable Java methods to your project. They can be called from Microflows and custom Java actions. The content of this module is the result of many questions and answers posted at mxforum.mendix.com, and of investigating several projects.
 
-The module adds functionality for working with Dates, Batches, Strings, Internet, Files, Configuration etc. See the documentation or screenshot for a complete list of functions.
+The module adds functionality for working with Dates, Batches, Strings, Internet, Files, Configuration etc. See the documentation and screenshots for a complete list of functions.
