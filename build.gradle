@@ -1,9 +1,14 @@
+// This gradle build depends on Mendix internal resources, the lastest commit
+// which did not is 6e1527a5e31347c6914bc34deab31ef4ab46953b. You may restore
+// the gradle scripts to that commit if you which to use them at your own risk.
+// We don't guarantee that those will keep working in the future.
+
 plugins {
     id 'java'
     id 'com.mendix.gradle.publish-module-plugin' version '1.0-SNAPSHOT'
 }
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
@@ -38,7 +43,6 @@ dependencies {
     compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixVersion"])
 
     implementation(
-        [group: 'com.google.guava', name: 'guava', version: '30.0-jre'],
         [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20200713.1'],
         [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
         [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.23'],

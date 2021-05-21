@@ -1,17 +1,18 @@
 package communitycommons;
 
-import com.google.common.collect.ImmutableMap;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.proxies.SanitizerPolicy;
+
 import static communitycommons.proxies.SanitizerPolicy.BLOCKS;
 import static communitycommons.proxies.SanitizerPolicy.FORMATTING;
 import static communitycommons.proxies.SanitizerPolicy.IMAGES;
 import static communitycommons.proxies.SanitizerPolicy.LINKS;
 import static communitycommons.proxies.SanitizerPolicy.STYLES;
 import static communitycommons.proxies.SanitizerPolicy.TABLES;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +25,8 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -42,6 +40,7 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -51,14 +50,15 @@ import system.proxies.FileDocument;
 
 public class StringUtils {
 
-	static final Map<String, PolicyFactory> SANITIZER_POLICIES = new ImmutableMap.Builder<String, PolicyFactory>()
-		.put(BLOCKS.name(), Sanitizers.BLOCKS)
-		.put(FORMATTING.name(), Sanitizers.FORMATTING)
-		.put(IMAGES.name(), Sanitizers.IMAGES)
-		.put(LINKS.name(), Sanitizers.LINKS)
-		.put(STYLES.name(), Sanitizers.STYLES)
-		.put(TABLES.name(), Sanitizers.TABLES)
-		.build();
+  static final Map<String, PolicyFactory> SANITIZER_POLICIES =
+    Map.ofEntries(
+      new SimpleEntry<>(BLOCKS.name(), Sanitizers.BLOCKS),
+      new SimpleEntry<>(FORMATTING.name(), Sanitizers.FORMATTING),
+      new SimpleEntry<>(IMAGES.name(), Sanitizers.IMAGES),
+      new SimpleEntry<>(LINKS.name(), Sanitizers.LINKS),
+      new SimpleEntry<>(STYLES.name(), Sanitizers.STYLES),
+      new SimpleEntry<>(TABLES.name(), Sanitizers.TABLES)
+    );
 
 	public static final String HASH_ALGORITHM = "SHA-256";
 
