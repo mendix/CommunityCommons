@@ -40,5 +40,7 @@ package.xml
 *.bak
 *.orig
 GPUCache
-
+gradle
+gradlew
+gradlew.bat
 /src/CommunityCommons/*.mpk

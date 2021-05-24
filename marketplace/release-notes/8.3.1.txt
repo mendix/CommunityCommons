@@ -1,0 +1,1 @@
+Updated the Community Commons module to support Mendix Studio Version 9.

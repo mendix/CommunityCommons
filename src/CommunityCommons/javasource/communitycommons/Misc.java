@@ -592,6 +592,7 @@ public class Misc {
 	 * @return
 	 * @deprecated Native Java function Objects.equals() is available since Java 7
 	 */
+	@Deprecated
 	public static boolean objectsAreEqual(Object left, Object right) {
 		if (left == null && right == null) {
 			return true;
