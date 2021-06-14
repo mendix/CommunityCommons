@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.0-SNAPSHOT'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.0'
 }
 
 sourceCompatibility = '11'
