@@ -1,1 +1,12 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://nexus.rnd.mendix.com/repository/repo1-proxy/'
+        }
+        maven {
+            url 'https://nexus.rnd.mendix.com/repository/maven-hosted/'
+        }
+    }
+}
+
 rootProject.name = 'CommunityCommons'

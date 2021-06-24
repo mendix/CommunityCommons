@@ -1,0 +1,5 @@
+Update library dependencies. Now Community Commons ships with
+ - Apache Common IO 2.8
+ - Apache Commons Lang 3.11
+ - Guava 30.0
+ - PDFBox 2.0.24
