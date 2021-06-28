@@ -26,19 +26,19 @@ public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-        FileDocument doc = new FileDocument(getContext());
-        doc.setName("TestDocument");
-        doc.getMendixObject().setValue(getContext(), "__UUID__", UUID.randomUUID().toString());
-        doc.commit(getContext());
+		FileDocument doc = new FileDocument(getContext());
+		doc.setName("TestDocument");
+		doc.getMendixObject().setValue(getContext(), "__UUID__", UUID.randomUUID().toString());
+		doc.commit(getContext());
 
-        FileDocument clonedDoc = new FileDocument(getContext());
-        ORM.cloneObject(getContext(), doc.getMendixObject(), clonedDoc.getMendixObject(), false);
-        clonedDoc.commit(getContext());
+		FileDocument clonedDoc = new FileDocument(getContext());
+		ORM.cloneObject(getContext(), doc.getMendixObject(), clonedDoc.getMendixObject(), false);
+		clonedDoc.commit(getContext());
 
-        if (!clonedDoc.getName().equals(doc.getName())) throw new RuntimeException("Name was not cloned.");
-        if (getUUID(doc).equals(getUUID(clonedDoc))) throw new RuntimeException("UUID was cloned.");
+		if (!clonedDoc.getName().equals(doc.getName())) throw new RuntimeException("Name was not cloned.");
+		if (getUUID(doc).equals(getUUID(clonedDoc))) throw new RuntimeException("UUID was cloned.");
 
-        return true;
+		return true;
 		// END USER CODE
 	}
 

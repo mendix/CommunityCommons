@@ -109,9 +109,9 @@ public class ORM {
 					tar.setValue(ctx, key, res);
 				} else if (m instanceof MendixAutoNumber) //skip autonumbers! Ticket 14893
 				{
-                    // do nothing
-                } else if ("__UUID__".equals(key) && (isFileDocument(src) || isFileDocument(tar))) {
-                    // do nothing
+					// do nothing
+				} else if ("__UUID__".equals(key) && (isFileDocument(src) || isFileDocument(tar))) {
+					// do nothing
 				} else {
 					tar.setValue(ctx, key, m.getValue(ctx));
 				}
@@ -358,9 +358,9 @@ public class ORM {
 			if (e.isVirtual() || e.getType() == PrimitiveType.AutoNumber) {
 				continue;
 			}
-            if ("__UUID__".equals(e.getName()) && (isFileDocument(source) || isFileDocument(target))) {
-                continue;
-            }
+			if ("__UUID__".equals(e.getName()) && (isFileDocument(source) || isFileDocument(target))) {
+				continue;
+			}
 
 			target.setValue(context, e.getName(), source.getValue(context, e.getName()));
 		}
