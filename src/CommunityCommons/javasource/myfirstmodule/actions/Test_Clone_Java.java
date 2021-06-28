@@ -52,8 +52,8 @@ public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
 	}
 
 	// BEGIN EXTRA CODE
-  public Object getUUID(FileDocument doc) {
-    return doc.getMendixObject().getValue(getContext(), "__UUID__");
-  }
+	public Object getUUID(FileDocument doc) {
+		return doc.getMendixObject().getValue(getContext(), "__UUID__");
+	}
 	// END EXTRA CODE
 }
