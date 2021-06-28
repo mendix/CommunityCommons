@@ -1,0 +1,3 @@
+Update Guava to 30.1.1 to be the same version as used by the SSO module.
+Update PDFBox to 2.0.24 because of a vulnerability in that library.
+Don't clone internal __UUID__ attribute on System.FileDocument and entities inheriting from it.

@@ -102,6 +102,7 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.TimeMeasureStart.class);
     registrator.registerUserAction(communitycommons.actions.XSSSanitize.class);
     registrator.registerUserAction(communitycommons.actions.YearsBetween.class);
+    registrator.registerUserAction(myfirstmodule.actions.Test_Clone_Java.class);
     registrator.registerUserAction(system.actions.VerifyPassword.class);
     registrator.registerUserAction(unittesting.actions.FindAllUnitTests.class);
     registrator.registerUserAction(unittesting.actions.ReportStepJava.class);
