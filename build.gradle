@@ -12,7 +12,6 @@ sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    CC_VERSION = '8.4.0'
     mendixVersion = '8.12.7'
 }
 
