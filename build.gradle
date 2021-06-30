@@ -31,22 +31,21 @@ repositories {
 }
 
 dependencies {
-
     testImplementation(
-        [group: 'com.mendix', name: 'public-api', version: "$mendixVersion"],
-        [group: 'junit', name: 'junit', version: '4.13.2'],
-        [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
-        [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
+            [group: 'com.mendix', name: 'public-api', version: "$mendixVersion"],
+            [group: 'junit', name: 'junit', version: '4.13.2'],
+            [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
+            [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
     )
 
     compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixVersion"])
 
     implementation(
-        [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
-        [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20200713.1'],
-        [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
-        [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
-        [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
+            [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
+            [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20200713.1'],
+            [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
+            [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
+            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
     )
 }
 
@@ -69,16 +68,16 @@ test {
     exclude 'unittesting/*'
 }
 
-task copyAllToUserlib( type: Copy ) {
+task copyAllToUserlib(type: Copy) {
     from configurations.testCompileClasspath
     into userLibDir
-    eachFile { fileCopyDetails -> new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
+    eachFile { fileCopyDetails -> new File(destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
-task copyRuntimeToUserlib( type: Copy ) {
+task copyRuntimeToUserlib(type: Copy) {
     from configurations.runtimeClasspath
     into userLibDir
-    eachFile { fileCopyDetails -> new File( destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
+    eachFile { fileCopyDetails -> new File(destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
 clean {
