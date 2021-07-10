@@ -306,12 +306,14 @@ public class StringUtils {
 	// See https://www.baeldung.com/java-generate-secure-password
 	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
 	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+		int noOfLowerAlpha = minLen - noOfCapsAlpha - noOfDigits - noOfSplChars;
+		String lowerCaseLetters = RandomStringUtils.random(noOfLowerAlpha, 97, 122, true, true);
 		String upperCaseLetters = RandomStringUtils.random(noOfCapsAlpha, 65, 90, true, true);
 		String numbers = RandomStringUtils.randomNumeric(noOfDigits);
 		String specialChar = RandomStringUtils.random(noOfSplChars, 33, 47, false, false);
-		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars;
-		String totalChars = RandomStringUtils.randomAlphanumeric(minLen - fixedNumber, maxLen - fixedNumber);
+		String totalChars = RandomStringUtils.randomAlphanumeric(0, maxLen - minLen);
 		String combinedChars = upperCaseLetters
+			.concat(lowerCaseLetters)
 			.concat(numbers)
 			.concat(specialChar)
 			.concat(totalChars);
