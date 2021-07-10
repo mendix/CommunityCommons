@@ -297,8 +297,8 @@ public class StringUtils {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
-		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
-			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
+		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars + 1) > minLen) {
+			throw new IllegalArgumentException("Min. Length should be at least one more than sum of (CAPS, DIGITS, SPL CHARS) Length!");
 		}
 		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
 	}
