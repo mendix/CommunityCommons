@@ -81,5 +81,5 @@ task copyRuntimeToUserlib(type: Copy) {
 }
 
 clean {
-    delete "$projectDir/src/CommunityCommons/userlib"
+    delete "$userLibDir"
 }
