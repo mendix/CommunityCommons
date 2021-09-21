@@ -1,0 +1,2 @@
+Allow null/empty values when configuring the SanitizerPolicies for the XSSSanitize class.
+
