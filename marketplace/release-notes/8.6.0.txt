@@ -1,2 +1,1 @@
-Allow null/empty values when configuring the SanitizerPolicies for the XSSSanitize class.
-
+Fixed regression introduced in 8.5.0 when configuring null/empty values as the SanitizerPolicies for the XSSSanitize class.
