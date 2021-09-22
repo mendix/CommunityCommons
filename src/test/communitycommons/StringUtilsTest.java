@@ -20,6 +20,8 @@ import org.owasp.html.Sanitizers;
  */
 public class StringUtilsTest {
 
+	private static final int PASSWORD_LENGTH = 12;
+
 	public StringUtilsTest() {
 	}
 
@@ -64,4 +66,75 @@ public class StringUtilsTest {
 		assertEquals(expResult, result);	
 	}
 
+	@Test
+	public void testRandomStrongPassword_WithDigitsOnly() {
+		String password = StringUtils.randomStrongPassword(PASSWORD_LENGTH, PASSWORD_LENGTH, 0, PASSWORD_LENGTH, 0);
+
+		assertEquals(password.length(), PASSWORD_LENGTH);
+		assertTrue(password.matches("^\\d+$"));
+	}
+
+	@Test
+	public void testRandomStrongPassword_WithUppercaseAlphaOnly() {
+		String password = StringUtils.randomStrongPassword(PASSWORD_LENGTH, PASSWORD_LENGTH, PASSWORD_LENGTH, 0, 0);
+
+		assertEquals(PASSWORD_LENGTH, password.length());
+		assertTrue(password.matches("^[A-Z]+$"));
+	}
+
+	@Test
+	public void testRandomStrongPassword_WithNoSpecifiedCharacters() {
+		String password = StringUtils.randomStrongPassword(PASSWORD_LENGTH, PASSWORD_LENGTH, 0, 0, 0);
+
+		assertEquals(PASSWORD_LENGTH, password.length());
+		assertTrue(password.matches("^[A-Za-z0-9]+$"));
+	}
+
+	@Test
+	public void testRandomStrongPassword_WithVaryingLength() {
+		final int minLength = 10;
+		final int maxLength = 11;
+		final int runs = 50;
+
+		boolean minimumHit = false;
+		boolean maximumHit = false;
+
+		// Since we are dealing with randomness, there is a probability of this test failing.
+		// With 50 runs, the chance of this test failing is about 1 in 562.949.953.421.312
+		for (int run = 0; run < runs; run++) {
+			String password = StringUtils.randomStrongPassword(minLength, maxLength, 0, 0, 0);
+
+			assertTrue(password.length() >= minLength);
+			assertTrue(password.length() <= maxLength);
+
+			if (password.length() == minLength) {
+				minimumHit = true;
+			} else {
+				maximumHit = true;
+			}
+		}
+
+		assertTrue(minimumHit);
+		assertTrue(maximumHit);
+	}
+
+	@Test
+	public void testRandomStrongPassword_WithMinLengthLargerThanMaxLength() {
+		final int minLength = 12;
+		final int maxLength = 10;
+		assertThrows(IllegalArgumentException.class, () -> StringUtils.randomStrongPassword(minLength, maxLength, 0, 0, 0));
+	}
+
+	@Test
+	public void testRandomStrongPassword_WithNumberOfSpecifiedCharactersGreaterThanLength() {
+		final int upperCount = 10;
+		final int digitCount = 10;
+		final int specialCount = 10;
+
+		// Password length is 1 less than the total number of minimum specified characters.
+		final int length = upperCount + digitCount + specialCount - 1;
+
+		assertThrows(IllegalArgumentException.class, () ->
+			StringUtils.randomStrongPassword(length, length, upperCount, digitCount, specialCount));
+	}
 }
