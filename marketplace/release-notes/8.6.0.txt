@@ -1,1 +1,2 @@
 Fixed regression introduced in 8.5.0 when configuring null/empty values as the SanitizerPolicies for the XSSSanitize class.
+Use SecureRandom instead of a normal Random for generating passwords in the StringUtils class.
