@@ -1,0 +1,2 @@
+Update owasp-java-html-sanitizer to 20211018.2.
+All encryption related functionality is deprecated as part of this release. Please use the encryption-module instead.

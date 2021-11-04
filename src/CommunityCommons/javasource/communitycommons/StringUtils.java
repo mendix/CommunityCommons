@@ -397,6 +397,10 @@ public class StringUtils {
 		return builder.toString();
 	}
 
+	/**
+	 * @deprecated use similar functionality present in the encryption module instead
+	 */
+	@Deprecated
 	public static String encryptString(String key, String valueToEncrypt) throws Exception {
 		if (valueToEncrypt == null) {
 			return null;
@@ -416,6 +420,10 @@ public class StringUtils {
 		return Base64.getEncoder().encodeToString(iv) + ";" + Base64.getEncoder().encodeToString(encryptedData);
 	}
 
+	/**
+	 * @deprecated use similar functionality present in the encryption module instead
+	 */
+	@Deprecated
 	public static String decryptString(String key, String valueToDecrypt) throws Exception {
 		if (valueToDecrypt == null) {
 			return null;
