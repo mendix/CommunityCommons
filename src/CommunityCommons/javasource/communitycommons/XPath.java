@@ -66,7 +66,7 @@ public class XPath<T>
 	private int	limit = -1;
 	private LinkedHashMap<String, String> sorting = new LinkedHashMap<String, String>(); //important, linked map!
 	private LinkedList<String> closeStack = new LinkedList<String>();
-	private StringBuffer builder = new StringBuffer();
+	private StringBuilder builder = new StringBuilder();
 	private IContext	context;
 	private Class<T>	proxyClass;
 	private boolean requiresBinOp = false; //state property, indicates whether and 'and' needs to be inserted before the next constraint
@@ -295,7 +295,6 @@ public class XPath<T>
 	/**
 	 * Given a set of attribute names and values, tries to find the first object that matches all conditions, or creates one
 	 * 
-	 * @param autoCommit: whether the object should be committed once created (default: true)
 	 * @param keysAndValues
 	 * @return
 	 * @throws CoreException 

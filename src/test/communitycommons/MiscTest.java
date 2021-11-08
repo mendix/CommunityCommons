@@ -50,7 +50,7 @@ public class MiscTest {
 		System.out.println("enumFromString");
 		SanitizerPolicy expResult = SanitizerPolicy.BLOCKS;
 		Optional<SanitizerPolicy> result = Misc.enumFromString(SanitizerPolicy.class, "BLOCKS");
-		assertEquals(expResult, result.get());
+		assertEquals(expResult, result.orElseThrow());
 	}
 
 	@Test
