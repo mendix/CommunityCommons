@@ -22,7 +22,6 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.deleteAll.class);
     registrator.registerUserAction(communitycommons.actions.DuplicateFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.DuplicateImageDocument.class);
-    registrator.registerUserAction(communitycommons.actions.encryptMemberIfChanged.class);
     registrator.registerUserAction(communitycommons.actions.EndTransaction.class);
     registrator.registerUserAction(communitycommons.actions.EnumerationFromString.class);
     registrator.registerUserAction(communitycommons.actions.EscapeHTML.class);

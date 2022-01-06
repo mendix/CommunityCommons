@@ -13,16 +13,14 @@ import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.SanitizerPolicy;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser.
+ * Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. 
  * 
  * This function should be applied to all HTML which is displayed in the browser, and can be entered by (untrusted) users.
  * 
