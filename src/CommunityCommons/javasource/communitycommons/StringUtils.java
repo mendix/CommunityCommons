@@ -243,7 +243,7 @@ public class StringUtils {
 		if (html == null) {
 			return "";
 		}
-		final StringBuffer result = new StringBuffer();
+		final StringBuilder result = new StringBuilder();
 
 		HTMLEditorKit.ParserCallback callback = new HTMLEditorKit.ParserCallback() {
 			@Override
