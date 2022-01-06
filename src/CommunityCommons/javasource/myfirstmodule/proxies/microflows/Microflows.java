@@ -213,6 +213,11 @@ public class Microflows
 		Map<java.lang.String, Object> params = new HashMap<>();
 		return (java.lang.Boolean) Core.microflowCall("MyFirstModule.Test_Base64EncodeToFile_getFileSize").withParams(params).execute(context);
 	}
+	public static boolean test_Clone(IContext context)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		return (java.lang.Boolean) Core.microflowCall("MyFirstModule.Test_Clone").withParams(params).execute(context);
+	}
 	public static boolean test_CreateAndMerge(IContext context)
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();
@@ -223,11 +228,6 @@ public class Microflows
 		Map<java.lang.String, Object> params = new HashMap<>();
 		params.put("inputURLToDocument", _inputURLToDocument == null ? null : _inputURLToDocument.getMendixObject());
 		return (java.lang.Boolean) Core.microflowCall("MyFirstModule.Test_EmptyName").withParams(params).execute(context);
-	}
-	public static boolean test_EncryptString(IContext context)
-	{
-		Map<java.lang.String, Object> params = new HashMap<>();
-		return (java.lang.Boolean) Core.microflowCall("MyFirstModule.Test_EncryptString").withParams(params).execute(context);
 	}
 	public static boolean test_generateHmacSha256(IContext context)
 	{
