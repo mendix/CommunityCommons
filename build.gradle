@@ -5,14 +5,14 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.0'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.3'
+    id 'net.researchgate.release' version '2.8.1'
 }
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    CC_VERSION = '8.8.0'
     mendixVersion = '7.23.22'
 }
 
@@ -85,3 +85,21 @@ task copyRuntimeToUserlib(type: Copy) {
 clean {
     delete "$projectDir/src/CommunityCommons/userlib"
 }
+
+release {
+    tagTemplate = '$name-$version'
+    git {
+        requireBranch = 'lts/7.23'
+    }
+}
+
+task afterReleaseBuildTask {
+    dependsOn 'clean'
+    dependsOn 'copyRuntimeToUserlib'
+    dependsOn 'publishModuleToMarketplace'
+
+    tasks.findByName('copyRuntimeToUserlib').mustRunAfter 'clean'
+    tasks.findByName('publishModuleToMarketplace').mustRunAfter 'copyRuntimeToUserlib'
+}
+
+afterReleaseBuild.dependsOn afterReleaseBuildTask
