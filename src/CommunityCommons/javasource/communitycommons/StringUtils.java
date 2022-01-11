@@ -1,7 +1,6 @@
 package communitycommons;
 
 import com.mendix.core.Core;
-import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.proxies.SanitizerPolicy;
@@ -29,9 +28,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.crypto.Cipher;
 import javax.crypto.Mac;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
@@ -243,7 +240,7 @@ public class StringUtils {
 		if (html == null) {
 			return "";
 		}
-		final StringBuffer result = new StringBuffer();
+		final StringBuilder result = new StringBuilder();
 
 		HTMLEditorKit.ParserCallback callback = new HTMLEditorKit.ParserCallback() {
 			@Override
@@ -395,56 +392,6 @@ public class StringUtils {
 		while (begin <= end)
 			builder.append(begin++);
 		return builder.toString();
-	}
-
-	/**
-	 * @deprecated use similar functionality present in the encryption module instead
-	 */
-	@Deprecated
-	public static String encryptString(String key, String valueToEncrypt) throws Exception {
-		if (valueToEncrypt == null) {
-			return null;
-		}
-		if (key == null) {
-			throw new MendixRuntimeException("Key should not be empty");
-		}
-		if (key.length() != 16) {
-			throw new MendixRuntimeException("Key length should be 16");
-		}
-		Cipher c = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-		SecretKeySpec k = new SecretKeySpec(key.getBytes(), "AES");
-		c.init(Cipher.ENCRYPT_MODE, k);
-		byte[] encryptedData = c.doFinal(valueToEncrypt.getBytes());
-		byte[] iv = c.getIV();
-
-		return Base64.getEncoder().encodeToString(iv) + ";" + Base64.getEncoder().encodeToString(encryptedData);
-	}
-
-	/**
-	 * @deprecated use similar functionality present in the encryption module instead
-	 */
-	@Deprecated
-	public static String decryptString(String key, String valueToDecrypt) throws Exception {
-		if (valueToDecrypt == null) {
-			return null;
-		}
-		if (key == null) {
-			throw new MendixRuntimeException("Key should not be empty");
-		}
-		if (key.length() != 16) {
-			throw new MendixRuntimeException("Key length should be 16");
-		}
-		Cipher c = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-		SecretKeySpec k = new SecretKeySpec(key.getBytes(), "AES");
-		String[] s = valueToDecrypt.split(";");
-		if (s.length < 2) //Not an encrypted string, just return the original value.
-		{
-			return valueToDecrypt;
-		}
-		byte[] iv = Base64.getDecoder().decode(s[0].getBytes());
-		byte[] encryptedData = Base64.getDecoder().decode(s[1].getBytes());
-		c.init(Cipher.DECRYPT_MODE, k, new IvParameterSpec(iv));
-		return new String(c.doFinal(encryptedData));
 	}
 
 	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt) throws UnsupportedEncodingException, IllegalStateException, InvalidKeyException, NoSuchAlgorithmException {

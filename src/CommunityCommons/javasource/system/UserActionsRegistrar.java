@@ -17,14 +17,11 @@ public class UserActionsRegistrar
     registrator.registerUserAction(communitycommons.actions.copyAttributes.class);
     registrator.registerUserAction(communitycommons.actions.CreateLogNode.class);
     registrator.registerUserAction(communitycommons.actions.DateTimeToLong.class);
-    registrator.registerUserAction(communitycommons.actions.DecryptString.class);
     registrator.registerUserAction(communitycommons.actions.DeepClone.class);
     registrator.registerUserAction(communitycommons.actions.Delay.class);
     registrator.registerUserAction(communitycommons.actions.deleteAll.class);
     registrator.registerUserAction(communitycommons.actions.DuplicateFileDocument.class);
     registrator.registerUserAction(communitycommons.actions.DuplicateImageDocument.class);
-    registrator.registerUserAction(communitycommons.actions.encryptMemberIfChanged.class);
-    registrator.registerUserAction(communitycommons.actions.EncryptString.class);
     registrator.registerUserAction(communitycommons.actions.EndTransaction.class);
     registrator.registerUserAction(communitycommons.actions.EnumerationFromString.class);
     registrator.registerUserAction(communitycommons.actions.EscapeHTML.class);

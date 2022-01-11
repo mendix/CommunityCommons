@@ -6,6 +6,7 @@ pluginManagement {
         maven {
             url 'https://nexus.rnd.mendix.com/repository/maven-hosted/'
         }
+        gradlePluginPortal()
     }
 }
 

@@ -1,0 +1,5 @@
+Remove encrypt / decrypt functionality that was deprecated in 8.7.0. Specifically the Java Actions `EncryptString`, `DecryptString`, and
+`encryptMembersIfChanged` have been removed. The underlying java functions `StringUtils#encryptString`, `StringUtils#decryptString`, and
+`ORM#encryptMembersIfChanged` have been removed as well.
+
+Add documentation to `objectHasChanged` pointing out a discrepancy in behaviour in the Mendix runtime-server.
