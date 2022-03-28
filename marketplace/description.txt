@@ -1,2 +1,1 @@
-Add reusable Java methods that can be called from microflows and custom Java actions to bring functionality for working with dates, batches, strings, internet, files, configurations, etc.
-
+Add reusable Java methods that can be called from microflows and custom Java actions to bring functionality for working with dates, batches, strings, files, configurations, etc.
