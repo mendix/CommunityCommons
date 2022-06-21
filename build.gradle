@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.2'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.6'
     id 'net.researchgate.release' version '2.8.1'
 }
 
@@ -13,11 +13,16 @@ sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    mendixVersion = '8.12.7'
+    mendixPublicApiVersion = '8.12.0'
 }
 
 mxMarketplace {
-    mxProjectDirectory = "src/CommunityCommons"
+    appNumber = 170
+    appName = 'Community Commons'
+    moduleName = 'CommunityCommons'
+    moduleLicense = 'Apache V2'
+    appDirectory = "src/CommunityCommons"
+    versionPathPrefix = "_Version " // the path prefix within the module to the version folder
 }
 
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
@@ -33,18 +38,18 @@ repositories {
 
 dependencies {
     testImplementation(
-            [group: 'com.mendix', name: 'public-api', version: "$mendixVersion"],
+            [group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"],
             [group: 'junit', name: 'junit', version: '4.13.2'],
             [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
             [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
     )
 
-    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixVersion"])
+    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"])
 
     implementation(
             [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
             [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
-            [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
+            [group: 'commons-io', name: 'commons-io', version: '2.11.0'],
             [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
             [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
     )
