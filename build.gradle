@@ -12,12 +12,17 @@ plugins {
 sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+project.ext {
+    mendixPublicApiVersion = '8.12.0'
+}
+
 mxMarketplace {
     appNumber = 170
     appName = 'Community Commons'
     moduleName = 'CommunityCommons'
     moduleLicense = 'Apache V2'
-    mxProjectDirectory = "src/CommunityCommons"
+    appDirectory = "src/CommunityCommons"
+    versionPathPrefix = "_Version " // the path prefix within the module to the version folder
 }
 
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
@@ -33,13 +38,13 @@ repositories {
 
 dependencies {
     testImplementation(
-            [group: 'com.mendix', name: 'public-api', version: "8.12.0"],
+            [group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"],
             [group: 'junit', name: 'junit', version: '4.13.2'],
             [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
             [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
     )
 
-    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixVersion"])
+    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"])
 
     implementation(
             [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
