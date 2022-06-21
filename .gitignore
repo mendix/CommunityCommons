@@ -44,3 +44,4 @@ gradle
 gradlew
 gradlew.bat
 /src/CommunityCommons/*.mpk
+.idea
