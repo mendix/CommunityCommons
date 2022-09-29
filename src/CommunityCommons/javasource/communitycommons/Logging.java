@@ -25,7 +25,7 @@ public class Logging {
 	}
 
 	public static void warn(String lognode, String message, Throwable e) {
-		log(lognode, LogLevel.Debug, message, e);
+		log(lognode, LogLevel.Warning, message, e);
 	}
 
 	public static void warn(String lognode, String message) {
