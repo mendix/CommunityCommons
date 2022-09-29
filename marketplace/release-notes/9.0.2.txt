@@ -1,0 +1,1 @@
+Fixed a bug where warning logging was using DEBUG log level.
