@@ -45,3 +45,5 @@ gradlew
 gradlew.bat
 /src/CommunityCommons/*.mpk
 .idea
+/bin/
+.vscode

@@ -21,7 +21,7 @@ https://marketplace.mendix.com/link/component/170
 #### Step 2: Publish the module
 Release to the Marketplace with the following command:
 ```
-gradle release -PmarketplaceUsername=myemail@mendix.com -PmarketplacePassword=MyMarketPlacePassword
+gradle release -PmarketplaceUsername='username' -PmarketplacePassword='password' -PmarketplaceOpenID='open-id-url'
 ```
 
 ## References:
