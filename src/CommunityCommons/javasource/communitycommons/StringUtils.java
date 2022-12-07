@@ -293,8 +293,8 @@ public class StringUtils {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
-		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
-			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
+		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars + 1) > minLen) {
+			throw new IllegalArgumentException("Min. Length should be at least one more than the sum of (CAPS, DIGITS, SPL CHARS) Length!");
 		}
 		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
 	}
@@ -302,16 +302,19 @@ public class StringUtils {
 	// See https://www.baeldung.com/java-generate-secure-password
 	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
 	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+		int noOfLowerAlpha = minLen - noOfCapsAlpha - noOfDigits - noOfSplChars;
+		String lowerCaseLetters = randomStringFromCharArray(noOfLowerAlpha, LOWERCASE_ALPHA.toCharArray());
 		String upperCaseLetters = randomStringFromCharArray(noOfCapsAlpha, UPPERCASE_ALPHA.toCharArray());
 		String numbers = randomStringFromCharArray(noOfDigits, DIGITS.toCharArray());
 		String specialChar = randomStringFromCharArray(noOfSplChars, SPECIAL.toCharArray());
 
-		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars;
+		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars + noOfLowerAlpha;
 		final int lowerBound = minLen - fixedNumber;
 		final int upperBound = maxLen - fixedNumber;
 		String totalChars = randomStringFromCharArray(lowerBound, upperBound, ALPHANUMERIC.toCharArray());
 
 		String combinedChars = upperCaseLetters
+			.concat(lowerCaseLetters)
 			.concat(numbers)
 			.concat(specialChar)
 			.concat(totalChars);
