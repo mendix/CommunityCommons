@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.3'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.10'
     id 'net.researchgate.release' version '2.8.1'
 }
 
@@ -17,8 +17,12 @@ project.ext {
 }
 
 mxMarketplace {
-    mxProjectDirectory = "src/CommunityCommons"
-    mxBuildNumber = '21805'
+    appNumber = 170
+    appName = 'Community Commons'
+    moduleName = 'CommunityCommons'
+    moduleLicense = 'Apache V2'
+    appDirectory = "src/CommunityCommons"
+    versionPathPrefix = "_Version " // the path prefix within the module to the version folder
 }
 
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
@@ -45,7 +49,7 @@ dependencies {
     implementation(
             [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
             [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
-            [group: 'commons-io', name: 'commons-io', version: '2.8.0'],
+            [group: 'commons-io', name: 'commons-io', version: '2.11.0'],
             [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
             [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
     )
