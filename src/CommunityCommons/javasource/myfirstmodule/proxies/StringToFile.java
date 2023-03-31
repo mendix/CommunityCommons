@@ -23,7 +23,7 @@ public class StringToFile extends system.proxies.FileDocument
 		HasContents("HasContents"),
 		Size("Size");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -39,14 +39,15 @@ public class StringToFile extends system.proxies.FileDocument
 
 	public StringToFile(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.StringToFile"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected StringToFile(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject stringToFileMendixObject)
 	{
 		super(context, stringToFileMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.StringToFile", stringToFileMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.StringToFile");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, stringToFileMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -61,6 +62,9 @@ public class StringToFile extends system.proxies.FileDocument
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.StringToFile initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -75,18 +79,19 @@ public class StringToFile extends system.proxies.FileDocument
 
 	public static java.util.List<myfirstmodule.proxies.StringToFile> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.StringToFile> result = new java.util.ArrayList<myfirstmodule.proxies.StringToFile>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.StringToFile" + xpathConstraint))
-			result.add(myfirstmodule.proxies.StringToFile.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.StringToFile.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.StringToFile that = (myfirstmodule.proxies.StringToFile) obj;
@@ -106,7 +111,7 @@ public class StringToFile extends system.proxies.FileDocument
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.StringToFile";
+		return entityName;
 	}
 
 	/**

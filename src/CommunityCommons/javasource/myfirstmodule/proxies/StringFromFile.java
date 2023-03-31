@@ -25,7 +25,7 @@ public class StringFromFile extends system.proxies.FileDocument
 		HasContents("HasContents"),
 		Size("Size");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -41,14 +41,15 @@ public class StringFromFile extends system.proxies.FileDocument
 
 	public StringFromFile(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.StringFromFile"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected StringFromFile(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject stringFromFileMendixObject)
 	{
 		super(context, stringFromFileMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.StringFromFile", stringFromFileMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.StringFromFile");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, stringFromFileMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -63,6 +64,9 @@ public class StringFromFile extends system.proxies.FileDocument
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.StringFromFile initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -77,10 +81,11 @@ public class StringFromFile extends system.proxies.FileDocument
 
 	public static java.util.List<myfirstmodule.proxies.StringFromFile> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.StringFromFile> result = new java.util.ArrayList<myfirstmodule.proxies.StringFromFile>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.StringFromFile" + xpathConstraint))
-			result.add(myfirstmodule.proxies.StringFromFile.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.StringFromFile.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
@@ -135,9 +140,9 @@ public class StringFromFile extends system.proxies.FileDocument
 	public final communitycommons.proxies.StandardEncodings getEncoding(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.Encoding.toString());
-		if (obj == null)
+		if (obj == null) {
 			return null;
-
+		}
 		return communitycommons.proxies.StandardEncodings.valueOf((java.lang.String) obj);
 	}
 
@@ -157,18 +162,19 @@ public class StringFromFile extends system.proxies.FileDocument
 	 */
 	public final void setEncoding(com.mendix.systemwideinterfaces.core.IContext context, communitycommons.proxies.StandardEncodings encoding)
 	{
-		if (encoding != null)
+		if (encoding != null) {
 			getMendixObject().setValue(context, MemberNames.Encoding.toString(), encoding.toString());
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Encoding.toString(), null);
+		}
 	}
 
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.StringFromFile that = (myfirstmodule.proxies.StringFromFile) obj;
@@ -188,7 +194,7 @@ public class StringFromFile extends system.proxies.FileDocument
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.StringFromFile";
+		return entityName;
 	}
 
 	/**

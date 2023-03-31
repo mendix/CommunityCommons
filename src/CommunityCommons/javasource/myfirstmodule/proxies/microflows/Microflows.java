@@ -7,13 +7,19 @@ package myfirstmodule.proxies.microflows;
 import java.util.HashMap;
 import java.util.Map;
 import com.mendix.core.Core;
-import com.mendix.core.CoreException;
-import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 public class Microflows
 {
+	/**
+	 * @deprecated
+	 * The default constructor of the Microflows class should not be used.
+	 * Use the static microflow invocation methods instead.
+	 */
+	@java.lang.Deprecated(since = "9.12", forRemoval = true)
+	public Microflows() {}
+
 	// These are the microflows for the MyFirstModule module
 	public static myfirstmodule.proxies.ImageSpecialization createImage(IContext context)
 	{
@@ -89,12 +95,13 @@ public class Microflows
 	public static void iVK_CreateAndMerge(IContext context, java.util.List<myfirstmodule.proxies.MergeTestString> _mergeTest)
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();
-		java.util.ArrayList<IMendixObject> listparam_mergeTest = null;
+		java.util.List<IMendixObject> listparam_mergeTest = null;
 		if (_mergeTest != null)
 		{
 			listparam_mergeTest = new java.util.ArrayList<>();
-			for (myfirstmodule.proxies.MergeTestString obj : _mergeTest)
+			for (var obj : _mergeTest) {
 				listparam_mergeTest.add(obj.getMendixObject());
+			}
 		}
 		params.put("MergeTest", listparam_mergeTest);
 

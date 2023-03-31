@@ -24,7 +24,7 @@ public class HttpHeader
 		Value("Value"),
 		HttpHeaders("System.HttpHeaders");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -40,15 +40,17 @@ public class HttpHeader
 
 	public HttpHeader(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.HttpHeader"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected HttpHeader(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject httpHeaderMendixObject)
 	{
-		if (httpHeaderMendixObject == null)
+		if (httpHeaderMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.HttpHeader", httpHeaderMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.HttpHeader");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, httpHeaderMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.httpHeaderMendixObject = httpHeaderMendixObject;
 		this.context = context;
@@ -66,6 +68,9 @@ public class HttpHeader
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.HttpHeader initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -80,6 +85,7 @@ public class HttpHeader
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -88,6 +94,7 @@ public class HttpHeader
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -182,6 +189,7 @@ public class HttpHeader
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of HttpHeaders
 	 */
 	public final system.proxies.HttpMessage getHttpHeaders() throws com.mendix.core.CoreException
@@ -192,13 +200,15 @@ public class HttpHeader
 	/**
 	 * @param context
 	 * @return value of HttpHeaders
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final system.proxies.HttpMessage getHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		system.proxies.HttpMessage result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.HttpHeaders.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = system.proxies.HttpMessage.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -218,10 +228,11 @@ public class HttpHeader
 	 */
 	public final void setHttpHeaders(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.HttpMessage httpheaders)
 	{
-		if (httpheaders == null)
+		if (httpheaders == null) {
 			getMendixObject().setValue(context, MemberNames.HttpHeaders.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.HttpHeaders.toString(), httpheaders.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -243,9 +254,9 @@ public class HttpHeader
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.HttpHeader that = (system.proxies.HttpHeader) obj;
@@ -265,7 +276,7 @@ public class HttpHeader
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.HttpHeader";
+		return entityName;
 	}
 
 	/**

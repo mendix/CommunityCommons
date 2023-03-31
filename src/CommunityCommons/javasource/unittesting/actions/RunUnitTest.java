@@ -28,7 +28,7 @@ public class RunUnitTest extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.unitTest = __unitTest == null ? null : unittesting.proxies.UnitTest.initialize(getContext(), __unitTest);
+		this.unitTest = this.__unitTest == null ? null : unittesting.proxies.UnitTest.initialize(getContext(), __unitTest);
 
 		// BEGIN USER CODE
 		TestManager.instance().runTest(getContext(), unitTest);
@@ -38,6 +38,7 @@ public class RunUnitTest extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

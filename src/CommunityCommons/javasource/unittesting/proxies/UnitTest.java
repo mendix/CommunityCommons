@@ -30,7 +30,7 @@ public class UnitTest
 		_dirty("_dirty"),
 		UnitTest_TestSuite("UnitTesting.UnitTest_TestSuite");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -46,15 +46,17 @@ public class UnitTest
 
 	public UnitTest(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "UnitTesting.UnitTest"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected UnitTest(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject unitTestMendixObject)
 	{
-		if (unitTestMendixObject == null)
+		if (unitTestMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("UnitTesting.UnitTest", unitTestMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a UnitTesting.UnitTest");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, unitTestMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.unitTestMendixObject = unitTestMendixObject;
 		this.context = context;
@@ -72,6 +74,9 @@ public class UnitTest
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static unittesting.proxies.UnitTest initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -86,14 +91,16 @@ public class UnitTest
 
 	public static java.util.List<unittesting.proxies.UnitTest> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<unittesting.proxies.UnitTest> result = new java.util.ArrayList<unittesting.proxies.UnitTest>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//UnitTesting.UnitTest" + xpathConstraint))
-			result.add(unittesting.proxies.UnitTest.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> unittesting.proxies.UnitTest.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -102,6 +109,7 @@ public class UnitTest
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -175,9 +183,9 @@ public class UnitTest
 	public final unittesting.proxies.UnitTestResult getResult(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.Result.toString());
-		if (obj == null)
+		if (obj == null) {
 			return null;
-
+		}
 		return unittesting.proxies.UnitTestResult.valueOf((java.lang.String) obj);
 	}
 
@@ -197,10 +205,11 @@ public class UnitTest
 	 */
 	public final void setResult(com.mendix.systemwideinterfaces.core.IContext context, unittesting.proxies.UnitTestResult result)
 	{
-		if (result != null)
+		if (result != null) {
 			getMendixObject().setValue(context, MemberNames.Result.toString(), result.toString());
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Result.toString(), null);
+		}
 	}
 
 	/**
@@ -420,6 +429,7 @@ public class UnitTest
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of UnitTest_TestSuite
 	 */
 	public final unittesting.proxies.TestSuite getUnitTest_TestSuite() throws com.mendix.core.CoreException
@@ -430,13 +440,15 @@ public class UnitTest
 	/**
 	 * @param context
 	 * @return value of UnitTest_TestSuite
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final unittesting.proxies.TestSuite getUnitTest_TestSuite(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		unittesting.proxies.TestSuite result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.UnitTest_TestSuite.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = unittesting.proxies.TestSuite.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -456,10 +468,11 @@ public class UnitTest
 	 */
 	public final void setUnitTest_TestSuite(com.mendix.systemwideinterfaces.core.IContext context, unittesting.proxies.TestSuite unittest_testsuite)
 	{
-		if (unittest_testsuite == null)
+		if (unittest_testsuite == null) {
 			getMendixObject().setValue(context, MemberNames.UnitTest_TestSuite.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.UnitTest_TestSuite.toString(), unittest_testsuite.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -481,9 +494,9 @@ public class UnitTest
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final unittesting.proxies.UnitTest that = (unittesting.proxies.UnitTest) obj;
@@ -503,7 +516,7 @@ public class UnitTest
 	 */
 	public static java.lang.String getType()
 	{
-		return "UnitTesting.UnitTest";
+		return entityName;
 	}
 
 	/**

@@ -34,12 +34,13 @@ public class MergeMultiplePdfs extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.FilesToMerge = new java.util.ArrayList<system.proxies.FileDocument>();
-		if (__FilesToMerge != null)
-			for (IMendixObject __FilesToMergeElement : __FilesToMerge)
-				this.FilesToMerge.add(system.proxies.FileDocument.initialize(getContext(), __FilesToMergeElement));
+		this.FilesToMerge = java.util.Optional.ofNullable(this.__FilesToMerge)
+			.orElse(java.util.Collections.emptyList())
+			.stream()
+			.map(__FilesToMergeElement -> system.proxies.FileDocument.initialize(getContext(), __FilesToMergeElement))
+			.collect(java.util.stream.Collectors.toList());
 
-		this.MergedDocument = __MergedDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __MergedDocument);
+		this.MergedDocument = this.__MergedDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __MergedDocument);
 
 		// BEGIN USER CODE
 		return Misc.mergePDF(this.getContext(), this.FilesToMerge, this.MergedDocument.getMendixObject());
@@ -48,6 +49,7 @@ public class MergeMultiplePdfs extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

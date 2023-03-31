@@ -25,7 +25,7 @@ public class Session
 		LastActive("LastActive"),
 		Session_User("System.Session_User");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -41,15 +41,17 @@ public class Session
 
 	public Session(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.Session"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected Session(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject sessionMendixObject)
 	{
-		if (sessionMendixObject == null)
+		if (sessionMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.Session", sessionMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.Session");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, sessionMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.sessionMendixObject = sessionMendixObject;
 		this.context = context;
@@ -67,6 +69,9 @@ public class Session
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.Session initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -81,14 +86,16 @@ public class Session
 
 	public static java.util.List<system.proxies.Session> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<system.proxies.Session> result = new java.util.ArrayList<system.proxies.Session>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//System.Session" + xpathConstraint))
-			result.add(system.proxies.Session.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> system.proxies.Session.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -97,6 +104,7 @@ public class Session
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -227,6 +235,7 @@ public class Session
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of Session_User
 	 */
 	public final system.proxies.User getSession_User() throws com.mendix.core.CoreException
@@ -237,13 +246,15 @@ public class Session
 	/**
 	 * @param context
 	 * @return value of Session_User
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final system.proxies.User getSession_User(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		system.proxies.User result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.Session_User.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = system.proxies.User.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -263,10 +274,11 @@ public class Session
 	 */
 	public final void setSession_User(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.User session_user)
 	{
-		if (session_user == null)
+		if (session_user == null) {
 			getMendixObject().setValue(context, MemberNames.Session_User.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Session_User.toString(), session_user.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -288,9 +300,9 @@ public class Session
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.Session that = (system.proxies.Session) obj;
@@ -310,7 +322,7 @@ public class Session
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.Session";
+		return entityName;
 	}
 
 	/**

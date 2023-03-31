@@ -43,9 +43,9 @@ public class DuplicateImageDocument extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.fileToClone = __fileToClone == null ? null : system.proxies.Image.initialize(getContext(), __fileToClone);
+		this.fileToClone = this.__fileToClone == null ? null : system.proxies.Image.initialize(getContext(), __fileToClone);
 
-		this.cloneTarget = __cloneTarget == null ? null : system.proxies.Image.initialize(getContext(), __cloneTarget);
+		this.cloneTarget = this.__cloneTarget == null ? null : system.proxies.Image.initialize(getContext(), __cloneTarget);
 
 		// BEGIN USER CODE
 		return Misc.duplicateImage(this.getContext(), fileToClone.getMendixObject(), cloneTarget.getMendixObject(), thumbWidth.intValue(), thumbHeight.intValue());
@@ -54,6 +54,7 @@ public class DuplicateImageDocument extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

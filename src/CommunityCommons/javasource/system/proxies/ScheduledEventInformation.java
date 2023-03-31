@@ -27,7 +27,7 @@ public class ScheduledEventInformation
 		Status("Status"),
 		ScheduledEventInformation_XASInstance("System.ScheduledEventInformation_XASInstance");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -43,15 +43,17 @@ public class ScheduledEventInformation
 
 	public ScheduledEventInformation(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.ScheduledEventInformation"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected ScheduledEventInformation(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject scheduledEventInformationMendixObject)
 	{
-		if (scheduledEventInformationMendixObject == null)
+		if (scheduledEventInformationMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.ScheduledEventInformation", scheduledEventInformationMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.ScheduledEventInformation");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, scheduledEventInformationMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.scheduledEventInformationMendixObject = scheduledEventInformationMendixObject;
 		this.context = context;
@@ -69,6 +71,9 @@ public class ScheduledEventInformation
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.ScheduledEventInformation initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -83,14 +88,16 @@ public class ScheduledEventInformation
 
 	public static java.util.List<system.proxies.ScheduledEventInformation> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<system.proxies.ScheduledEventInformation> result = new java.util.ArrayList<system.proxies.ScheduledEventInformation>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//System.ScheduledEventInformation" + xpathConstraint))
-			result.add(system.proxies.ScheduledEventInformation.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> system.proxies.ScheduledEventInformation.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -99,6 +106,7 @@ public class ScheduledEventInformation
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -280,9 +288,9 @@ public class ScheduledEventInformation
 	public final system.proxies.EventStatus getStatus(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.Status.toString());
-		if (obj == null)
+		if (obj == null) {
 			return null;
-
+		}
 		return system.proxies.EventStatus.valueOf((java.lang.String) obj);
 	}
 
@@ -302,13 +310,15 @@ public class ScheduledEventInformation
 	 */
 	public final void setStatus(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.EventStatus status)
 	{
-		if (status != null)
+		if (status != null) {
 			getMendixObject().setValue(context, MemberNames.Status.toString(), status.toString());
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Status.toString(), null);
+		}
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of ScheduledEventInformation_XASInstance
 	 */
 	public final system.proxies.XASInstance getScheduledEventInformation_XASInstance() throws com.mendix.core.CoreException
@@ -319,13 +329,15 @@ public class ScheduledEventInformation
 	/**
 	 * @param context
 	 * @return value of ScheduledEventInformation_XASInstance
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final system.proxies.XASInstance getScheduledEventInformation_XASInstance(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		system.proxies.XASInstance result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.ScheduledEventInformation_XASInstance.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = system.proxies.XASInstance.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -345,10 +357,11 @@ public class ScheduledEventInformation
 	 */
 	public final void setScheduledEventInformation_XASInstance(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.XASInstance scheduledeventinformation_xasinstance)
 	{
-		if (scheduledeventinformation_xasinstance == null)
+		if (scheduledeventinformation_xasinstance == null) {
 			getMendixObject().setValue(context, MemberNames.ScheduledEventInformation_XASInstance.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.ScheduledEventInformation_XASInstance.toString(), scheduledeventinformation_xasinstance.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -370,9 +383,9 @@ public class ScheduledEventInformation
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.ScheduledEventInformation that = (system.proxies.ScheduledEventInformation) obj;
@@ -392,7 +405,7 @@ public class ScheduledEventInformation
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.ScheduledEventInformation";
+		return entityName;
 	}
 
 	/**

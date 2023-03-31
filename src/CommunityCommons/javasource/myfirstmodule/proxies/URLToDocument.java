@@ -27,7 +27,7 @@ public class URLToDocument extends system.proxies.FileDocument
 		HasContents("HasContents"),
 		Size("Size");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -43,14 +43,15 @@ public class URLToDocument extends system.proxies.FileDocument
 
 	public URLToDocument(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.URLToDocument"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected URLToDocument(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject uRLToDocumentMendixObject)
 	{
 		super(context, uRLToDocumentMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.URLToDocument", uRLToDocumentMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.URLToDocument");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, uRLToDocumentMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -65,6 +66,9 @@ public class URLToDocument extends system.proxies.FileDocument
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.URLToDocument initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -79,10 +83,11 @@ public class URLToDocument extends system.proxies.FileDocument
 
 	public static java.util.List<myfirstmodule.proxies.URLToDocument> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.URLToDocument> result = new java.util.ArrayList<myfirstmodule.proxies.URLToDocument>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.URLToDocument" + xpathConstraint))
-			result.add(myfirstmodule.proxies.URLToDocument.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.URLToDocument.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
@@ -232,9 +237,9 @@ public class URLToDocument extends system.proxies.FileDocument
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.URLToDocument that = (myfirstmodule.proxies.URLToDocument) obj;
@@ -254,7 +259,7 @@ public class URLToDocument extends system.proxies.FileDocument
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.URLToDocument";
+		return entityName;
 	}
 
 	/**

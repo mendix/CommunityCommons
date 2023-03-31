@@ -8,6 +8,14 @@ import com.mendix.core.Core;
 
 public class Constants
 {
+	/**
+	 * @deprecated
+	 * The default constructor of the Constants class should not be used.
+	 * Use the static get methods instead.
+	 */
+	@java.lang.Deprecated(since = "9.12", forRemoval = true)
+	public Constants() {}
+
 	// These are the constants for the Atlas_UI_Resources module
 
 	public static java.lang.String getAtlas_UI_Resources_Version()

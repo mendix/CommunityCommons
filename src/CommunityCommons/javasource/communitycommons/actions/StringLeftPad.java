@@ -46,6 +46,7 @@ public class StringLeftPad extends CustomJavaAction<java.lang.String>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

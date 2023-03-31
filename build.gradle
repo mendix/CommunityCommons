@@ -13,7 +13,7 @@ sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    mendixPublicApiVersion = '8.12.0'
+    mendixPublicApiVersion = '9.18.0'
 }
 
 mxMarketplace {
@@ -39,9 +39,10 @@ repositories {
 dependencies {
     testImplementation(
             [group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"],
-            [group: 'junit', name: 'junit', version: '4.13.2'],
-            [group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'],
-            [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13']
+            [group: 'junit', name: 'junit', version: '4.13.1'],
+            [group: 'org.apache.httpcomponents.core5', name: 'httpcore5', version: '5.0.3'],
+            [group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.0.3'],
+            [group: 'org.hamcrest', name: 'hamcrest', version: '2.2']
     )
 
     compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"])
@@ -51,8 +52,13 @@ dependencies {
             [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
             [group: 'commons-io', name: 'commons-io', version: '2.11.0'],
             [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
-            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
+            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'],
+            [group: 'org.apache.commons', name: 'commons-text', version: '1.10.0']
     )
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation"
 }
 
 sourceSets {

@@ -11,6 +11,9 @@ package myfirstmodule.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import communitycommons.ORM;
 import system.proxies.FileDocument;
@@ -29,6 +32,8 @@ public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
 		FileDocument doc = new FileDocument(getContext());
 		doc.setName("TestDocument");
 		doc.getMendixObject().setValue(getContext(), "__UUID__", UUID.randomUUID().toString());
+		InputStream is = new ByteArrayInputStream("foo".getBytes(StandardCharsets.UTF_8));
+		doc.getMendixObject().setValue(getContext(), "Contents", is);
 		doc.commit(getContext());
 
 		FileDocument clonedDoc = new FileDocument(getContext());
@@ -44,6 +49,7 @@ public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

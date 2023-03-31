@@ -7,12 +7,18 @@ package unittesting.proxies.microflows;
 import java.util.HashMap;
 import java.util.Map;
 import com.mendix.core.Core;
-import com.mendix.core.CoreException;
-import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
 
 public class Microflows
 {
+	/**
+	 * @deprecated
+	 * The default constructor of the Microflows class should not be used.
+	 * Use the static microflow invocation methods instead.
+	 */
+	@java.lang.Deprecated(since = "9.12", forRemoval = true)
+	public Microflows() {}
+
 	// These are the microflows for the UnitTesting module
 	public static void assertTrue1(IContext context, boolean _valueToAssert)
 	{
@@ -31,6 +37,11 @@ public class Microflows
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();
 		Core.microflowCall("UnitTesting.IVK_FindAllTests").withParams(params).execute(context);
+	}
+	public static void iVK_RefreshUnitTestOverview(IContext context)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		Core.microflowCall("UnitTesting.IVK_RefreshUnitTestOverview").withParams(params).execute(context);
 	}
 	public static void iVK_RemoveAllAndFindAllTests(IContext context)
 	{

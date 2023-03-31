@@ -24,7 +24,7 @@ public class UserReportInfo
 		Hash("Hash"),
 		UserReportInfo_User("System.UserReportInfo_User");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -40,15 +40,17 @@ public class UserReportInfo
 
 	public UserReportInfo(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.UserReportInfo"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected UserReportInfo(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject userReportInfoMendixObject)
 	{
-		if (userReportInfoMendixObject == null)
+		if (userReportInfoMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.UserReportInfo", userReportInfoMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.UserReportInfo");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, userReportInfoMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.userReportInfoMendixObject = userReportInfoMendixObject;
 		this.context = context;
@@ -66,6 +68,9 @@ public class UserReportInfo
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.UserReportInfo initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -80,14 +85,16 @@ public class UserReportInfo
 
 	public static java.util.List<system.proxies.UserReportInfo> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<system.proxies.UserReportInfo> result = new java.util.ArrayList<system.proxies.UserReportInfo>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//System.UserReportInfo" + xpathConstraint))
-			result.add(system.proxies.UserReportInfo.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> system.proxies.UserReportInfo.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -96,6 +103,7 @@ public class UserReportInfo
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -133,9 +141,9 @@ public class UserReportInfo
 	public final system.proxies.UserType getUserType(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.UserType.toString());
-		if (obj == null)
+		if (obj == null) {
 			return null;
-
+		}
 		return system.proxies.UserType.valueOf((java.lang.String) obj);
 	}
 
@@ -155,10 +163,11 @@ public class UserReportInfo
 	 */
 	public final void setUserType(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.UserType usertype)
 	{
-		if (usertype != null)
+		if (usertype != null) {
 			getMendixObject().setValue(context, MemberNames.UserType.toString(), usertype.toString());
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.UserType.toString(), null);
+		}
 	}
 
 	/**
@@ -198,6 +207,7 @@ public class UserReportInfo
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of UserReportInfo_User
 	 */
 	public final system.proxies.User getUserReportInfo_User() throws com.mendix.core.CoreException
@@ -208,13 +218,15 @@ public class UserReportInfo
 	/**
 	 * @param context
 	 * @return value of UserReportInfo_User
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final system.proxies.User getUserReportInfo_User(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		system.proxies.User result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.UserReportInfo_User.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = system.proxies.User.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -234,10 +246,11 @@ public class UserReportInfo
 	 */
 	public final void setUserReportInfo_User(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.User userreportinfo_user)
 	{
-		if (userreportinfo_user == null)
+		if (userreportinfo_user == null) {
 			getMendixObject().setValue(context, MemberNames.UserReportInfo_User.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.UserReportInfo_User.toString(), userreportinfo_user.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -259,9 +272,9 @@ public class UserReportInfo
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.UserReportInfo that = (system.proxies.UserReportInfo) obj;
@@ -281,7 +294,7 @@ public class UserReportInfo
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.UserReportInfo";
+		return entityName;
 	}
 
 	/**

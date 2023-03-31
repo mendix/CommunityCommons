@@ -20,7 +20,7 @@ public class HttpRequest extends system.proxies.HttpMessage
 		HttpVersion("HttpVersion"),
 		Content("Content");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -36,14 +36,15 @@ public class HttpRequest extends system.proxies.HttpMessage
 
 	public HttpRequest(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.HttpRequest"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected HttpRequest(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject httpRequestMendixObject)
 	{
 		super(context, httpRequestMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("System.HttpRequest", httpRequestMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.HttpRequest");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, httpRequestMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -58,6 +59,9 @@ public class HttpRequest extends system.proxies.HttpMessage
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.HttpRequest initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -109,9 +113,9 @@ public class HttpRequest extends system.proxies.HttpMessage
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.HttpRequest that = (system.proxies.HttpRequest) obj;
@@ -131,7 +135,7 @@ public class HttpRequest extends system.proxies.HttpMessage
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.HttpRequest";
+		return entityName;
 	}
 
 	/**

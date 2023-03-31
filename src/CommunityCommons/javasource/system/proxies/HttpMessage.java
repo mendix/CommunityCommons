@@ -23,7 +23,7 @@ public class HttpMessage
 		HttpVersion("HttpVersion"),
 		Content("Content");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -39,15 +39,17 @@ public class HttpMessage
 
 	public HttpMessage(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.HttpMessage"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected HttpMessage(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject httpMessageMendixObject)
 	{
-		if (httpMessageMendixObject == null)
+		if (httpMessageMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.HttpMessage", httpMessageMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.HttpMessage");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, httpMessageMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.httpMessageMendixObject = httpMessageMendixObject;
 		this.context = context;
@@ -65,15 +67,18 @@ public class HttpMessage
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.HttpMessage initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (com.mendix.core.Core.isSubClassOf("System.HttpRequest", mendixObject.getType()))
+		if (com.mendix.core.Core.isSubClassOf("System.HttpRequest", mendixObject.getType())) {
 			return system.proxies.HttpRequest.initialize(context, mendixObject);
-
-		if (com.mendix.core.Core.isSubClassOf("System.HttpResponse", mendixObject.getType()))
+		}
+		if (com.mendix.core.Core.isSubClassOf("System.HttpResponse", mendixObject.getType())) {
 			return system.proxies.HttpResponse.initialize(context, mendixObject);
-
+		}
 		return new system.proxies.HttpMessage(context, mendixObject);
 	}
 
@@ -85,6 +90,7 @@ public class HttpMessage
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -93,6 +99,7 @@ public class HttpMessage
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -205,9 +212,9 @@ public class HttpMessage
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.HttpMessage that = (system.proxies.HttpMessage) obj;
@@ -227,7 +234,7 @@ public class HttpMessage
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.HttpMessage";
+		return entityName;
 	}
 
 	/**

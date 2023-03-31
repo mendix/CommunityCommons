@@ -24,7 +24,7 @@ public class Customer
 		Customer_Item_Selected("MyFirstModule.Customer_Item_Selected"),
 		Customer_Item("MyFirstModule.Customer_Item");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -40,15 +40,17 @@ public class Customer
 
 	public Customer(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.Customer"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected Customer(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject customerMendixObject)
 	{
-		if (customerMendixObject == null)
+		if (customerMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.Customer", customerMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.Customer");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, customerMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.customerMendixObject = customerMendixObject;
 		this.context = context;
@@ -66,6 +68,9 @@ public class Customer
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.Customer initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -80,14 +85,16 @@ public class Customer
 
 	public static java.util.List<myfirstmodule.proxies.Customer> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.Customer> result = new java.util.ArrayList<myfirstmodule.proxies.Customer>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.Customer" + xpathConstraint))
-			result.add(myfirstmodule.proxies.Customer.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.Customer.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -96,6 +103,7 @@ public class Customer
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -154,6 +162,7 @@ public class Customer
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of Customer_Item_Selected
 	 */
 	public final myfirstmodule.proxies.Item getCustomer_Item_Selected() throws com.mendix.core.CoreException
@@ -164,13 +173,15 @@ public class Customer
 	/**
 	 * @param context
 	 * @return value of Customer_Item_Selected
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final myfirstmodule.proxies.Item getCustomer_Item_Selected(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		myfirstmodule.proxies.Item result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.Customer_Item_Selected.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = myfirstmodule.proxies.Item.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -190,13 +201,15 @@ public class Customer
 	 */
 	public final void setCustomer_Item_Selected(com.mendix.systemwideinterfaces.core.IContext context, myfirstmodule.proxies.Item customer_item_selected)
 	{
-		if (customer_item_selected == null)
+		if (customer_item_selected == null) {
 			getMendixObject().setValue(context, MemberNames.Customer_Item_Selected.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Customer_Item_Selected.toString(), customer_item_selected.getMendixObject().getId());
+		}
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of Customer_Item
 	 */
 	public final java.util.List<myfirstmodule.proxies.Item> getCustomer_Item() throws com.mendix.core.CoreException
@@ -207,16 +220,19 @@ public class Customer
 	/**
 	 * @param context
 	 * @return value of Customer_Item
+	 * @throws com.mendix.core.CoreException
 	 */
 	@SuppressWarnings("unchecked")
 	public final java.util.List<myfirstmodule.proxies.Item> getCustomer_Item(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.Item> result = new java.util.ArrayList<myfirstmodule.proxies.Item>();
+		java.util.List<myfirstmodule.proxies.Item> result = new java.util.ArrayList<>();
 		Object valueObject = getMendixObject().getValue(context, MemberNames.Customer_Item.toString());
-		if (valueObject == null)
+		if (valueObject == null) {
 			return result;
-		for (com.mendix.systemwideinterfaces.core.IMendixObject mendixObject : com.mendix.core.Core.retrieveIdList(context, (java.util.List<com.mendix.systemwideinterfaces.core.IMendixIdentifier>) valueObject))
+		}
+		for (com.mendix.systemwideinterfaces.core.IMendixObject mendixObject : com.mendix.core.Core.retrieveIdList(context, (java.util.List<com.mendix.systemwideinterfaces.core.IMendixIdentifier>) valueObject)) {
 			result.add(myfirstmodule.proxies.Item.initialize(context, mendixObject));
+		}
 		return result;
 	}
 
@@ -236,9 +252,11 @@ public class Customer
 	 */
 	public final void setCustomer_Item(com.mendix.systemwideinterfaces.core.IContext context, java.util.List<myfirstmodule.proxies.Item> customer_item)
 	{
-		java.util.List<com.mendix.systemwideinterfaces.core.IMendixIdentifier> identifiers = new java.util.ArrayList<com.mendix.systemwideinterfaces.core.IMendixIdentifier>();
-		for (myfirstmodule.proxies.Item proxyObject : customer_item)
-			identifiers.add(proxyObject.getMendixObject().getId());
+		var identifiers = customer_item
+			.stream()
+			.map(proxyObject -> proxyObject.getMendixObject().getId())
+			.collect(java.util.stream.Collectors.toList());
+		
 		getMendixObject().setValue(context, MemberNames.Customer_Item.toString(), identifiers);
 	}
 
@@ -261,9 +279,9 @@ public class Customer
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.Customer that = (myfirstmodule.proxies.Customer) obj;
@@ -283,7 +301,7 @@ public class Customer
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.Customer";
+		return entityName;
 	}
 
 	/**

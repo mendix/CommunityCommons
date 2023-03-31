@@ -25,7 +25,7 @@ public class TokenInformation
 		UserAgent("UserAgent"),
 		TokenInformation_User("System.TokenInformation_User");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -41,15 +41,17 @@ public class TokenInformation
 
 	public TokenInformation(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.TokenInformation"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected TokenInformation(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject tokenInformationMendixObject)
 	{
-		if (tokenInformationMendixObject == null)
+		if (tokenInformationMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("System.TokenInformation", tokenInformationMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.TokenInformation");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, tokenInformationMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.tokenInformationMendixObject = tokenInformationMendixObject;
 		this.context = context;
@@ -67,6 +69,9 @@ public class TokenInformation
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.TokenInformation initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -81,14 +86,16 @@ public class TokenInformation
 
 	public static java.util.List<system.proxies.TokenInformation> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<system.proxies.TokenInformation> result = new java.util.ArrayList<system.proxies.TokenInformation>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//System.TokenInformation" + xpathConstraint))
-			result.add(system.proxies.TokenInformation.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> system.proxies.TokenInformation.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -97,6 +104,7 @@ public class TokenInformation
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -210,6 +218,7 @@ public class TokenInformation
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of TokenInformation_User
 	 */
 	public final system.proxies.User getTokenInformation_User() throws com.mendix.core.CoreException
@@ -220,13 +229,15 @@ public class TokenInformation
 	/**
 	 * @param context
 	 * @return value of TokenInformation_User
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final system.proxies.User getTokenInformation_User(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		system.proxies.User result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.TokenInformation_User.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = system.proxies.User.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -246,10 +257,11 @@ public class TokenInformation
 	 */
 	public final void setTokenInformation_User(com.mendix.systemwideinterfaces.core.IContext context, system.proxies.User tokeninformation_user)
 	{
-		if (tokeninformation_user == null)
+		if (tokeninformation_user == null) {
 			getMendixObject().setValue(context, MemberNames.TokenInformation_User.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.TokenInformation_User.toString(), tokeninformation_user.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -271,9 +283,9 @@ public class TokenInformation
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.TokenInformation that = (system.proxies.TokenInformation) obj;
@@ -293,7 +305,7 @@ public class TokenInformation
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.TokenInformation";
+		return entityName;
 	}
 
 	/**

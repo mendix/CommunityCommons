@@ -4,6 +4,9 @@
 
 package system.proxies;
 
+/**
+ * An entity that inherits from the System.FileDocument entity. Used to store images. The content of the file is verified to be an image. In some places, thumbnails are generated.
+ */
 public class Image extends system.proxies.FileDocument
 {
 	/**
@@ -24,7 +27,7 @@ public class Image extends system.proxies.FileDocument
 		HasContents("HasContents"),
 		Size("Size");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -40,14 +43,15 @@ public class Image extends system.proxies.FileDocument
 
 	public Image(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.Image"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected Image(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject imageMendixObject)
 	{
 		super(context, imageMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("System.Image", imageMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.Image");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, imageMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -62,12 +66,15 @@ public class Image extends system.proxies.FileDocument
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.Image initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.ImageSpecialization", mendixObject.getType()))
+		if (com.mendix.core.Core.isSubClassOf("MyFirstModule.ImageSpecialization", mendixObject.getType())) {
 			return myfirstmodule.proxies.ImageSpecialization.initialize(context, mendixObject);
-
+		}
 		return new system.proxies.Image(context, mendixObject);
 	}
 
@@ -79,10 +86,11 @@ public class Image extends system.proxies.FileDocument
 
 	public static java.util.List<? extends system.proxies.Image> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<system.proxies.Image> result = new java.util.ArrayList<system.proxies.Image>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//System.Image" + xpathConstraint))
-			result.add(system.proxies.Image.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> system.proxies.Image.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
@@ -124,9 +132,9 @@ public class Image extends system.proxies.FileDocument
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.Image that = (system.proxies.Image) obj;
@@ -146,7 +154,7 @@ public class Image extends system.proxies.FileDocument
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.Image";
+		return entityName;
 	}
 
 	/**

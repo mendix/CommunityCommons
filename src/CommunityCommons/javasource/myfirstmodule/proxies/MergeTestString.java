@@ -22,7 +22,7 @@ public class MergeTestString
 	{
 		Name("Name");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -38,15 +38,17 @@ public class MergeTestString
 
 	public MergeTestString(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.MergeTestString"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected MergeTestString(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mergeTestStringMendixObject)
 	{
-		if (mergeTestStringMendixObject == null)
+		if (mergeTestStringMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.MergeTestString", mergeTestStringMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.MergeTestString");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, mergeTestStringMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.mergeTestStringMendixObject = mergeTestStringMendixObject;
 		this.context = context;
@@ -64,6 +66,9 @@ public class MergeTestString
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.MergeTestString initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -78,14 +83,16 @@ public class MergeTestString
 
 	public static java.util.List<myfirstmodule.proxies.MergeTestString> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.MergeTestString> result = new java.util.ArrayList<myfirstmodule.proxies.MergeTestString>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.MergeTestString" + xpathConstraint))
-			result.add(myfirstmodule.proxies.MergeTestString.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.MergeTestString.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -94,6 +101,7 @@ public class MergeTestString
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -170,9 +178,9 @@ public class MergeTestString
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.MergeTestString that = (myfirstmodule.proxies.MergeTestString) obj;
@@ -192,7 +200,7 @@ public class MergeTestString
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.MergeTestString";
+		return entityName;
 	}
 
 	/**

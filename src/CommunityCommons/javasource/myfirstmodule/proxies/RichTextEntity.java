@@ -26,7 +26,7 @@ public class RichTextEntity
 		SanitizedText("SanitizedText"),
 		RichTextEntity_PdfOverlay("MyFirstModule.RichTextEntity_PdfOverlay");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -42,15 +42,17 @@ public class RichTextEntity
 
 	public RichTextEntity(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "MyFirstModule.RichTextEntity"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected RichTextEntity(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject richTextEntityMendixObject)
 	{
-		if (richTextEntityMendixObject == null)
+		if (richTextEntityMendixObject == null) {
 			throw new java.lang.IllegalArgumentException("The given object cannot be null.");
-		if (!com.mendix.core.Core.isSubClassOf("MyFirstModule.RichTextEntity", richTextEntityMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a MyFirstModule.RichTextEntity");
+		}
+		if (!com.mendix.core.Core.isSubClassOf(entityName, richTextEntityMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 
 		this.richTextEntityMendixObject = richTextEntityMendixObject;
 		this.context = context;
@@ -68,6 +70,9 @@ public class RichTextEntity
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static myfirstmodule.proxies.RichTextEntity initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -82,14 +87,16 @@ public class RichTextEntity
 
 	public static java.util.List<myfirstmodule.proxies.RichTextEntity> load(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String xpathConstraint) throws com.mendix.core.CoreException
 	{
-		java.util.List<myfirstmodule.proxies.RichTextEntity> result = new java.util.ArrayList<myfirstmodule.proxies.RichTextEntity>();
-		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//MyFirstModule.RichTextEntity" + xpathConstraint))
-			result.add(myfirstmodule.proxies.RichTextEntity.initialize(context, obj));
-		return result;
+		return com.mendix.core.Core.createXPathQuery(String.format("//%1$s%2$s", entityName, xpathConstraint))
+			.execute(context)
+			.stream()
+			.map(obj -> myfirstmodule.proxies.RichTextEntity.initialize(context, obj))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * Commit the changes made on this proxy object.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit() throws com.mendix.core.CoreException
 	{
@@ -98,6 +105,7 @@ public class RichTextEntity
 
 	/**
 	 * Commit the changes made on this proxy object using the specified context.
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final void commit(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
@@ -207,9 +215,9 @@ public class RichTextEntity
 	public final myfirstmodule.proxies.Enumeration getPolicy(com.mendix.systemwideinterfaces.core.IContext context)
 	{
 		Object obj = getMendixObject().getValue(context, MemberNames.Policy.toString());
-		if (obj == null)
+		if (obj == null) {
 			return null;
-
+		}
 		return myfirstmodule.proxies.Enumeration.valueOf((java.lang.String) obj);
 	}
 
@@ -229,10 +237,11 @@ public class RichTextEntity
 	 */
 	public final void setPolicy(com.mendix.systemwideinterfaces.core.IContext context, myfirstmodule.proxies.Enumeration policy)
 	{
-		if (policy != null)
+		if (policy != null) {
 			getMendixObject().setValue(context, MemberNames.Policy.toString(), policy.toString());
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.Policy.toString(), null);
+		}
 	}
 
 	/**
@@ -272,6 +281,7 @@ public class RichTextEntity
 	}
 
 	/**
+	 * @throws com.mendix.core.CoreException
 	 * @return value of RichTextEntity_PdfOverlay
 	 */
 	public final myfirstmodule.proxies.PdfOverlay getRichTextEntity_PdfOverlay() throws com.mendix.core.CoreException
@@ -282,13 +292,15 @@ public class RichTextEntity
 	/**
 	 * @param context
 	 * @return value of RichTextEntity_PdfOverlay
+	 * @throws com.mendix.core.CoreException
 	 */
 	public final myfirstmodule.proxies.PdfOverlay getRichTextEntity_PdfOverlay(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
 	{
 		myfirstmodule.proxies.PdfOverlay result = null;
 		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.RichTextEntity_PdfOverlay.toString());
-		if (identifier != null)
+		if (identifier != null) {
 			result = myfirstmodule.proxies.PdfOverlay.load(context, identifier);
+		}
 		return result;
 	}
 
@@ -308,10 +320,11 @@ public class RichTextEntity
 	 */
 	public final void setRichTextEntity_PdfOverlay(com.mendix.systemwideinterfaces.core.IContext context, myfirstmodule.proxies.PdfOverlay richtextentity_pdfoverlay)
 	{
-		if (richtextentity_pdfoverlay == null)
+		if (richtextentity_pdfoverlay == null) {
 			getMendixObject().setValue(context, MemberNames.RichTextEntity_PdfOverlay.toString(), null);
-		else
+		} else {
 			getMendixObject().setValue(context, MemberNames.RichTextEntity_PdfOverlay.toString(), richtextentity_pdfoverlay.getMendixObject().getId());
+		}
 	}
 
 	/**
@@ -333,9 +346,9 @@ public class RichTextEntity
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final myfirstmodule.proxies.RichTextEntity that = (myfirstmodule.proxies.RichTextEntity) obj;
@@ -355,7 +368,7 @@ public class RichTextEntity
 	 */
 	public static java.lang.String getType()
 	{
-		return "MyFirstModule.RichTextEntity";
+		return entityName;
 	}
 
 	/**

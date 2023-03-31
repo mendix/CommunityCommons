@@ -25,7 +25,7 @@ public class SoapFault extends system.proxies.Error
 		Message("Message"),
 		Stacktrace("Stacktrace");
 
-		private java.lang.String metaName;
+		private final java.lang.String metaName;
 
 		MemberNames(java.lang.String s)
 		{
@@ -41,14 +41,15 @@ public class SoapFault extends system.proxies.Error
 
 	public SoapFault(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		this(context, com.mendix.core.Core.instantiate(context, "System.SoapFault"));
+		this(context, com.mendix.core.Core.instantiate(context, entityName));
 	}
 
 	protected SoapFault(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject soapFaultMendixObject)
 	{
 		super(context, soapFaultMendixObject);
-		if (!com.mendix.core.Core.isSubClassOf("System.SoapFault", soapFaultMendixObject.getType()))
-			throw new java.lang.IllegalArgumentException("The given object is not a System.SoapFault");
+		if (!com.mendix.core.Core.isSubClassOf(entityName, soapFaultMendixObject.getType())) {
+			throw new java.lang.IllegalArgumentException(String.format("The given object is not a %s", entityName));
+		}	
 	}
 
 	/**
@@ -63,6 +64,9 @@ public class SoapFault extends system.proxies.Error
 	/**
 	 * Initialize a proxy using context (recommended). This context will be used for security checking when the get- and set-methods without context parameters are called.
 	 * The get- and set-methods with context parameter should be used when for instance sudo access is necessary (IContext.createSudoClone() can be used to obtain sudo access).
+	 * @param context The context to be used
+	 * @param mendixObject The Mendix object for the new instance
+	 * @return a new instance of this proxy class
 	 */
 	public static system.proxies.SoapFault initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
@@ -258,9 +262,9 @@ public class SoapFault extends system.proxies.Error
 	@java.lang.Override
 	public boolean equals(Object obj)
 	{
-		if (obj == this)
+		if (obj == this) {
 			return true;
-
+		}
 		if (obj != null && getClass().equals(obj.getClass()))
 		{
 			final system.proxies.SoapFault that = (system.proxies.SoapFault) obj;
@@ -280,7 +284,7 @@ public class SoapFault extends system.proxies.Error
 	 */
 	public static java.lang.String getType()
 	{
-		return "System.SoapFault";
+		return entityName;
 	}
 
 	/**

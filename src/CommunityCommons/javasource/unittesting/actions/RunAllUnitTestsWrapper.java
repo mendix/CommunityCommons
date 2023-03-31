@@ -30,7 +30,7 @@ public class RunAllUnitTestsWrapper extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.testRun = __testRun == null ? null : unittesting.proxies.TestSuite.initialize(getContext(), __testRun);
+		this.testRun = this.__testRun == null ? null : unittesting.proxies.TestSuite.initialize(getContext(), __testRun);
 
 		// BEGIN USER CODE
 		try {
@@ -47,6 +47,7 @@ public class RunAllUnitTestsWrapper extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()
