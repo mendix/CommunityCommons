@@ -61,12 +61,12 @@ public class DeepClone extends CustomJavaAction<java.lang.Boolean>
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-        this.membersToSkip       = this.membersToSkip == null       ? "" : this.membersToSkip;
-        this.membersToKeep       = this.membersToKeep == null       ? "" : this.membersToKeep;
-        this.reverseAssociations = this.reverseAssociations == null ? "" : this.reverseAssociations;
-        this.excludeEntities     = this.excludeEntities == null     ? "" : this.excludeEntities;
-        this.excludeModules      = this.excludeModules == null      ? "" : this.excludeModules;
-	    
+		java.lang.String membersToSkip       = this.membersToSkip == null       ? "" : this.membersToSkip;
+		java.lang.String membersToKeep       = this.membersToKeep == null       ? "" : this.membersToKeep;
+		java.lang.String reverseAssociations = this.reverseAssociations == null ? "" : this.reverseAssociations;
+		java.lang.String excludeEntities     = this.excludeEntities == null     ? "" : this.excludeEntities;
+		java.lang.String excludeModules      = this.excludeModules == null      ? "" : this.excludeModules;
+
 		ORM.deepClone(getContext(), source, target, membersToSkip, membersToKeep, reverseAssociations, excludeEntities, excludeModules);
 		return true;
 		// END USER CODE
