@@ -36,6 +36,8 @@ package.xml
 /src/CommunityCommons/build/
 /src/CommunityCommons/javasource/*/proxies/
 /src/CommunityCommons/project-settings.user.json
+/src/CommunityCommons/theme/native/
+/src/CommunityCommons/theme/web
 /src/CommunityCommons/themesource/
 /src/CommunityCommons/userlib/
 /nbproject/
