@@ -32,9 +32,12 @@ src/javasource/system/UserActionsRegistrar.java
 /build/
 private/cache/retriever/catalog.xml
 package.xml
-/src/CommunityCommons/userlib/
-/src/CommunityCommons/build/
 *.mda
+/src/CommunityCommons/build/
+/src/CommunityCommons/javasource/*/proxies/
+/src/CommunityCommons/project-settings.user.json
+/src/CommunityCommons/themesource/
+/src/CommunityCommons/userlib/
 /nbproject/
 /.nb-gradle-properties
 *.bak
