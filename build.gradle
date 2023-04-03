@@ -96,17 +96,19 @@ clean {
     delete "$userLibDir"
 }
 
+tasks.named('exportModule') {
+    dependsOn 'copyRuntimeToUserlib'
+}
+
 release {
     tagTemplate = '$name-$version'
 }
 
 task afterReleaseBuildTask {
     dependsOn 'clean'
-    dependsOn 'copyRuntimeToUserlib'
     dependsOn 'publishModuleToMarketplace'
 
-    tasks.findByName('copyRuntimeToUserlib').mustRunAfter 'clean'
-    tasks.findByName('publishModuleToMarketplace').mustRunAfter 'copyRuntimeToUserlib'
+    tasks.findByName('publishModuleToMarketplace').mustRunAfter 'clean'
 }
 
 afterReleaseBuild.dependsOn afterReleaseBuildTask
