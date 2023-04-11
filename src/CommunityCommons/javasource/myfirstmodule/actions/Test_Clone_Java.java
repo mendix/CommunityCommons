@@ -33,7 +33,7 @@ public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
 		doc.setName("TestDocument");
 		doc.getMendixObject().setValue(getContext(), "__UUID__", UUID.randomUUID().toString());
 		InputStream is = new ByteArrayInputStream("foo".getBytes(StandardCharsets.UTF_8));
-		doc.getMendixObject().setValue(getContext(), "Contents", is);
+		doc.getMendixObject().setValue(getContext(), FileDocument.MemberNames.Contents.toString(), is);
 		doc.commit(getContext());
 
 		FileDocument clonedDoc = new FileDocument(getContext());
