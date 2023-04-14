@@ -1,6 +1,5 @@
 package unittesting;
 
-
 public class AbstractUnitTest
 {
 	private static long	startTime;
@@ -22,5 +21,4 @@ public class AbstractUnitTest
 	{
 		TestManager.instance().reportStep(lastStep1);
 	}
-	
 }

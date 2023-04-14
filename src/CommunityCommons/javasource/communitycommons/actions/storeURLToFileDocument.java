@@ -42,7 +42,7 @@ public class storeURLToFileDocument extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.document = __document == null ? null : system.proxies.FileDocument.initialize(getContext(), __document);
+		this.document = this.__document == null ? null : system.proxies.FileDocument.initialize(getContext(), __document);
 
 		// BEGIN USER CODE
 		return Misc.storeURLToFileDocument(this.getContext(), url, document.getMendixObject(), filename);
@@ -51,6 +51,7 @@ public class storeURLToFileDocument extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

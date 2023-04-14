@@ -59,6 +59,7 @@ public class executeMicroflowInBatches extends CustomJavaAction<java.lang.Boolea
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

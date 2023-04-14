@@ -316,7 +316,7 @@ public class Misc {
 			try {
 				session = initializeSessionForUser(newContext, username);
 			} catch (CoreException e) {
-				newContext.rollbackTransAction();
+				newContext.rollbackTransaction();
 
 				throw new RuntimeException("Failed to initialize session for user: " + username + ": " + e.getMessage(), e);
 			} finally {

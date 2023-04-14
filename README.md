@@ -4,7 +4,7 @@ Add reusable Java methods that can be called from microflows and custom Java act
 
 In version 7.2.0 of this module, we introduced a new way of dependency management using a Gradle build file. Unfortunately, this does not mean that obsolete JARs are automatically deleted from your apps' userlib folders when you import this module into your app model.
 
-The Community Commons container project contains a variety of predesigned unit tests. To use these tests, download the Unit Testing module from the Mendix Marketplace and run `gradle copyAllToUserlib`. This module has a dependency on the Object Handling module, so that module should also be imported to your app if you want to run the tests.
+The Community Commons container project contains a variety of predesigned unit tests. To use these tests, run `gradle copyAllToUserlib`, start the project in Studio Pro and run the tests in a web browser.
 
 Please see [Community Commons Function Library](https://docs.mendix.com/appstore/modules/community-commons-function-library) in the Mendix documentation for details.
  

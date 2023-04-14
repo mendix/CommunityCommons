@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -32,7 +33,6 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IDataType;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 
-import communitycommons.XPath;
 import unittesting.proxies.TestSuite;
 import unittesting.proxies.UnitTest;
 import unittesting.proxies.UnitTestResult;
@@ -63,7 +63,6 @@ public class TestManager
 	private static TestManager	instance;
 	public static ILogNode LOG = Core.getLogger("UnitTestRunner");
 
-	private static final Map<String, Object> emptyArguments = new HashMap<String, Object>();
 	private static final Map<String, Class<?>[]> classCache = new HashMap<String, Class<?>[]>();
 
 	private IContext setupContext;
@@ -137,9 +136,9 @@ public class TestManager
 				if (testSuite.getAutoRollbackMFs()) {
 					setupContext = Core.createSystemContext();
 					setupContext.startTransaction();
-					Core.execute(setupContext, testSuite.getModule() + ".Setup", emptyArguments);
+					Core.microflowCall(testSuite.getModule() + ".Setup").execute(setupContext);
 				} else {
-					Core.execute(Core.createSystemContext(), testSuite.getModule() + ".Setup", emptyArguments);
+					Core.microflowCall(testSuite.getModule() + ".Setup").execute(Core.createSystemContext());
 				}
 			}
 			catch(Exception e) {
@@ -162,7 +161,7 @@ public class TestManager
 				if (testSuite.getAutoRollbackMFs()) {
 					tearDownContext.startTransaction();
 				}
-				Core.execute(tearDownContext, testSuite.getModule() + ".TearDown", emptyArguments);
+				Core.microflowCall(testSuite.getModule() + ".TearDown").execute(tearDownContext);
 			}
 			catch (Exception e)
 			{
@@ -186,7 +185,7 @@ public class TestManager
 		//Context without transaction!
 		IContext context = Core.createSystemContext();
 
-		List<IMendixObject> testsuites = Core.retrieveXPathQuery(context,"//" +TestSuite.entityName);
+		List<IMendixObject> testsuites = Core.retrieveXPathQuery(context, "//" + TestSuite.entityName);
 
 		for(IMendixObject suite : testsuites) {
 			suite.setValue(context, TestSuite.MemberNames.Result.toString(), null);;
@@ -213,7 +212,17 @@ public class TestManager
 		testSuite.setResult(UnitTestResult._1_Running);
 		testSuite.commit();
 
-		for(UnitTest test : XPath.create(context, UnitTest.class).eq(UnitTest.MemberNames.UnitTest_TestSuite, testSuite).all()) {
+		StringBuilder query = new StringBuilder();
+		query.append(String.format("//%s", UnitTest.entityName));
+		query.append(String.format("[%s=$TestSuite]", UnitTest.MemberNames.UnitTest_TestSuite));
+
+		List<IMendixObject> unitTests = Core.createXPathQuery(query.toString())
+				.setVariable("TestSuite", testSuite.getMendixObject().getId().toLong())
+				.execute(context);
+
+		for(IMendixObject mxObject : unitTests)
+		{
+			UnitTest test = UnitTest.initialize(context, mxObject);
 			test.setResult(null);
 			test.commit();
 		}
@@ -357,7 +366,7 @@ public class TestManager
 		long start = System.currentTimeMillis();
 
 		try {
-			Object resultObject = Core.execute(mfContext, mf, emptyArguments);
+			Object resultObject = Core.microflowCall(mf).execute(mfContext);
 
 			start = System.currentTimeMillis() - start;
 			boolean res = 	resultObject == null || Boolean.TRUE.equals(resultObject) || "".equals(resultObject);
@@ -366,6 +375,8 @@ public class TestManager
 
 			if (res) {
 				test.setResultMessage("Microflow completed successfully");
+			} else if (resultObject instanceof String) {
+				test.setResultMessage((String)resultObject);
 			}
 
 			return res;
@@ -411,31 +422,31 @@ public class TestManager
 		return getUnitTest(context, testSuite, description.getClassName() + "/" + description.getMethodName(), isMF);
 	}
 
-	private UnitTest getUnitTest(IContext context, TestSuite testSuite, String name, boolean isMF) {
-		UnitTest res;
-		try
-		{
-			res = XPath.create(context, UnitTest.class)
-					.eq(UnitTest.MemberNames.UnitTest_TestSuite, testSuite)
-					.and()
-					.eq(UnitTest.MemberNames.Name, name)
-					.and()
-					.eq(UnitTest.MemberNames.IsMf, isMF)
-					.first();
-		}
-		catch (CoreException e)
-		{
-			throw new RuntimeException(e);
-		}
+	private UnitTest getUnitTest(IContext context, TestSuite testSuite, String name, boolean isMF) {		
+		StringBuilder query = new StringBuilder();
+		query.append(String.format("//%s", UnitTest.entityName));
+		query.append(String.format("[%s=$TestSuite]", UnitTest.MemberNames.UnitTest_TestSuite));
+		query.append(String.format("[%s=$Name]", UnitTest.MemberNames.Name));
+		query.append(String.format("[%s=$IsMicroflow]", UnitTest.MemberNames.IsMf));
 
-		if (res == null) {
-			res = new UnitTest(context);
-			res.setName(name);
-			res.setUnitTest_TestSuite(testSuite);
-			res.setIsMf(isMF);
+		Optional<IMendixObject> mxObject = Core.createXPathQuery(query.toString())
+				.setVariable("TestSuite", testSuite.getMendixObject().getId())
+				.setVariable("Name", name)
+				.setVariable("IsMicroflow", isMF)
+				.execute(context)
+				.stream()
+				.findAny();
+		
+		if (mxObject.isPresent()) {
+			return UnitTest.initialize(context, mxObject.get());
+		} else {
+			UnitTest newTest = new UnitTest(context);
+			newTest.setName(name);
+			newTest.setUnitTest_TestSuite(testSuite);
+			newTest.setIsMf(isMF);
+			
+			return newTest;
 		}
-
-		return res;
 	}
 
 
@@ -468,7 +479,7 @@ public class TestManager
 
 			String className = null;
 
-			if (fileName.startsWith(pkgname) && fileName.endsWith(".class")) {
+			if (fileName.startsWith(pkgname.concat("/")) && fileName.endsWith(".class")) {
 				fileName = fileName.replace("/", ".");
 				// removes the .class extension
 				className = fileName.substring(0, fileName.length() - 6);
@@ -529,14 +540,45 @@ public class TestManager
 		 * Update modules
 		 */
 		for(String module : modules) {
-			TestSuite testSuite = XPath.create(context, TestSuite.class).findOrCreate(TestSuite.MemberNames.Module, module);
+			TestSuite testSuite = findOrCreateTestSuite(context, module);
 			updateUnitTestList(context, testSuite);
 		}
 
 		/*
 		 * Remove all modules without tests
 		 */
-		XPath.create(context, TestSuite.class).not().hasReference(UnitTest.MemberNames.UnitTest_TestSuite, UnitTest.entityName).close().deleteAll();
+		deleteTestSuitesWithoutTest(context);
+	}
+	
+	private synchronized TestSuite findOrCreateTestSuite(IContext context, String module) throws CoreException {
+		StringBuilder query = new StringBuilder();
+		query.append(String.format("//%s", TestSuite.entityName));
+		query.append(String.format("[%s=$Module]", TestSuite.MemberNames.Module));
+
+		Optional<IMendixObject> mxObject = Core.createXPathQuery(query.toString())
+				.setVariable("Module", module)
+				.execute(context)
+				.stream()
+				.findAny();
+		
+		if (mxObject.isPresent()) {
+			return TestSuite.initialize(context, mxObject.get());
+		} else {
+			TestSuite newSuite = new TestSuite(context);
+			newSuite.setModule(module);
+			newSuite.commit();
+			
+			return newSuite;
+		}
+	}
+	
+	private synchronized void deleteTestSuitesWithoutTest(IContext context) throws CoreException {
+		StringBuilder query = new StringBuilder();
+		query.append(String.format("//%s", TestSuite.entityName));
+		query.append("[not(" + UnitTest.MemberNames.UnitTest_TestSuite + "/" + UnitTest.entityName + ")]");
+
+		List<IMendixObject> testSuites = Core.retrieveXPathQuery(context, query.toString());
+		Core.delete(context, testSuites);
 	}
 
 	public synchronized void updateUnitTestList(IContext context, TestSuite testSuite)
@@ -545,9 +587,16 @@ public class TestManager
 			/*
 			 * Mark all dirty
 			 */
-			for(UnitTest test : XPath.create(context, UnitTest.class)
-					.eq(UnitTest.MemberNames.UnitTest_TestSuite, testSuite)
-					.all()) {
+			StringBuilder query = new StringBuilder();
+			query.append(String.format("//%s", UnitTest.entityName));
+			query.append(String.format("[%s=$TestSuite]", UnitTest.MemberNames.UnitTest_TestSuite));
+			
+			List<IMendixObject> unitTests = Core.createXPathQuery(query.toString())
+					.setVariable("TestSuite", testSuite.getMendixObject().getId().toLong())
+					.execute(context);
+			
+			for(IMendixObject mxObject : unitTests) {
+				UnitTest test = UnitTest.initialize(context, mxObject);
 				test.set_dirty(true);
 				test.commit();
 			}
@@ -578,16 +627,22 @@ public class TestManager
 			/*
 			 * Delete dirty tests
 			 */
-			for(UnitTest test : XPath.create(context, UnitTest.class)
-					.eq(UnitTest.MemberNames._dirty, true)
-					.all()) {
-				test.delete();
-			}
+			StringBuilder deleteQuery = new StringBuilder();
+			deleteQuery.append(String.format("//%s", UnitTest.entityName));
+			deleteQuery.append(String.format("[%s=true]", UnitTest.MemberNames._dirty));
+		
+			List<IMendixObject> dirtyTests = Core.retrieveXPathQuery(context, deleteQuery.toString());
+			Core.delete(context, dirtyTests);
 
 			/*
 			 * Update count
 			 */
-			testSuite.setTestCount(XPath.create(context, UnitTest.class).eq(UnitTest.MemberNames.UnitTest_TestSuite, testSuite).count());
+			StringBuilder countQuery = new StringBuilder();
+			countQuery.append(String.format("//%s", UnitTest.entityName));
+			countQuery.append(String.format("[%s=" + testSuite.getMendixObject().getId().toLong() + "]", UnitTest.MemberNames.UnitTest_TestSuite));
+			Long testCount = Core.retrieveXPathQueryAggregate(context, "count(" + countQuery.toString() + ")");
+			
+			testSuite.setTestCount(testCount);
 			testSuite.commit();
 
 		}

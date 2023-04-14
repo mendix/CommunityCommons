@@ -38,7 +38,7 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.destination = __destination == null ? null : system.proxies.FileDocument.initialize(getContext(), __destination);
+		this.destination = this.__destination == null ? null : system.proxies.FileDocument.initialize(getContext(), __destination);
 
 		// BEGIN USER CODE
 		Charset charset = StandardCharsets.UTF_8;
@@ -51,6 +51,7 @@ public class StringToFile extends CustomJavaAction<java.lang.Boolean>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

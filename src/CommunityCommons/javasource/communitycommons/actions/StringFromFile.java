@@ -35,7 +35,7 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 	@java.lang.Override
 	public java.lang.String executeAction() throws Exception
 	{
-		this.source = __source == null ? null : system.proxies.FileDocument.initialize(getContext(), __source);
+		this.source = this.__source == null ? null : system.proxies.FileDocument.initialize(getContext(), __source);
 
 		// BEGIN USER CODE
 		Charset charset = StandardCharsets.UTF_8;
@@ -47,6 +47,7 @@ public class StringFromFile extends CustomJavaAction<java.lang.String>
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

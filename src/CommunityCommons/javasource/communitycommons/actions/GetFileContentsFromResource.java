@@ -35,7 +35,7 @@ public class GetFileContentsFromResource extends CustomJavaAction<java.lang.Bool
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.fileDocument = __fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __fileDocument);
+		this.fileDocument = this.__fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __fileDocument);
 
 		// BEGIN USER CODE
 		File myFile = new File(Core.getConfiguration().getResourcesPath() + 
@@ -53,6 +53,7 @@ public class GetFileContentsFromResource extends CustomJavaAction<java.lang.Bool
 
 	/**
 	 * Returns a string representation of this action
+	 * @return a string representation of this action
 	 */
 	@java.lang.Override
 	public java.lang.String toString()

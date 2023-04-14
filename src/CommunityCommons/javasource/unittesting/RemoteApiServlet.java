@@ -1,12 +1,15 @@
 package unittesting;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.auth.InvalidCredentialsException;
+import org.apache.hc.client5.http.auth.InvalidCredentialsException;
+
 import com.mendix.core.Core;
 import com.mendix.core.CoreException;
 import com.mendix.externalinterface.connector.RequestHandler;
@@ -14,10 +17,10 @@ import com.mendix.logging.ILogNode;
 import com.mendix.m2ee.api.IMxRuntimeRequest;
 import com.mendix.m2ee.api.IMxRuntimeResponse;
 import com.mendix.systemwideinterfaces.core.IContext;
+import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.thirdparty.org.json.JSONArray;
 import com.mendix.thirdparty.org.json.JSONObject;
 
-import communitycommons.XPath;
 import unittesting.proxies.TestSuite;
 import unittesting.proxies.UnitTest;
 import unittesting.proxies.UnitTestResult;
@@ -132,7 +135,7 @@ public class RemoteApiServlet extends RequestHandler {
 	}
 
 	private JSONObject parseInput(HttpServletRequest request) throws IOException {
-		String data = IOUtils.toString(request.getInputStream());
+		String data = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
 		return new JSONObject(data);
 	}
 
@@ -166,9 +169,12 @@ public class RemoteApiServlet extends RequestHandler {
 			long count = 0l;
 			long failures = 0l;
 			
-			for(TestSuite suite : XPath.create(context, TestSuite.class).all()) {
-				count += suite.getTestCount();
-				failures += suite.getTestFailedCount();
+			List<IMendixObject> testSuites = Core.retrieveXPathQuery(context, String.format("//%s", TestSuite.entityName));
+
+			for (IMendixObject mxObject : testSuites) {
+				TestSuite testSuite = TestSuite.initialize(context, mxObject);
+				count += testSuite.getTestCount();
+				failures += testSuite.getTestFailedCount();
 			}
 			
 			result.put("tests", count);
@@ -176,14 +182,20 @@ public class RemoteApiServlet extends RequestHandler {
 			
 			JSONArray failedTests = new JSONArray();
 			result.put("failed_tests", failedTests);
+						
+			StringBuilder query = new StringBuilder();
+			query.append(String.format("//%s", UnitTest.entityName));
+			// Failed tests
+			query.append("[" + UnitTest.MemberNames.Result + "=\"" + UnitTestResult._2_Failed + "\"]");
+			// In test suites that are not running anymore
+			query.append("[" + UnitTest.MemberNames.UnitTest_TestSuite + "/" + TestSuite.entityName + "/"
+					+ TestSuite.MemberNames.Result + "=\"" + UnitTestResult._2_Failed + "\"]");
 			
-			for(UnitTest test : XPath.create(context, UnitTest.class)
-					//failed tests
-					.eq(UnitTest.MemberNames.Result, UnitTestResult._2_Failed)
-					//in testsuites which are not running anymore
-					.eq(UnitTest.MemberNames.UnitTest_TestSuite, TestSuite.entityName, TestSuite.MemberNames.Result, UnitTestResult._2_Failed)
-					.all()) 
+			List<IMendixObject> unitTests = Core.retrieveXPathQuery(context, query.toString());
+
+			for(IMendixObject mxObject : unitTests)
 			{
+				UnitTest test = UnitTest.initialize(context, mxObject);
 				JSONObject i = new JSONObject();
 				i.put("name", test.getName());
 				i.put("error", test.getResultMessage());
@@ -194,5 +206,4 @@ public class RemoteApiServlet extends RequestHandler {
 			return result;
 		}	
 	}
-
 }
