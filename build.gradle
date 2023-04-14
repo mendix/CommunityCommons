@@ -92,6 +92,14 @@ task copyRuntimeToUserlib(type: Copy) {
     eachFile { fileCopyDetails -> new File(destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
+tasks.named('mxBuild') {
+    dependsOn copyAllToUserlib
+}
+
+tasks.named('compileJava') {
+    dependsOn mxBuild
+}
+
 clean {
     delete "$userLibDir"
 }
