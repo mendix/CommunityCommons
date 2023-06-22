@@ -39,7 +39,6 @@ public class XPath<T> {
    * https://world.mendix.com/display/refguide3/XPath+Keywords+and+System+Variables
    * 
    */
-
   public static final String CurrentUser = "[%CurrentUser%]";
   public static final String CurrentObject = "[%CurrentObject%]";
 
@@ -62,25 +61,24 @@ public class XPath<T> {
   public static final String WeekLength = "[%WeekLength%]";
   public static final String YearLength = "[%YearLength%]";
   public static final String ID = "id";
-
   /** End builtin tokens */
 
   private String entity;
   private int offset = 0;
   private int limit = -1;
-  private LinkedHashMap<String, String> sorting = new LinkedHashMap<String, String>(); // important, linked map!
+  // important, linked map, insertion order is relevant!
+  private LinkedHashMap<String, String> sorting = new LinkedHashMap<String, String>();
   private LinkedList<String> closeStack = new LinkedList<String>();
   private StringBuilder builder = new StringBuilder();
   private IContext context;
   private Class<T> proxyClass;
-  private boolean requiresBinOp = false; // state property, indicates whether and 'and' needs to be inserted before the
-                                         // next constraint
+  // state property, indicates whether 'and' needs to be inserted before the next
+  // constraint
+  private boolean requiresBinOp = false;
 
   public static XPath<IMendixObject> create(IContext c, String entityType) {
     XPath<IMendixObject> res = new XPath<IMendixObject>(c, IMendixObject.class);
-
     res.entity = entityType;
-
     return res;
   }
 
@@ -174,6 +172,18 @@ public class XPath<T> {
     return this.requireBinOp(true);
   }
 
+  public XPath<T> startsWith(Object attr, String value) {
+    autoInsertAnd().append(" starts-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
+        .append(") ");
+    return this.requireBinOp(true);
+  }
+
+  public XPath<T> endsWith(Object attr, String value) {
+    autoInsertAnd().append(" ends-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
+        .append(") ");
+    return this.requireBinOp(true);
+  }
+
   public XPath<T> compare(Object attr, String operator, Object value) {
     return compare(new Object[] { attr }, operator, value);
   }
@@ -255,19 +265,48 @@ public class XPath<T> {
   }
 
   public String getXPath() {
-
     if (builder.length() > 0)
       return "//" + this.entity + "[" + builder.toString() + "]";
     return "//" + this.entity;
   }
 
   public XPath<T> gt(Object attr, Object valuecomparison) {
-    return compare(attr, ">=", valuecomparison);
+    return compare(attr, ">", valuecomparison);
   }
 
   public XPath<T> gt(Object... pathAndValue) {
     assertEven(pathAndValue);
+    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), ">",
+        pathAndValue[pathAndValue.length - 1]);
+  }
+
+  public XPath<T> gte(Object attr, Object valuecomparison) {
+    return compare(attr, ">=", valuecomparison);
+  }
+
+  public XPath<T> gte(Object... pathAndValue) {
+    assertEven(pathAndValue);
     return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), ">=",
+        pathAndValue[pathAndValue.length - 1]);
+  }
+
+  public XPath<T> lt(Object attr, Object valuecomparison) {
+    return compare(attr, "<", valuecomparison);
+  }
+
+  public XPath<T> lt(Object... pathAndValue) {
+    assertEven(pathAndValue);
+    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "<",
+        pathAndValue[pathAndValue.length - 1]);
+  }
+
+  public XPath<T> lte(Object attr, Object valuecomparison) {
+    return compare(attr, "<=", valuecomparison);
+  }
+
+  public XPath<T> lte(Object... pathAndValue) {
+    assertEven(pathAndValue);
+    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "<=",
         pathAndValue[pathAndValue.length - 1]);
   }
 
