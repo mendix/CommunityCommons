@@ -15,11 +15,11 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
- * 
- * - item : the object to inspect
- * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
- * 
+ * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
+ * 
+ * - item : the object to inspect
+ * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
+ * 
  * Returns true if changed.
  */
 public class memberHasChanged extends CustomJavaAction<java.lang.Boolean>

@@ -15,8 +15,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns the user that last changed this object as System.User 
- * 
+ * Returns the user that last changed this object as System.User 
+ * 
  * (or empty if not applicable).
  */
 public class getLastChangedByUser extends CustomJavaAction<IMendixObject>

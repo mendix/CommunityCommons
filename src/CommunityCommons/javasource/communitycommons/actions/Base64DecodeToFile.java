@@ -15,8 +15,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Stores an base 64 encoded string plain in the provided target file document
- * 
+ * Stores an base 64 encoded string plain in the provided target file document
+ * 
  * Note that targetFile will be committed.
  */
 public class Base64DecodeToFile extends CustomJavaAction<java.lang.Boolean>
