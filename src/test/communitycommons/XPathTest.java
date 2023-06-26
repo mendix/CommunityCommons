@@ -53,36 +53,48 @@ public class XPathTest {
   public void eq() throws Exception {
     var xpath = XPath.create(null, "A").eq("attr", 42);
     assertEquals("//A[attr = 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").eq("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 = 42]", xpathPath.getXPath());
   }
 
   @Test
   public void notEq() throws Exception {
     var xpath = XPath.create(null, "A").notEq("attr", 42);
     assertEquals("//A[attr != 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").notEq("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 != 42]", xpathPath.getXPath());
   }
 
   @Test
   public void gt() throws Exception {
     var xpath = XPath.create(null, "A").gt("attr", 42);
     assertEquals("//A[attr > 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").gt("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 > 42]", xpathPath.getXPath());
   }
 
   @Test
   public void gte() throws Exception {
     var xpath = XPath.create(null, "A").gte("attr", 42);
     assertEquals("//A[attr >= 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").gte("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 >= 42]", xpathPath.getXPath());
   }
 
   @Test
   public void lt() throws Exception {
     var xpath = XPath.create(null, "A").lt("attr", 42);
     assertEquals("//A[attr < 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").lt("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 < 42]", xpathPath.getXPath());
   }
 
   @Test
   public void lte() throws Exception {
     var xpath = XPath.create(null, "A").lte("attr", 42);
     assertEquals("//A[attr <= 42]", xpath.getXPath());
+    var xpathPath = XPath.create(null, "A").lte("attr1", "attr2", "attr3", 42);
+    assertEquals("//A[attr1/attr2/attr3 <= 42]", xpathPath.getXPath());
   }
 
   // contains, startsWith, endsWith
