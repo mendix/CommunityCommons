@@ -142,9 +142,7 @@ public class XPath<T> {
   }
 
   public XPath<T> eq(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "=",
-        pathAndValue[pathAndValue.length - 1]);
+    return compare("=", pathAndValue);
   }
 
   public XPath<T> equalsIgnoreCase(Object attr, String value) {
@@ -161,9 +159,39 @@ public class XPath<T> {
   }
 
   public XPath<T> notEq(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "!=",
-        pathAndValue[pathAndValue.length - 1]);
+    return compare("!=", pathAndValue);
+  }
+
+  public XPath<T> gt(Object attr, Object valuecomparison) {
+    return compare(attr, ">", valuecomparison);
+  }
+
+  public XPath<T> gt(Object... pathAndValue) {
+    return compare(">", pathAndValue);
+  }
+
+  public XPath<T> gte(Object attr, Object valuecomparison) {
+    return compare(attr, ">=", valuecomparison);
+  }
+
+  public XPath<T> gte(Object... pathAndValue) {
+    return compare(">=", pathAndValue);
+  }
+
+  public XPath<T> lt(Object attr, Object valuecomparison) {
+    return compare(attr, "<", valuecomparison);
+  }
+
+  public XPath<T> lt(Object... pathAndValue) {
+    return compare("<", pathAndValue);
+  }
+
+  public XPath<T> lte(Object attr, Object valuecomparison) {
+    return compare(attr, "<=", valuecomparison);
+  }
+
+  public XPath<T> lte(Object... pathAndValue) {
+    return compare("<=", pathAndValue);
   }
 
   public XPath<T> contains(Object attr, String value) {
@@ -186,6 +214,12 @@ public class XPath<T> {
 
   public XPath<T> compare(Object attr, String operator, Object value) {
     return compare(new Object[] { attr }, operator, value);
+  }
+
+  public XPath<T> compare(String operator, Object[] pathAndValue) {
+    assertEven(pathAndValue);
+    int lastIndex = pathAndValue.length - 1;
+    return compare(Arrays.copyOf(pathAndValue, lastIndex), operator, pathAndValue[lastIndex]);
   }
 
   public XPath<T> compare(Object[] path, String operator, Object value) {
@@ -268,46 +302,6 @@ public class XPath<T> {
     if (builder.length() > 0)
       return "//" + this.entity + "[" + builder.toString() + "]";
     return "//" + this.entity;
-  }
-
-  public XPath<T> gt(Object attr, Object valuecomparison) {
-    return compare(attr, ">", valuecomparison);
-  }
-
-  public XPath<T> gt(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), ">",
-        pathAndValue[pathAndValue.length - 1]);
-  }
-
-  public XPath<T> gte(Object attr, Object valuecomparison) {
-    return compare(attr, ">=", valuecomparison);
-  }
-
-  public XPath<T> gte(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), ">=",
-        pathAndValue[pathAndValue.length - 1]);
-  }
-
-  public XPath<T> lt(Object attr, Object valuecomparison) {
-    return compare(attr, "<", valuecomparison);
-  }
-
-  public XPath<T> lt(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "<",
-        pathAndValue[pathAndValue.length - 1]);
-  }
-
-  public XPath<T> lte(Object attr, Object valuecomparison) {
-    return compare(attr, "<=", valuecomparison);
-  }
-
-  public XPath<T> lte(Object... pathAndValue) {
-    assertEven(pathAndValue);
-    return compare(Arrays.copyOfRange(pathAndValue, 0, pathAndValue.length - 1), "<=",
-        pathAndValue[pathAndValue.length - 1]);
   }
 
   private void assertEmptyStack() throws IllegalStateException {
