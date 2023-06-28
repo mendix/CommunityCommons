@@ -749,10 +749,7 @@ public class XPath<T> {
     @Override
     public Boolean call() {
       try {
-        batchProcessor.onItem(XPath.createProxy(Core.createSystemContext(), self.proxyClass, item), index, count); // mwe:
-                                                                                                                   // hmm,
-                                                                                                                   // many
-                                                                                                                   // contexts..
+        batchProcessor.onItem(XPath.createProxy(Core.createSystemContext(), self.proxyClass, item), index, count);
         return true;
       } catch (Exception e) {
         throw new RuntimeException(String.format("Failed to execute batch on '%s' offset %d: %s", self.toString(),
