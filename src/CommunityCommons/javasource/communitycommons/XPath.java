@@ -35,33 +35,61 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 public class XPath<T> {
   /**
-   * Build in tokens, see:
-   * https://world.mendix.com/display/refguide3/XPath+Keywords+and+System+Variables
-   * 
+   * Built-in tokens, see:
+   * https://docs.mendix.com/refguide/xpath-keywords-and-system-variables/
    */
+
+  /* Keywords */
+  public static final String ID = "id";
+  public static final String NULL = "NULL";
+  public static final String Empty = "empty";
+
+  /* Object related */
   public static final String CurrentUser = "[%CurrentUser%]";
   public static final String CurrentObject = "[%CurrentObject%]";
 
+  /* Time related */
   public static final String CurrentDateTime = "[%CurrentDateTime%]";
-  public static final String BeginOfCurrentDay = "[%BeginOfCurrentDay%]";
-  public static final String EndOfCurrentDay = "[%EndOfCurrentDay%]";
-  public static final String BeginOfCurrentHour = "[%BeginOfCurrentHour%]";
-  public static final String EndOfCurrentHour = "[%EndOfCurrentHour%]";
   public static final String BeginOfCurrentMinute = "[%BeginOfCurrentMinute%]";
+  public static final String BeginOfCurrentMinuteUTC = "[%BeginOfCurrentMinuteUTC%]";
   public static final String EndOfCurrentMinute = "[%EndOfCurrentMinute%]";
-  public static final String BeginOfCurrentMonth = "[%BeginOfCurrentMonth%]";
-  public static final String EndOfCurrentMonth = "[%EndOfCurrentMonth%]";
+  public static final String EndOfCurrentMinuteUTC = "[%EndOfCurrentMinuteUTC%]";
+  public static final String BeginOfCurrentHour = "[%BeginOfCurrentHour%]";
+  public static final String BeginOfCurrentHourUTC = "[%BeginOfCurrentHourUTC%]";
+  public static final String EndOfCurrentHour = "[%EndOfCurrentHour%]";
+  public static final String EndOfCurrentHourUTC = "[%EndOfCurrentHourUTC%]";
+  public static final String BeginOfCurrentDay = "[%BeginOfCurrentDay%]";
+  public static final String BeginOfCurrentDayUTC = "[%BeginOfCurrentDayUTC%]";
+  public static final String EndOfCurrentDay = "[%EndOfCurrentDay%]";
+  public static final String EndOfCurrentDayUTC = "[%EndOfCurrentDayUTC%]";
+  public static final String BeginOfYesterday = "[%BeginOfYesterday%]";
+  public static final String BeginOfYesterdayUTC = "[%BeginOfYesterdayUTC%]";
+  public static final String EndOfYesterday = "[%EndOfYesterday%]";
+  public static final String EndOfYesterdayUTC = "[%EndOfYesterdayUTC%]";
+  public static final String BeginOfTomorrow = "[%BeginOfTomorrow%]";
+  public static final String BeginOfTomorrowUTC = "[%BeginOfTomorrowUTC%]";
+  public static final String EndOfTomorrow = "[%EndOfTomorrow%]";
+  public static final String EndOfTomorrowUTC = "[%EndOfTomorrowUTC%]";
   public static final String BeginOfCurrentWeek = "[%BeginOfCurrentWeek%]";
+  public static final String BeginOfCurrentWeekUTC = "[%BeginOfCurrentWeekUTC%]";
   public static final String EndOfCurrentWeek = "[%EndOfCurrentWeek%]";
+  public static final String EndOfCurrentWeekUTC = "[%EndOfCurrentWeekUTC%]";
+  public static final String BeginOfCurrentMonth = "[%BeginOfCurrentMonth%]";
+  public static final String BeginOfCurrentMonthUTC = "[%BeginOfCurrentMonthUTC%]";
+  public static final String EndOfCurrentMonth = "[%EndOfCurrentMonth%]";
+  public static final String EndOfCurrentMonthUTC = "[%EndOfCurrentMonthUTC%]";
+  public static final String BeginOfCurrentYear = "[%BeginOfCurrentYear%]";
+  public static final String BeginOfCurrentYearUTC = "[%BeginOfCurrentYearUTC%]";
+  public static final String EndOfCurrentYear = "[%EndOfCurrentYear%]";
+  public static final String EndOfCurrentYearUTC = "[%EndOfCurrentYearUTC%]";
 
   public static final String DayLength = "[%DayLength%]";
   public static final String HourLength = "[%HourLength%]";
   public static final String MinuteLength = "[%MinuteLength%]";
   public static final String SecondLength = "[%SecondLength%]";
   public static final String WeekLength = "[%WeekLength%]";
+  public static final String MonthLength = "[%MonthLength%]";
   public static final String YearLength = "[%YearLength%]";
-  public static final String ID = "id";
-  /** End builtin tokens */
 
   private String entity;
   private int offset = 0;
@@ -588,7 +616,7 @@ public class XPath<T> {
 
   public static String valueToXPathValue(Object value) {
     if (value == null)
-      return "NULL";
+      return NULL;
 
     // Complex objects
     if (value instanceof IMendixIdentifier)

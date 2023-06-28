@@ -21,7 +21,7 @@ public class XPathTest {
 
   @Test
   public void valueToXPathValue() throws Exception {
-    assertEquals("NULL", XPath.valueToXPathValue(null));
+    assertEquals(XPath.NULL, XPath.valueToXPathValue(null));
     assertEquals("42", XPath.valueToXPathValue(42));
     assertEquals("42.42", XPath.valueToXPathValue(42.42));
     assertEquals("'string'", XPath.valueToXPathValue("string"));
