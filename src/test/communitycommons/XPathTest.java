@@ -1,8 +1,8 @@
 package communitycommons;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.Date;
 import java.util.List;
@@ -53,48 +53,78 @@ public class XPathTest {
   public void eq() throws Exception {
     var xpath = XPath.create(null, "A").eq("attr", 42);
     assertEquals("//A[attr = 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").eq("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr = 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").eq("assoc", "attr", 42);
+    });
   }
 
   @Test
   public void notEq() throws Exception {
     var xpath = XPath.create(null, "A").notEq("attr", 42);
     assertEquals("//A[attr != 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").notEq("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr != 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").notEq("assoc", "attr", 42);
+    });
   }
 
   @Test
   public void gt() throws Exception {
     var xpath = XPath.create(null, "A").gt("attr", 42);
     assertEquals("//A[attr > 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").gt("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr > 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").gt("assoc", "attr", 42);
+    });
   }
 
   @Test
   public void gte() throws Exception {
     var xpath = XPath.create(null, "A").gte("attr", 42);
     assertEquals("//A[attr >= 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").gte("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr >= 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").gte("assoc", "attr", 42);
+    });
   }
 
   @Test
   public void lt() throws Exception {
     var xpath = XPath.create(null, "A").lt("attr", 42);
     assertEquals("//A[attr < 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").lt("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr < 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").lt("assoc", "attr", 42);
+    });
   }
 
   @Test
   public void lte() throws Exception {
     var xpath = XPath.create(null, "A").lte("attr", 42);
     assertEquals("//A[attr <= 42]", xpath.getXPath());
+
     var xpathPath = XPath.create(null, "A").lte("assoc", "entity", "attr", 42);
     assertEquals("//A[assoc/entity/attr <= 42]", xpathPath.getXPath());
+
+    assertThrows("Expected an even number of xpath path parts", java.lang.IllegalArgumentException.class, () -> {
+      XPath.create(null, "A").lte("assoc", "attr", 42);
+    });
   }
 
   // contains, startsWith, endsWith
