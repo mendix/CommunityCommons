@@ -78,7 +78,6 @@ sourceSets {
 
 test {
     exclude 'unittesting/*'
-    testLogging.showStandardStreams true
 }
 
 task copyAllToUserlib(type: Copy) {
