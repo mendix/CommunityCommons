@@ -254,7 +254,7 @@ public class XPath<T> {
     return compare(new Object[] { attr }, operator, value);
   }
 
-  public XPath<T> compare(String operator, Object[] pathAndValue) {
+  private XPath<T> compare(String operator, Object[] pathAndValue) {
     assertEven(pathAndValue);
     int lastIndex = pathAndValue.length - 1;
     return compare(Arrays.copyOf(pathAndValue, lastIndex), operator, pathAndValue[lastIndex]);
