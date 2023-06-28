@@ -224,20 +224,29 @@ public class XPath<T> {
   }
 
   public XPath<T> contains(Object attr, String value) {
-    autoInsertAnd().append(" contains(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
-        .append(") ");
-    return requireBinOp(true);
+    return functionCall("contains", String.valueOf(attr), valueToXPathValue(value));
   }
 
   public XPath<T> startsWith(Object attr, String value) {
-    autoInsertAnd().append(" starts-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
-        .append(") ");
-    return requireBinOp(true);
+    return functionCall("starts-with", String.valueOf(attr), valueToXPathValue(value));
   }
 
   public XPath<T> endsWith(Object attr, String value) {
-    autoInsertAnd().append(" ends-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
-        .append(") ");
+    return functionCall("ends-with", String.valueOf(attr), valueToXPathValue(value));
+  }
+
+  private XPath<T> functionCall(String functionName, String... args) {
+    autoInsertAnd();
+    append(" " + functionName + "(");
+
+    if (args.length > 0) {
+      append(args[0]);
+      for (int i = 1; i < args.length; i++) {
+        append(",");
+        append(args[i]);
+      }
+    }
+    append(") ");
     return requireBinOp(true);
   }
 
