@@ -117,7 +117,7 @@ public class XPath<T> {
   private XPath(IContext c, Class<T> proxyClass) {
     try {
       if (proxyClass != IMendixObject.class)
-        this.entity = (String) proxyClass.getMethod("getType").invoke(null);
+        entity = (String) proxyClass.getMethod("getType").invoke(null);
     } catch (Exception e) {
       throw new IllegalArgumentException(
           "Failed to determine entity type of proxy class. Did you provide a valid proxy class? '"
@@ -139,18 +139,19 @@ public class XPath<T> {
     return this;
   }
 
-  public XPath<T> offset(int offset2) {
-    if (offset2 < 0)
+  public XPath<T> offset(int offset) {
+    if (offset < 0)
       throw new IllegalArgumentException("Offset should not be negative");
-    this.offset = offset2;
+
+    this.offset = offset;
     return this;
   }
 
-  public XPath<T> limit(int limit2) {
-    if (limit2 < -1 || limit2 == 0)
+  public XPath<T> limit(int limit) {
+    if (limit < -1 || limit == 0)
       throw new IllegalArgumentException("Limit should be larger than zero or -1. ");
 
-    this.limit = limit2;
+    this.limit = limit;
     return this;
   }
 
@@ -225,19 +226,19 @@ public class XPath<T> {
   public XPath<T> contains(Object attr, String value) {
     autoInsertAnd().append(" contains(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
         .append(") ");
-    return this.requireBinOp(true);
+    return requireBinOp(true);
   }
 
   public XPath<T> startsWith(Object attr, String value) {
     autoInsertAnd().append(" starts-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
         .append(") ");
-    return this.requireBinOp(true);
+    return requireBinOp(true);
   }
 
   public XPath<T> endsWith(Object attr, String value) {
     autoInsertAnd().append(" ends-with(").append(String.valueOf(attr)).append(",").append(valueToXPathValue(value))
         .append(") ");
-    return this.requireBinOp(true);
+    return requireBinOp(true);
   }
 
   public XPath<T> compare(Object attr, String operator, Object value) {
@@ -254,26 +255,26 @@ public class XPath<T> {
     assertOdd(path);
     autoInsertAnd().append(StringUtils.join(path, '/')).append(" ").append(operator).append(" ")
         .append(valueToXPathValue(value));
-    return this.requireBinOp(true);
+    return requireBinOp(true);
   }
 
   public XPath<T> hasReference(Object... path) {
     assertEven(path); // Reference + entity type
     autoInsertAnd().append(StringUtils.join(path, '/'));
-    return this.requireBinOp(true);
+    return requireBinOp(true);
   }
 
   public XPath<T> subconstraint(Object... path) {
     assertEven(path);
     autoInsertAnd().append(StringUtils.join(path, '/')).append("[");
     closeStack.push("]");
-    return this.requireBinOp(false);
+    return requireBinOp(false);
   }
 
   public XPath<T> subconstraint() {
     autoInsertAnd().append("(");
     closeStack.push(")");
-    return this.requireBinOp(false);
+    return requireBinOp(false);
   }
 
   public XPath<T> addConstraint() {
@@ -328,8 +329,8 @@ public class XPath<T> {
 
   public String getXPath() {
     if (builder.length() > 0)
-      return "//" + this.entity + "[" + builder.toString() + "]";
-    return "//" + this.entity;
+      return "//" + entity + "[" + builder + "]";
+    return "//" + entity;
   }
 
   private void assertEmptyStack() throws IllegalStateException {
@@ -410,8 +411,7 @@ public class XPath<T> {
     for (int i = 0; i < keysAndValues.length; i += 2)
       eq(keysAndValues[i], keysAndValues[i + 1]);
 
-    T res = this.first();
-    return res;
+    return first();
   }
 
   /**
@@ -425,7 +425,7 @@ public class XPath<T> {
    */
   public T constructInstance(boolean autoCommit, Object... keysAndValues) throws CoreException {
     assertEven(keysAndValues);
-    IMendixObject newObj = Core.instantiate(context, this.entity);
+    IMendixObject newObj = Core.instantiate(context, entity);
 
     for (int i = 0; i < keysAndValues.length; i += 2)
       newObj.setValue(context, String.valueOf(keysAndValues[i]), toMemberValue(keysAndValues[i + 1]));
@@ -471,13 +471,13 @@ public class XPath<T> {
     for (int i = 0; i < keysAndValues.length; i += 2)
       eq(keysAndValues[i], keysAndValues[i + 1]);
 
-    for (IMendixObject existingItem : this.allMendixObjects()) {
+    for (IMendixObject existingItem : allMendixObjects()) {
       // Item is still available
       if (col.remove(existingItem.getValue(context, String.valueOf(comparisonAttribute))))
         continue;
 
       // No longer available
-      removed.add(createProxy(context, this.proxyClass, existingItem));
+      removed.add(createProxy(context, proxyClass, existingItem));
       if (autoDelete)
         Core.delete(context, existingItem);
     }
@@ -766,40 +766,40 @@ public class XPath<T> {
    * @throws CoreException
    */
   public void batch(int batchsize, IBatchProcessor<T> batchProcessor) throws CoreException {
-    if (this.sorting.isEmpty())
-      this.addSortingAsc(XPath.ID);
+    if (sorting.isEmpty())
+      addSortingAsc(XPath.ID);
 
-    long count = this.count();
+    final long itemcount = count();
 
-    int baseoffset = this.offset;
-    int baselimit = this.limit;
+    int baseoffset = offset;
+    int baselimit = limit;
 
     boolean useBaseLimit = baselimit > -1;
 
-    this.offset(baseoffset);
+    offset(baseoffset);
     List<T> data;
 
     long i = 0;
 
     do {
-      int newlimit = useBaseLimit ? Math.min(batchsize, baseoffset + baselimit - this.offset) : batchsize;
+      int newlimit = useBaseLimit ? Math.min(batchsize, baseoffset + baselimit - offset) : batchsize;
       if (newlimit == 0)
         break; // where done, no more data is needed
 
-      this.limit(newlimit);
-      data = this.all();
+      limit(newlimit);
+      data = all();
 
       for (T item : data) {
         i += 1;
         try {
-          batchProcessor.onItem(item, i, Math.max(i, count));
+          batchProcessor.onItem(item, i, Math.max(i, itemcount));
         } catch (Exception e) {
-          throw new RuntimeException(String.format("Failed to execute batch on '%s' offset %d: %s", this.toString(),
-              this.offset, e.getMessage()), e);
+          throw new RuntimeException(String.format("Failed to execute batch on '%s' offset %d: %s", this,
+              offset, e.getMessage()), e);
         }
       }
 
-      this.offset(this.offset + data.size());
+      offset(offset + data.size());
     } while (data.size() > 0);
   }
 
@@ -821,40 +821,36 @@ public class XPath<T> {
    */
   public void batch(int batchsize, int threads, final IBatchProcessor<T> batchProcessor)
       throws CoreException, InterruptedException, ExecutionException {
-    if (this.sorting.isEmpty())
-      this.addSortingAsc(XPath.ID);
+    if (sorting.isEmpty())
+      addSortingAsc(XPath.ID);
 
     ExecutorService pool = Executors.newFixedThreadPool(threads);
 
-    final long count = this.count();
-
-    final XPath<T> self = this;
+    final long itemcount = count();
 
     int progress = 0;
     List<Future<?>> futures = new ArrayList<Future<?>>(batchsize); // no need to synchronize
 
-    this.offset(0);
-    this.limit(batchsize);
+    offset(0);
+    limit(batchsize);
 
-    List<IMendixObject> data = this.allMendixObjects();
+    List<IMendixObject> data = allMendixObjects();
 
     while (data.size() > 0) {
-
       for (final IMendixObject item : data) {
-        futures.add(pool.submit(new ParallelJobRunner<T>(self, batchProcessor, item, progress, count)));
+        futures.add(pool.submit(new ParallelJobRunner<T>(this, batchProcessor, item, progress, itemcount)));
         progress += 1;
       }
 
       while (!futures.isEmpty())
         futures.remove(0).get(); // wait for all futures before proceeding to next iteration
 
-      this.offset(this.offset + data.size());
-      data = this.allMendixObjects();
+      offset(offset + data.size());
+      data = allMendixObjects();
     }
 
     if (pool.shutdownNow().size() > 0)
       throw new IllegalStateException("Not all tasks where finished!");
-
   }
 
   public static Class<?> getProxyClassForEntityName(String entityname) {
@@ -869,7 +865,7 @@ public class XPath<T> {
   }
 
   public boolean deleteAll() throws CoreException {
-    this.limit(1000);
+    limit(1000);
     List<IMendixObject> objs = allMendixObjects();
     while (!objs.isEmpty()) {
       if (!Core.delete(context, objs.toArray(new IMendixObject[objs.size()])))
