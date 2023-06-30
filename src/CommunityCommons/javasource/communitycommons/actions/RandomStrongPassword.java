@@ -14,8 +14,8 @@ import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
 
 /**
- * Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
- * 
+ * Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
+ * 
  * Note:Minimumlength should be equal or larger than NrOfCapitalizedCharacters, NrOfDigits and NrOfSpecialCharacters
  */
 public class RandomStrongPassword extends CustomJavaAction<java.lang.String>

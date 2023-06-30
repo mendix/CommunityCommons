@@ -1,0 +1,5 @@
+We added startsWith, endsWith, gte, lt and lte to XPath.java.
+
+We fixed gt in XPath.java. This function was using >= instead of the correct >.
+
+We updated the Guava dependency to 32.0.1.

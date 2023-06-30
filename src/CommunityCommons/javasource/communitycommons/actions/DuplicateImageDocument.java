@@ -15,11 +15,11 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Clones the contents of one image document into another, and generates a thumbnail as well. 
- * - fileToClone : the source file
- * - cloneTarget : an initialized file document, in which the file will be stored.
- * 
- * Returns true if copied, returns file if the source had no contents, throws exception in any other case.
+ * Clones the contents of one image document into another, and generates a thumbnail as well. 
+ * - fileToClone : the source file
+ * - cloneTarget : an initialized file document, in which the file will be stored.
+ * 
+ * Returns true if copied, returns file if the source had no contents, throws exception in any other case.
  * Pre condition: HasContents of the 'fileToClone' need to be set to true, otherwise the action will not copy anything.
  */
 public class DuplicateImageDocument extends CustomJavaAction<java.lang.Boolean>
