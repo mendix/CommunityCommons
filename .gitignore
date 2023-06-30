@@ -43,4 +43,5 @@ package.xml
 *.bak
 *.orig
 GPUCache
+bin
 
