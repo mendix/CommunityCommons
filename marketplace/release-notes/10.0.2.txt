@@ -1,0 +1,1 @@
+Include a migration file for the Java dependencies.

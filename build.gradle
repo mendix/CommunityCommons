@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.12'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.13'
     id 'net.researchgate.release' version '2.8.1'
 }
 
@@ -23,6 +23,7 @@ mxMarketplace {
     moduleLicense = 'Apache V2'
     appDirectory = "src/CommunityCommons"
     versionPathPrefix = "_Version " // the path prefix within the module to the version folder
+    createMigrationFile = true
 }
 
 def userLibDir = "$projectDir/src/CommunityCommons/userlib"
@@ -33,6 +34,12 @@ repositories {
     }
     maven {
         url 'https://nexus.rnd.mendix.com/repository/maven-hosted/'
+    }
+}
+
+configurations {
+    implementation {
+        canBeResolved = true
     }
 }
 
@@ -86,12 +93,6 @@ task copyAllToUserlib(type: Copy) {
     eachFile { fileCopyDetails -> new File(destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
 }
 
-task copyRuntimeToUserlib(type: Copy) {
-    from configurations.runtimeClasspath
-    into userLibDir
-    eachFile { fileCopyDetails -> new File(destinationDir, "${fileCopyDetails.name}.${project.name}.RequiredLib").write '' }
-}
-
 tasks.named('mxBuild') {
     dependsOn copyAllToUserlib
 }
@@ -102,10 +103,6 @@ tasks.named('compileJava') {
 
 clean {
     delete "$userLibDir"
-}
-
-tasks.named('exportModule') {
-    dependsOn 'copyRuntimeToUserlib'
 }
 
 release {
