@@ -1,1 +1,1 @@
-Include a migration file for the Java dependencies.
+We included a migration file for the Java dependencies for Studio Pro 10 compatibility.
