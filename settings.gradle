@@ -1,5 +1,6 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         maven {
             url 'https://nexus.rnd.mendix.com/repository/repo1-proxy/'
         }
