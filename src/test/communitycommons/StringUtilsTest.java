@@ -83,6 +83,26 @@ public class StringUtilsTest {
 	}
 
 	@Test
+	public void testRandomStrongPassword_WithLowercaseAlphaOnly() {
+		String password = StringUtils.randomStrongPassword(PASSWORD_LENGTH, PASSWORD_LENGTH, 0, PASSWORD_LENGTH, 0, 0);
+
+		assertEquals(PASSWORD_LENGTH, password.length());
+		assertTrue(password.matches("^[a-z]+$"));
+	}
+
+	@Test
+	public void testRandomStrongPassword_Combined() {
+		var passwordLength = 12;
+		var password = StringUtils.randomStrongPassword(passwordLength, passwordLength, 2, 2, 2, 2);
+
+		assertEquals(passwordLength, password.length());
+		assertTrue(password.chars().filter(c -> Character.isUpperCase(c)).count() >= 2);
+		assertTrue(password.chars().filter(c -> Character.isLowerCase(c)).count() >= 2);
+		assertTrue(password.chars().filter(c -> Character.isDigit(c)).count() >= 2);
+		assertTrue(password.chars().filter(c -> StringUtils.SPECIAL.indexOf(c) >= 0).count() == 2);
+	}
+
+	@Test
 	public void testRandomStrongPassword_WithNoSpecifiedCharacters() {
 		String password = StringUtils.randomStrongPassword(PASSWORD_LENGTH, PASSWORD_LENGTH, 0, 0, 0);
 

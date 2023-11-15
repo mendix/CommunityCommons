@@ -48,7 +48,8 @@ public class StringUtils {
 	private static final String UPPERCASE_ALPHA = stringRange('A', 'Z');
 	private static final String LOWERCASE_ALPHA = stringRange('a', 'z');
 	private static final String DIGITS = stringRange('0', '9');
-	private static final String SPECIAL = stringRange('!', '/');
+	// Used in tests as well
+	static final String SPECIAL = stringRange('!', '/');
 	private static final String ALPHANUMERIC = UPPERCASE_ALPHA + LOWERCASE_ALPHA + DIGITS;
 
 	static final Map<String, PolicyFactory> SANITIZER_POLICIES =
@@ -279,16 +280,17 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns a random strong password containing a specified minimum number of digits, uppercase
-	 * and special characters.
+	 * Returns a random strong password containing a specified minimum number of uppercase, digits
+	 * and the exact number of special characters.
 	 *
 	 * @param minLen        Minimum length
 	 * @param maxLen        Maximum length
-	 * @param noOfCAPSAlpha Number of capitals
-	 * @param noOfDigits    Number of digits
-	 * @param noOfSplChars  Number of special characters
-	 * @return
+	 * @param noOfCAPSAlpha Minimum number of capitals
+	 * @param noOfDigits    Minimum number of digits
+	 * @param noOfSplChars  Exact number of special characters
+	 * @deprecated          Use the overload randomStrongPassword instead
 	 */
+	@Deprecated
 	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfDigits, int noOfSplChars) {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
@@ -296,22 +298,45 @@ public class StringUtils {
 		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
 			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
 		}
-		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
+		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, 0, noOfDigits, noOfSplChars);
+	}
+
+	/**
+	 * Returns a random strong password containing a specified minimum number of uppercase, lowercase, digits
+	 * and the exact number of special characters.
+	 *
+	 * @param minLen             Minimum length
+	 * @param maxLen             Maximum length
+	 * @param noOfCAPSAlpha      Minimum number of capitals
+	 * @param noOfLowercaseAlpha Minimum number of lowercase letters
+	 * @param noOfDigits         Minimum number of digits
+	 * @param noOfSplChars       Exact number of special characters
+	 */
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfLowercaseAlpha, int noOfDigits, int noOfSplChars) {
+		if (minLen > maxLen) {
+			throw new IllegalArgumentException("Min. Length > Max. Length!");
+		}
+		if ((noOfCAPSAlpha + noOfLowercaseAlpha + noOfDigits + noOfSplChars) > minLen) {
+			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, LOWER, DIGITS, SPL CHARS) Length!");
+		}
+		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfLowercaseAlpha, noOfDigits, noOfSplChars);
 	}
 
 	// See https://www.baeldung.com/java-generate-secure-password
 	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
-	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfDigits, int noOfSplChars) {
+	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfLowercaseAlpha, int noOfDigits, int noOfSplChars) {
 		String upperCaseLetters = randomStringFromCharArray(noOfCapsAlpha, UPPERCASE_ALPHA.toCharArray());
+		String lowerCaseLetters = randomStringFromCharArray(noOfLowercaseAlpha, LOWERCASE_ALPHA.toCharArray());
 		String numbers = randomStringFromCharArray(noOfDigits, DIGITS.toCharArray());
 		String specialChar = randomStringFromCharArray(noOfSplChars, SPECIAL.toCharArray());
 
-		final int fixedNumber = noOfCapsAlpha + noOfDigits + noOfSplChars;
+		final int fixedNumber = noOfCapsAlpha + noOfLowercaseAlpha + noOfDigits + noOfSplChars;
 		final int lowerBound = minLen - fixedNumber;
 		final int upperBound = maxLen - fixedNumber;
 		String totalChars = randomStringFromCharArray(lowerBound, upperBound, ALPHANUMERIC.toCharArray());
 
 		String combinedChars = upperCaseLetters
+			.concat(lowerCaseLetters)
 			.concat(numbers)
 			.concat(specialChar)
 			.concat(totalChars);
