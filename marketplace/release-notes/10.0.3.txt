@@ -1,0 +1,1 @@
+We now allow specifying a minimum number of lowercase characters in RandomStrongPassword.

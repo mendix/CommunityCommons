@@ -13,13 +13,13 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Pads a string on the left to a certain length. 
- * value : the original value
- * amount: the desired length of the resulting string.
- * fillCharacter: the character to pad with. (or space if empty)
- * 
- * For example
- * StringLeftPad("hello", 8, "-")  returns "---hello"
+ * Pads a string on the left to a certain length. 
+ * value : the original value
+ * amount: the desired length of the resulting string.
+ * fillCharacter: the character to pad with. (or space if empty)
+ * 
+ * For example
+ * StringLeftPad("hello", 8, "-")  returns "---hello"
  * StringLeftPad("hello", 2, "-")  returns "hello"
  */
 public class StringLeftPad extends CustomJavaAction<java.lang.String>
