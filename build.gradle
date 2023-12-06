@@ -50,7 +50,7 @@ dependencies {
             [group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'],
             [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
             [group: 'commons-io', name: 'commons-io', version: '2.11.0'],
-            [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'],
+            [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'],
             [group: 'org.apache.commons', name: 'commons-lang3', version: '3.11']
     )
 }
