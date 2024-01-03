@@ -1,0 +1,2 @@
+- We updated the Apache PDFBox dependency to 2.0.30.
+- We added a new Java action RandomStrongPasswordWithLowercase which allows specifying a minimum number of lowercase characters for RandomStrongPassword.
