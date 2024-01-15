@@ -138,7 +138,8 @@ public class Misc {
 
 	public static String getApplicationURL() {
 		final String applicationURL = UNDER_TEST ? "http://localhost:8080/" : Core.getConfiguration().getApplicationRootUrl();
-		return StringUtils.removeEnd(applicationURL, "/");
+		String modifiedURL = applicationURL.startsWith("https://") ? applicationURL : "https://" + applicationURL;
+		return StringUtils.removeEnd(modifiedURL, "/");
 	}
 
 	public static String getRuntimeVersion() {
