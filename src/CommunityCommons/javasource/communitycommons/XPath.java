@@ -528,7 +528,7 @@ public class XPath<T> {
 				break;
 
 			if (loopcount % 5 == 0)
-				sleepamount *= 1.5;
+				sleepamount = (int)(sleepamount * 1.5);
 
 			// not expired, wait a bit
 			if (result == null)
