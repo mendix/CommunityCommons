@@ -1,0 +1,1 @@
+- We removed "implicit narrowing conversion" which caused a warning to be made by a code scanning tool.
