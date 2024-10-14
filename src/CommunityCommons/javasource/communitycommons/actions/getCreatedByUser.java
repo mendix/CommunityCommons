@@ -15,8 +15,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns the user that created an object 
- * 
+ * Returns the user that created an object 
+ * 
  * (or empty if not applicable).
  */
 public class getCreatedByUser extends CustomJavaAction<IMendixObject>

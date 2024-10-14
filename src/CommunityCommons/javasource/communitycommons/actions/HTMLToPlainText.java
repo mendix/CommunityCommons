@@ -14,7 +14,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Use this function to convert HTML text to plain text. 
+ * Use this function to convert HTML text to plain text. 
  * It will preserve linebreaks but strip all other markup. including html entity decoding.
  */
 public class HTMLToPlainText extends CustomJavaAction<java.lang.String>
