@@ -1,2 +1,2 @@
-- We updated the commons-io dependency to 2.17.0. (Tickets 230717, 230797)
+- We updated the Apache Commons IO dependency to 2.17.0. (Tickets 230717, 230797)
 - We fixed the description of the RandomStrongPasswordWithLowercase Java action
