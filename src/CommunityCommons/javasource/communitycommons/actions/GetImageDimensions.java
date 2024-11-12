@@ -9,14 +9,17 @@
 
 package communitycommons.actions;
 
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.ImageDimensions;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 
 public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 {
@@ -36,13 +39,29 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 
 		// BEGIN USER CODE
 		ImageDimensions imageDimensions = new ImageDimensions(getContext());
-		try (InputStream inputStream = Core.getImage(getContext(), this.ImageParameter.getMendixObject(), false)) {
-			BufferedImage bimg = ImageIO.read(inputStream);
-			imageDimensions.setHeight(bimg.getHeight());
-			imageDimensions.setWidth(bimg.getWidth());
-		}
 
-		return imageDimensions.getMendixObject();
+		try (InputStream inputStream = Core.getImage(getContext(), this.ImageParameter.getMendixObject(), false);
+			ImageInputStream imageStream = ImageIO.createImageInputStream(inputStream)) {
+			if(imageStream != null) {
+				Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
+				if (!readers.hasNext()) throw new IOException("Can't find a suitable imagereader for this image");;
+
+				ImageReader reader = readers.next();
+			  
+				try {
+					reader.setInput(imageStream);
+					int height = reader.getHeight(reader.getMinIndex());
+					int width = reader.getWidth(reader.getMinIndex());
+					imageDimensions.setHeight(height);
+					imageDimensions.setWidth(width);
+					return imageDimensions.getMendixObject();
+				} finally {
+					reader.dispose();
+				}
+			} else {
+				throw new IOException("Can't open a stream for this image");
+			}
+		}
 		// END USER CODE
 	}
 
