@@ -1,0 +1,1 @@
+We deprecated the 'length' parameter of the StringUtils Hash java action. The length of the hash will now always be 32 bytes, represented as 64 hex characters.

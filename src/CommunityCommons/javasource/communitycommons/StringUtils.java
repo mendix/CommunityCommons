@@ -64,6 +64,12 @@ public class StringUtils {
 
 	public static final String HASH_ALGORITHM = "SHA-256";
 
+	public static String hash(String value) throws NoSuchAlgorithmException, DigestException {
+		int LENGTH = 32;
+		return hash(value, LENGTH);
+	}
+
+	@Deprecated
 	public static String hash(String value, int length) throws NoSuchAlgorithmException, DigestException {
 		byte[] inBytes = value.getBytes(StandardCharsets.UTF_8);
 		byte[] outBytes = new byte[length];
