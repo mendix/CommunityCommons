@@ -14,6 +14,9 @@ import org.junit.Test;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 
+import java.security.DigestException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  *
  * @author res
@@ -156,5 +159,15 @@ public class StringUtilsTest {
 
 		assertThrows(IllegalArgumentException.class, () ->
 			StringUtils.randomStrongPassword(length, length, upperCount, digitCount, specialCount));
+	}
+
+	@Test
+	public void testHash() throws DigestException, NoSuchAlgorithmException {
+		final int length = 32;
+		final String originalString = "original string";
+		final String hashedString = "18760223948747fb081582fdef27e3d216d0e6bc67734eb080bb1c0c4b22d01b";
+
+		assertEquals(StringUtils.hash(originalString), StringUtils.hash(originalString, length));
+		assertEquals(StringUtils.hash(originalString), hashedString);
 	}
 }
