@@ -1,0 +1,2 @@
+Added null check and close open streams.
+
