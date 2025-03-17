@@ -674,18 +674,19 @@ public class Misc {
 			Logging.trace(LOGNODE, "Overlay PDF start, retrieve overlay PDF");
 
 			Logging.trace(LOGNODE, "Perform overlay");
-			Overlay overlay = new Overlay();
-			overlay.setInputPDF(inputDoc);
-			overlay.setDefaultOverlayPDF(overlayDoc);
-			if (onTopOfContent == true) {
-				overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
-			} else {
-				overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+			try (Overlay overlay = new Overlay()) {
+				overlay.setInputPDF(inputDoc);
+				overlay.setDefaultOverlayPDF(overlayDoc);
+				if (onTopOfContent) {
+					overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+				} else {
+					overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+				}
+
+				Logging.trace(LOGNODE, "Save result in output stream");
+
+				overlay.overlay(new HashMap<>()).save(baos);
 			}
-
-			Logging.trace(LOGNODE, "Save result in output stream");
-
-			overlay.overlay(new HashMap<>()).save(baos);
 
 			Logging.trace(LOGNODE, "Duplicate result in input stream");
 			try (InputStream overlayedContent = new ByteArrayInputStream(baos.toByteArray())) {

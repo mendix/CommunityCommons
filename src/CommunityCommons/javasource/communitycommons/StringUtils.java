@@ -493,7 +493,12 @@ public class StringUtils {
 		PolicyFactory policyFactory = null;
 
 		for (SanitizerPolicy param : policyParams) {
-			policyFactory = (policyFactory == null) ? SANITIZER_POLICIES.get(param.name()) : policyFactory.and(SANITIZER_POLICIES.get(param.name()));
+			PolicyFactory policyFactoryForParam = SANITIZER_POLICIES.get(param.name());
+			policyFactory = (policyFactory == null) ? policyFactoryForParam : policyFactory.and(policyFactoryForParam);
+		}
+
+		if (policyFactory == null) {
+			throw new IllegalArgumentException("Sanitizer policy not found.");
 		}
 
 		return sanitizeHTML(html, policyFactory);
