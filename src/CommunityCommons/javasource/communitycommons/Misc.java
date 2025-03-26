@@ -63,11 +63,11 @@ public class Misc {
 
 		public abstract void hit(T1 key, T2 value) throws Exception;
 
-		public void exit() {
+		synchronized public void exit() {
 			stop = true;
 		}
 
-		public void remove() {
+		synchronized public void remove() {
 			mapIter.remove();
 		}
 

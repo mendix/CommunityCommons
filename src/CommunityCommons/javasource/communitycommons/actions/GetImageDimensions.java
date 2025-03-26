@@ -38,8 +38,10 @@ public class GetImageDimensions extends CustomJavaAction<IMendixObject>
 		ImageDimensions imageDimensions = new ImageDimensions(getContext());
 		try (InputStream inputStream = Core.getImage(getContext(), this.ImageParameter.getMendixObject(), false)) {
 			BufferedImage bimg = ImageIO.read(inputStream);
-			imageDimensions.setHeight(bimg.getHeight());
-			imageDimensions.setWidth(bimg.getWidth());
+			if (bimg != null) {
+				imageDimensions.setHeight(bimg.getHeight());
+				imageDimensions.setWidth(bimg.getWidth());
+			}
 		}
 
 		return imageDimensions.getMendixObject();
