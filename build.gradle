@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.14'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.20'
     id 'net.researchgate.release' version '2.8.1'
 }
 
@@ -16,6 +16,8 @@ project.ext {
     mendixPublicApiVersion = '9.18.0'
 }
 
+def mprDir = "$projectDir/src/CommunityCommons"
+
 mxMarketplace {
     appNumber = 170
     appName = 'Community Commons'
@@ -24,9 +26,10 @@ mxMarketplace {
     appDirectory = "src/CommunityCommons"
     versionPathPrefix = "_Version " // the path prefix within the module to the version folder
     createMigrationFile = true
+    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.1.3__READMEOSS.html"]
 }
 
-def userLibDir = "$projectDir/src/CommunityCommons/userlib"
+def userLibDir = "$mprDir/userlib"
 
 repositories {
     maven {
@@ -71,14 +74,14 @@ tasks.withType(JavaCompile) {
 sourceSets {
     main {
         java {
-            srcDir 'src/CommunityCommons/javasource'
+            srcDir '$mprDir/javasource'
             exclude 'unittesting/**'
             exclude 'system/UserActionsRegistrar.java'
         }
     }
     test {
         java {
-            srcDirs = ["src/test", "src/CommunityCommons/javasource"]
+            srcDirs = ["src/test", "$mprDir/javasource"]
         }
     }
 }
