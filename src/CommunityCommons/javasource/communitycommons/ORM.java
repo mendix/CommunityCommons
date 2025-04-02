@@ -276,7 +276,7 @@ public class ORM {
 			}
 			if ("__UUID__".equals(m.getName()) && (isFileDocument(source) || isFileDocument(target))) {
 				continue;
-            }
+			}
 			if (withAssociations || ((!(m instanceof MendixObjectReference) && !(m instanceof MendixObjectReferenceSet) && !(m instanceof MendixAutoNumber)))) {
 				target.setValue(c, entry.getKey(), m.getValue(c));
 			}
@@ -286,7 +286,12 @@ public class ORM {
 
 	public static IMendixObject firstWhere(IContext c, String entityName,
 		Object member, String value) throws CoreException {
-		List<IMendixObject> items = Core.retrieveXPathQuery(c, String.format("//%s[%s =  '%s']", entityName, member, value), 1, 0, new HashMap<String, String>());
+		List<IMendixObject> items = 
+			Core.createXPathQuery(String.format("//%s[%s =  '%s']", entityName, member, value))
+				.setAmount(1)
+				.setOffset(0)
+				.execute(c);
+
 		if (items == null || items.size() == 0) {
 			return null;
 		}

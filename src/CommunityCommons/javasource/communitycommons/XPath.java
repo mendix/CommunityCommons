@@ -29,6 +29,7 @@ import org.apache.commons.text.translate.LookupTranslator;
 
 import com.mendix.core.Core;
 import com.mendix.core.CoreException;
+import com.mendix.datastorage.XPathQuery;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixIdentifier;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
@@ -350,13 +351,17 @@ public class XPath<T> {
 	public long count() throws CoreException {
 		assertEmptyStack();
 
-		return Core.retrieveXPathQueryAggregate(context, "count(" + getXPath() + ")");
+		return Core.createXPathQuery("count(" + getXPath() + ")").executeAggregateLong(context);
 	}
 
 	public IMendixObject firstMendixObject() throws CoreException {
 		assertEmptyStack();
 
-		List<IMendixObject> result = Core.retrieveXPathQuery(context, getXPath(), 1, offset, sorting);
+		XPathQuery query = (XPathQuery) Core.createXPathQuery(getXPath()).setAmount(1).setOffset(offset);
+		for (Map.Entry<String, String> sort : sorting.entrySet())
+			query.addSort(sort.getKey(), sort.getValue() == "asc");
+		List<IMendixObject> result = query.execute(context);
+
 		if (result.isEmpty())
 			return null;
 		return result.get(0);
@@ -541,7 +546,10 @@ public class XPath<T> {
 	public List<IMendixObject> allMendixObjects() throws CoreException {
 		assertEmptyStack();
 
-		return Core.retrieveXPathQuery(context, getXPath(), limit, offset, sorting);
+		XPathQuery query = (XPathQuery) Core.createXPathQuery(getXPath()).setAmount(limit).setOffset(offset);
+		for (Map.Entry<String, String> sort : sorting.entrySet())
+			query.addSort(sort.getKey(), sort.getValue() == "asc");
+		return query.execute(context);
 	}
 
 	public List<T> all() throws CoreException {
