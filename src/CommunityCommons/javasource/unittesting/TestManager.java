@@ -185,7 +185,7 @@ public class TestManager
 		//Context without transaction!
 		IContext context = Core.createSystemContext();
 
-		List<IMendixObject> testsuites = Core.retrieveXPathQuery(context, "//" + TestSuite.entityName);
+		List<IMendixObject> testsuites = Core.createXPathQuery("//" + TestSuite.entityName).execute(context);
 
 		for(IMendixObject suite : testsuites) {
 			suite.setValue(context, TestSuite.MemberNames.Result.toString(), null);;
@@ -577,7 +577,7 @@ public class TestManager
 		query.append(String.format("//%s", TestSuite.entityName));
 		query.append("[not(" + UnitTest.MemberNames.UnitTest_TestSuite + "/" + UnitTest.entityName + ")]");
 
-		List<IMendixObject> testSuites = Core.retrieveXPathQuery(context, query.toString());
+		List<IMendixObject> testSuites = Core.createXPathQuery(query.toString()).execute(context);
 		Core.delete(context, testSuites);
 	}
 
@@ -631,7 +631,7 @@ public class TestManager
 			deleteQuery.append(String.format("//%s", UnitTest.entityName));
 			deleteQuery.append(String.format("[%s=true]", UnitTest.MemberNames._dirty));
 		
-			List<IMendixObject> dirtyTests = Core.retrieveXPathQuery(context, deleteQuery.toString());
+			List<IMendixObject> dirtyTests = Core.createXPathQuery(deleteQuery.toString()).execute(context);
 			Core.delete(context, dirtyTests);
 
 			/*
@@ -640,7 +640,7 @@ public class TestManager
 			StringBuilder countQuery = new StringBuilder();
 			countQuery.append(String.format("//%s", UnitTest.entityName));
 			countQuery.append(String.format("[%s=" + testSuite.getMendixObject().getId().toLong() + "]", UnitTest.MemberNames.UnitTest_TestSuite));
-			Long testCount = Core.retrieveXPathQueryAggregate(context, "count(" + countQuery.toString() + ")");
+			Long testCount = Core.createXPathQuery("count(" + countQuery.toString() + ")").executeAggregateLong(context);
 			
 			testSuite.setTestCount(testCount);
 			testSuite.commit();

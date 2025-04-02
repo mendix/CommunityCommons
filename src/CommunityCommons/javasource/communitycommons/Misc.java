@@ -515,7 +515,7 @@ public class Misc {
 	public static Boolean executeInBatches(String xpathRaw, BatchState batchState, int batchsize, boolean waitUntilFinished, boolean asc) throws CoreException, InterruptedException {
 		String xpath = xpathRaw.startsWith("//") ? xpathRaw : "//" + xpathRaw;
 
-		long count = Core.retrieveXPathQueryAggregate(Core.createSystemContext(), "count(" + xpath + ")");
+		long count = Core.createXPathQuery("count(" + xpath + ")").executeAggregateLong(Core.createSystemContext());
 		int loop = (int) Math.ceil(((float) count) / ((float) batchsize));
 
 		Logging.debug(LOGNODE,
@@ -549,15 +549,12 @@ public class Misc {
 					Thread.sleep(200);
 					IContext c = Core.createSystemContext();
 
-					List<IMendixObject> objects = Core.retrieveXPathQuery(c, xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""),
-						batchsize,
-						0,
-						new HashMap<String, String>() {
-						{
-							put("id", asc ? "asc" : "desc");
-						}
-					}
-					);
+					List<IMendixObject> objects = 
+						Core.createXPathQuery(xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""))
+							.setAmount(batchsize)
+							.setOffset(0)
+							.addSort("id", asc ? true : false)
+							.execute(c);
 
 					//no new objects found :)
 					if (objects.isEmpty()) {
