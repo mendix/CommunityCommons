@@ -110,6 +110,9 @@ clean {
 
 release {
     tagTemplate = '$name-$version'
+    git {
+        requireBranch = 'lts/9.18'
+    }
 }
 
 task afterReleaseBuildTask {
