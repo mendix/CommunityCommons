@@ -252,6 +252,11 @@ public class XPathTest {
 		}
 
 		@Override
+		public IMendixObjectMember<?> getMember(String memberName) {
+			throw new UnsupportedOperationException("Unimplemented method 'getMember'");
+		}
+
+		@Override
 		public IMendixIdentifier getId() {
 			return id;
 		}
@@ -264,6 +269,11 @@ public class XPathTest {
 		@Override
 		public boolean isChanged() {
 			throw new UnsupportedOperationException("Unimplemented method 'isChanged'");
+		}
+
+		@Override
+		public boolean hasChangedMemberValue(IContext context) {
+			throw new UnsupportedOperationException("Unimplemented method 'hasChangedMemberValue'");
 		}
 
 		@Override
@@ -324,6 +334,11 @@ public class XPathTest {
 		@Override
 		public boolean isNew() {
 			throw new UnsupportedOperationException("Unimplemented method 'isNew'");
+		}
+
+		@Override
+		public TestObject createClone() {
+			return new TestObject(id);
 		}
 
 		public TestObject clone() {

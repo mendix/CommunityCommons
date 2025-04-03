@@ -1,0 +1,1 @@
+We upgraded the Community Commons module to Mendix version 10.21.0

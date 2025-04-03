@@ -172,7 +172,7 @@ public class TestManager
 
 		// Either we had a teardown a teardown or
 		if (testSuite.getAutoRollbackMFs() && tearDownContext != null) {
-			tearDownContext.rollbackTransAction();
+			tearDownContext.rollbackTransaction();
 		}
 
 		// Make sure we clean setupContext after running this test/suite
@@ -396,7 +396,7 @@ public class TestManager
 		}
 		finally {
 			if (testSuite.getAutoRollbackMFs())
-				mfContext.rollbackTransAction();
+				mfContext.rollbackTransaction();
 			test.setLastStep(lastStep);
 			test.setReadableTime((start > 10000 ? Math.round(start / 1000) + " seconds" : start + " milliseconds"));
 			commitSilent(test);
