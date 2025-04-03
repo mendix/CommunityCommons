@@ -16,22 +16,27 @@ import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;
 import communitycommons.proxies.LogNodes;
 import java.util.Date;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Calculates the number of months between two dates. 
- * - dateTime : the original (oldest) dateTime
+ * Calculates the number of months between two dates. 
+ * - dateTime : the original (oldest) dateTime
  * - compareDate: the second date. If EMPTY, the current datetime will be used. Effectively this means that the age of the dateTime is calculated.
  */
-public class MonthsBetween extends CustomJavaAction<java.lang.Long>
+public class MonthsBetween extends UserAction<java.lang.Long>
 {
-	private java.util.Date date1;
-	private java.util.Date date2;
+	private final java.util.Date date1;
+	private final java.util.Date date2;
 
-	public MonthsBetween(IContext context, java.util.Date date1, java.util.Date date2)
+	public MonthsBetween(
+		IContext context,
+		java.util.Date _date1,
+		java.util.Date _date2
+	)
 	{
 		super(context);
-		this.date1 = date1;
-		this.date2 = date2;
+		this.date1 = _date1;
+		this.date2 = _date2;
 	}
 
 	@java.lang.Override

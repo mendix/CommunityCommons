@@ -12,28 +12,36 @@ package communitycommons.actions;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
- * 
+ * Returns a random strong password containing a specified minimum number of digits, uppercase and special characters.
+ * 
  * Note:Minimumlength should be equal or larger than NrOfCapitalizedCharacters, NrOfDigits and NrOfSpecialCharacters
  */
-public class RandomStrongPassword extends CustomJavaAction<java.lang.String>
+public class RandomStrongPassword extends UserAction<java.lang.String>
 {
-	private java.lang.Long MinLength;
-	private java.lang.Long MaxLength;
-	private java.lang.Long NrOfCapitalizedCharacters;
-	private java.lang.Long NrOfDigits;
-	private java.lang.Long NrOfSpecialCharacters;
+	private final java.lang.Long MinLength;
+	private final java.lang.Long MaxLength;
+	private final java.lang.Long NrOfCapitalizedCharacters;
+	private final java.lang.Long NrOfDigits;
+	private final java.lang.Long NrOfSpecialCharacters;
 
-	public RandomStrongPassword(IContext context, java.lang.Long MinLength, java.lang.Long MaxLength, java.lang.Long NrOfCapitalizedCharacters, java.lang.Long NrOfDigits, java.lang.Long NrOfSpecialCharacters)
+	public RandomStrongPassword(
+		IContext context,
+		java.lang.Long _minLength,
+		java.lang.Long _maxLength,
+		java.lang.Long _nrOfCapitalizedCharacters,
+		java.lang.Long _nrOfDigits,
+		java.lang.Long _nrOfSpecialCharacters
+	)
 	{
 		super(context);
-		this.MinLength = MinLength;
-		this.MaxLength = MaxLength;
-		this.NrOfCapitalizedCharacters = NrOfCapitalizedCharacters;
-		this.NrOfDigits = NrOfDigits;
-		this.NrOfSpecialCharacters = NrOfSpecialCharacters;
+		this.MinLength = _minLength;
+		this.MaxLength = _maxLength;
+		this.NrOfCapitalizedCharacters = _nrOfCapitalizedCharacters;
+		this.NrOfDigits = _nrOfDigits;
+		this.NrOfSpecialCharacters = _nrOfSpecialCharacters;
 	}
 
 	@java.lang.Override

@@ -12,11 +12,12 @@ package communitycommons.actions;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Returns true if the environment is a development environment. Calls Core.getConfiguration().isInDevelopment().
  */
-public class IsInDevelopment extends CustomJavaAction<java.lang.Boolean>
+public class IsInDevelopment extends UserAction<java.lang.Boolean>
 {
 	public IsInDevelopment(IContext context)
 	{

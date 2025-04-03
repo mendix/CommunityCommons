@@ -12,11 +12,12 @@ package communitycommons.actions;
 import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Generates a random hash, perfectly to use as random but unique identifier
  */
-public class RandomHash extends CustomJavaAction<java.lang.String>
+public class RandomHash extends UserAction<java.lang.String>
 {
 	public RandomHash(IContext context)
 	{

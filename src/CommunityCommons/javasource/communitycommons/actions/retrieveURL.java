@@ -12,30 +12,35 @@ package communitycommons.actions;
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Retrieves data (such as an HTML page) from an URL using the HTTP protocol, and returns it as string. 
- * 
- * - url : The URL to retrieve. 
- * - post : Data to be sent in the request body. If set, a POST request will be send, otherwise a GET request is used. 
- * 
- * Example urls: 
- * 'https://mxforum.mendix.com/search/'
- * 'http://www.google.nl/#hl=nl&q=download+mendix'
- * 
- * Example post data: 
+ * Retrieves data (such as an HTML page) from an URL using the HTTP protocol, and returns it as string. 
+ * 
+ * - url : The URL to retrieve. 
+ * - post : Data to be sent in the request body. If set, a POST request will be send, otherwise a GET request is used. 
+ * 
+ * Example urls: 
+ * 'https://mxforum.mendix.com/search/'
+ * 'http://www.google.nl/#hl=nl&q=download+mendix'
+ * 
+ * Example post data: 
  * 'ipSearchTag=url&x=0&y=0'
  */
-public class retrieveURL extends CustomJavaAction<java.lang.String>
+public class retrieveURL extends UserAction<java.lang.String>
 {
-	private java.lang.String url;
-	private java.lang.String postdata;
+	private final java.lang.String url;
+	private final java.lang.String postdata;
 
-	public retrieveURL(IContext context, java.lang.String url, java.lang.String postdata)
+	public retrieveURL(
+		IContext context,
+		java.lang.String _url,
+		java.lang.String _postdata
+	)
 	{
 		super(context);
-		this.url = url;
-		this.postdata = postdata;
+		this.url = _url;
+		this.postdata = _postdata;
 	}
 
 	@java.lang.Override

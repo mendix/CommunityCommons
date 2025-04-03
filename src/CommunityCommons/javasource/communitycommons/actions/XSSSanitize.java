@@ -18,46 +18,56 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. 
- * 
- * This function should be applied to all HTML which is displayed in the browser, and can be entered by (untrusted) users.
- * 
- * - HTML: The html to sanitize
- * - policy1... policy6: one or more values of SanitizerPolicy. You may leave these policy parameters empty if you don't want to allow additional elements.
- * 
- * BLOCKS: Allows common block elements including <p>, <h1>, etc.
- * FORMATTING: Allows common formatting elements including <b>, <i>, etc.
- * IMAGES: Allows <img> elements from HTTP, HTTPS, and relative sources.
- * LINKS: Allows HTTP, HTTPS, MAILTO and relative links
- * STYLES: Allows certain safe CSS properties in style="..." attributes.
- * TABLES: Allows commons table elements.
- * 
- * For more information, visit:
- * 
+ * Removes all potential dangerous HTML from a string so that it can be safely displayed in a browser. 
+ * 
+ * This function should be applied to all HTML which is displayed in the browser, and can be entered by (untrusted) users.
+ * 
+ * - HTML: The html to sanitize
+ * - policy1... policy6: one or more values of SanitizerPolicy. You may leave these policy parameters empty if you don't want to allow additional elements.
+ * 
+ * BLOCKS: Allows common block elements including <p>, <h1>, etc.
+ * FORMATTING: Allows common formatting elements including <b>, <i>, etc.
+ * IMAGES: Allows <img> elements from HTTP, HTTPS, and relative sources.
+ * LINKS: Allows HTTP, HTTPS, MAILTO and relative links
+ * STYLES: Allows certain safe CSS properties in style="..." attributes.
+ * TABLES: Allows commons table elements.
+ * 
+ * For more information, visit:
+ * 
  * http://javadoc.io/doc/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/20180219.1
  */
-public class XSSSanitize extends CustomJavaAction<java.lang.String>
+public class XSSSanitize extends UserAction<java.lang.String>
 {
-	private java.lang.String html;
-	private communitycommons.proxies.SanitizerPolicy policy1;
-	private communitycommons.proxies.SanitizerPolicy policy2;
-	private communitycommons.proxies.SanitizerPolicy policy3;
-	private communitycommons.proxies.SanitizerPolicy policy4;
-	private communitycommons.proxies.SanitizerPolicy policy5;
-	private communitycommons.proxies.SanitizerPolicy policy6;
+	private final java.lang.String html;
+	private final communitycommons.proxies.SanitizerPolicy policy1;
+	private final communitycommons.proxies.SanitizerPolicy policy2;
+	private final communitycommons.proxies.SanitizerPolicy policy3;
+	private final communitycommons.proxies.SanitizerPolicy policy4;
+	private final communitycommons.proxies.SanitizerPolicy policy5;
+	private final communitycommons.proxies.SanitizerPolicy policy6;
 
-	public XSSSanitize(IContext context, java.lang.String html, java.lang.String policy1, java.lang.String policy2, java.lang.String policy3, java.lang.String policy4, java.lang.String policy5, java.lang.String policy6)
+	public XSSSanitize(
+		IContext context,
+		java.lang.String _html,
+		java.lang.String _policy1,
+		java.lang.String _policy2,
+		java.lang.String _policy3,
+		java.lang.String _policy4,
+		java.lang.String _policy5,
+		java.lang.String _policy6
+	)
 	{
 		super(context);
-		this.html = html;
-		this.policy1 = policy1 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy1);
-		this.policy2 = policy2 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy2);
-		this.policy3 = policy3 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy3);
-		this.policy4 = policy4 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy4);
-		this.policy5 = policy5 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy5);
-		this.policy6 = policy6 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(policy6);
+		this.html = _html;
+		this.policy1 = _policy1 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy1);
+		this.policy2 = _policy2 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy2);
+		this.policy3 = _policy3 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy3);
+		this.policy4 = _policy4 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy4);
+		this.policy5 = _policy5 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy5);
+		this.policy6 = _policy6 == null ? null : communitycommons.proxies.SanitizerPolicy.valueOf(_policy6);
 	}
 
 	@java.lang.Override

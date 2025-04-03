@@ -17,8 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import communitycommons.ORM;
 import system.proxies.FileDocument;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
-public class Test_Clone_Java extends CustomJavaAction<java.lang.Boolean>
+public class Test_Clone_Java extends UserAction<java.lang.Boolean>
 {
 	public Test_Clone_Java(IContext context)
 	{

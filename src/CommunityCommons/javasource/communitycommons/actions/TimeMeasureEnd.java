@@ -12,25 +12,31 @@ package communitycommons.actions;
 import communitycommons.Logging;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * End timing something, and print the result to the log. 
- * - TimerName. Should correspond to the TimerName used with TimeMeasureStart.
- * - LogLevel. The loglevel used to print the result.
+ * End timing something, and print the result to the log. 
+ * - TimerName. Should correspond to the TimerName used with TimeMeasureStart.
+ * - LogLevel. The loglevel used to print the result.
  * - The message to be printed in the log.
  */
-public class TimeMeasureEnd extends CustomJavaAction<java.lang.Long>
+public class TimeMeasureEnd extends UserAction<java.lang.Long>
 {
-	private java.lang.String TimerName;
-	private communitycommons.proxies.LogLevel Loglevel;
-	private java.lang.String message;
+	private final java.lang.String TimerName;
+	private final communitycommons.proxies.LogLevel Loglevel;
+	private final java.lang.String message;
 
-	public TimeMeasureEnd(IContext context, java.lang.String TimerName, java.lang.String Loglevel, java.lang.String message)
+	public TimeMeasureEnd(
+		IContext context,
+		java.lang.String _timerName,
+		java.lang.String _loglevel,
+		java.lang.String _message
+	)
 	{
 		super(context);
-		this.TimerName = TimerName;
-		this.Loglevel = Loglevel == null ? null : communitycommons.proxies.LogLevel.valueOf(Loglevel);
-		this.message = message;
+		this.TimerName = _timerName;
+		this.Loglevel = _loglevel == null ? null : communitycommons.proxies.LogLevel.valueOf(_loglevel);
+		this.message = _message;
 	}
 
 	@java.lang.Override

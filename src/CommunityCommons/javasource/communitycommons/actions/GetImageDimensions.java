@@ -17,23 +17,28 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.ImageDimensions;
 import java.io.InputStream;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
-public class GetImageDimensions extends CustomJavaAction<IMendixObject>
+public class GetImageDimensions extends UserAction<IMendixObject>
 {
-	private IMendixObject __ImageParameter;
-	private system.proxies.Image ImageParameter;
+	/** @deprecated use ImageParameter.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __ImageParameter;
+	private final system.proxies.Image ImageParameter;
 
-	public GetImageDimensions(IContext context, IMendixObject ImageParameter)
+	public GetImageDimensions(
+		IContext context,
+		IMendixObject _imageParameter
+	)
 	{
 		super(context);
-		this.__ImageParameter = ImageParameter;
+		this.__ImageParameter = _imageParameter;
+		this.ImageParameter = _imageParameter == null ? null : system.proxies.Image.initialize(getContext(), _imageParameter);
 	}
 
 	@java.lang.Override
 	public IMendixObject executeAction() throws Exception
 	{
-		this.ImageParameter = this.__ImageParameter == null ? null : system.proxies.Image.initialize(getContext(), __ImageParameter);
-
 		// BEGIN USER CODE
 		ImageDimensions imageDimensions = new ImageDimensions(getContext());
 		try (InputStream inputStream = Core.getImage(getContext(), this.ImageParameter.getMendixObject(), false)) {

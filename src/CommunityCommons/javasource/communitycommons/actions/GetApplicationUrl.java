@@ -12,11 +12,12 @@ package communitycommons.actions;
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Returns the runtime URL of this application.
  */
-public class GetApplicationUrl extends CustomJavaAction<java.lang.String>
+public class GetApplicationUrl extends UserAction<java.lang.String>
 {
 	public GetApplicationUrl(IContext context)
 	{

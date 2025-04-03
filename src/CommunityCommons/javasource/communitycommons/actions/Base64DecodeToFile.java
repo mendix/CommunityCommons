@@ -13,30 +13,36 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Stores an base 64 encoded string plain in the provided target file document
- * 
+ * Stores an base 64 encoded string plain in the provided target file document
+ * 
  * Note that targetFile will be committed.
  */
-public class Base64DecodeToFile extends CustomJavaAction<java.lang.Boolean>
+public class Base64DecodeToFile extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String encoded;
-	private IMendixObject __targetFile;
-	private system.proxies.FileDocument targetFile;
+	private final java.lang.String encoded;
+	/** @deprecated use targetFile.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __targetFile;
+	private final system.proxies.FileDocument targetFile;
 
-	public Base64DecodeToFile(IContext context, java.lang.String encoded, IMendixObject targetFile)
+	public Base64DecodeToFile(
+		IContext context,
+		java.lang.String _encoded,
+		IMendixObject _targetFile
+	)
 	{
 		super(context);
-		this.encoded = encoded;
-		this.__targetFile = targetFile;
+		this.encoded = _encoded;
+		this.__targetFile = _targetFile;
+		this.targetFile = _targetFile == null ? null : system.proxies.FileDocument.initialize(getContext(), _targetFile);
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.targetFile = this.__targetFile == null ? null : system.proxies.FileDocument.initialize(getContext(), __targetFile);
-
 		// BEGIN USER CODE
 		StringUtils.base64DecodeToFile(getContext(), encoded, targetFile);
 		return true;

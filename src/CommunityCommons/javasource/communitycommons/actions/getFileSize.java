@@ -13,31 +13,36 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Returns the filesize of a file document in bytes.
- * 
- * From version 2.3 on, this function can be used in cloud environments as well. 
- * 
- * NOTE:
+ * Returns the filesize of a file document in bytes.
+ * 
+ * From version 2.3 on, this function can be used in cloud environments as well. 
+ * 
+ * NOTE:
  * before 2.1, this functioned returned the size in kilobytes, although this documentation mentioned bytes
  */
-public class getFileSize extends CustomJavaAction<java.lang.Long>
+public class getFileSize extends UserAction<java.lang.Long>
 {
-	private IMendixObject __document;
-	private system.proxies.FileDocument document;
+	/** @deprecated use document.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __document;
+	private final system.proxies.FileDocument document;
 
-	public getFileSize(IContext context, IMendixObject document)
+	public getFileSize(
+		IContext context,
+		IMendixObject _document
+	)
 	{
 		super(context);
-		this.__document = document;
+		this.__document = _document;
+		this.document = _document == null ? null : system.proxies.FileDocument.initialize(getContext(), _document);
 	}
 
 	@java.lang.Override
 	public java.lang.Long executeAction() throws Exception
 	{
-		this.document = this.__document == null ? null : system.proxies.FileDocument.initialize(getContext(), __document);
-
 		// BEGIN USER CODE
 		return Misc.getFileSize(this.getContext(), document.getMendixObject());
 		// END USER CODE

@@ -16,22 +16,27 @@ import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;
 import communitycommons.proxies.LogNodes;
 import java.util.Date;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Calculates the number of years between two dates. 
- * - dateTime : the original (oldest) dateTime
+ * Calculates the number of years between two dates. 
+ * - dateTime : the original (oldest) dateTime
  * - compareDate: the second date. If EMPTY, the current datetime will be used. Effectively this means that the age of the dateTime is calculated.
  */
-public class YearsBetween extends CustomJavaAction<java.lang.Long>
+public class YearsBetween extends UserAction<java.lang.Long>
 {
-	private java.util.Date dateTime;
-	private java.util.Date compareDate;
+	private final java.util.Date dateTime;
+	private final java.util.Date compareDate;
 
-	public YearsBetween(IContext context, java.util.Date dateTime, java.util.Date compareDate)
+	public YearsBetween(
+		IContext context,
+		java.util.Date _dateTime,
+		java.util.Date _compareDate
+	)
 	{
 		super(context);
-		this.dateTime = dateTime;
-		this.compareDate = compareDate;
+		this.dateTime = _dateTime;
+		this.compareDate = _compareDate;
 	}
 
 	@java.lang.Override

@@ -15,31 +15,38 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Stores a string into the provided FileDocument, using the specified encoding.
+ * Stores a string into the provided FileDocument, using the specified encoding.
  * Note that destination will be committed.
  */
-public class StringToFile extends CustomJavaAction<java.lang.Boolean>
+public class StringToFile extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String value;
-	private IMendixObject __destination;
-	private system.proxies.FileDocument destination;
-	private communitycommons.proxies.StandardEncodings encoding;
+	private final java.lang.String value;
+	/** @deprecated use destination.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __destination;
+	private final system.proxies.FileDocument destination;
+	private final communitycommons.proxies.StandardEncodings encoding;
 
-	public StringToFile(IContext context, java.lang.String value, IMendixObject destination, java.lang.String encoding)
+	public StringToFile(
+		IContext context,
+		java.lang.String _value,
+		IMendixObject _destination,
+		java.lang.String _encoding
+	)
 	{
 		super(context);
-		this.value = value;
-		this.__destination = destination;
-		this.encoding = encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(encoding);
+		this.value = _value;
+		this.__destination = _destination;
+		this.destination = _destination == null ? null : system.proxies.FileDocument.initialize(getContext(), _destination);
+		this.encoding = _encoding == null ? null : communitycommons.proxies.StandardEncodings.valueOf(_encoding);
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.destination = this.__destination == null ? null : system.proxies.FileDocument.initialize(getContext(), __destination);
-
 		// BEGIN USER CODE
 		Charset charset = StandardCharsets.UTF_8;
 		if (this.encoding != null)

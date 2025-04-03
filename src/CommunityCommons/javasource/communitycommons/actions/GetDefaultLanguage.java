@@ -14,11 +14,12 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.Misc;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Get default language
  */
-public class GetDefaultLanguage extends CustomJavaAction<IMendixObject>
+public class GetDefaultLanguage extends UserAction<IMendixObject>
 {
 	public GetDefaultLanguage(IContext context)
 	{

@@ -11,11 +11,12 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Start a transaction, if a transaction is already started for this context, a savepoint will be added
  */
-public class StartTransaction extends CustomJavaAction<java.lang.Boolean>
+public class StartTransaction extends UserAction<java.lang.Boolean>
 {
 	public StartTransaction(IContext context)
 	{

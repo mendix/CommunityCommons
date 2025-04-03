@@ -12,26 +12,32 @@ package communitycommons.actions;
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Executes the given microflow as if the $currentuser is the provided user (delegation). Use sudoContext to determine if 'apply entity access' should be used 
- * 
- * - microflowName: the fully qualified microflow name, 'CommunityCommons.CreateUserIfNotExists'
- * - username: The user that should be used to execute the microflow
+ * Executes the given microflow as if the $currentuser is the provided user (delegation). Use sudoContext to determine if 'apply entity access' should be used 
+ * 
+ * - microflowName: the fully qualified microflow name, 'CommunityCommons.CreateUserIfNotExists'
+ * - username: The user that should be used to execute the microflow
  * - sudoContext: whether entity access should be applied.
  */
-public class executeMicroflowAsUser extends CustomJavaAction<java.lang.String>
+public class executeMicroflowAsUser extends UserAction<java.lang.String>
 {
-	private java.lang.String microflow;
-	private java.lang.String username;
-	private java.lang.Boolean sudoContext;
+	private final java.lang.String microflow;
+	private final java.lang.String username;
+	private final java.lang.Boolean sudoContext;
 
-	public executeMicroflowAsUser(IContext context, java.lang.String microflow, java.lang.String username, java.lang.Boolean sudoContext)
+	public executeMicroflowAsUser(
+		IContext context,
+		java.lang.String _microflow,
+		java.lang.String _username,
+		java.lang.Boolean _sudoContext
+	)
 	{
 		super(context);
-		this.microflow = microflow;
-		this.username = username;
-		this.sudoContext = sudoContext;
+		this.microflow = _microflow;
+		this.username = _username;
+		this.sudoContext = _sudoContext;
 	}
 
 	@java.lang.Override

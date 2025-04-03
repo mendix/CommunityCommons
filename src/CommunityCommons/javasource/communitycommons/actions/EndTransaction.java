@@ -11,11 +11,12 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Commit the transaction, this will end this transaction or remove a save point from the queue if the transaction is nested
  */
-public class EndTransaction extends CustomJavaAction<java.lang.Boolean>
+public class EndTransaction extends UserAction<java.lang.Boolean>
 {
 	public EndTransaction(IContext context)
 	{

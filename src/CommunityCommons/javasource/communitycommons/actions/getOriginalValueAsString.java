@@ -13,26 +13,31 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Returns the original value of an object member, that is, the last committed value.
- * 
- * This is useful if you want to compare the actual value with the last stored value. 
- * - item : the object of which you want to inspect a member
- * - member: the member to retrieve the previous value from. Note that for references, the module name needs to be included.
- * 
+ * Returns the original value of an object member, that is, the last committed value.
+ * 
+ * This is useful if you want to compare the actual value with the last stored value. 
+ * - item : the object of which you want to inspect a member
+ * - member: the member to retrieve the previous value from. Note that for references, the module name needs to be included.
+ * 
  * The function is applicable for non-String members as well, but always returns a String representation of the previous value.
  */
-public class getOriginalValueAsString extends CustomJavaAction<java.lang.String>
+public class getOriginalValueAsString extends UserAction<java.lang.String>
 {
-	private IMendixObject item;
-	private java.lang.String member;
+	private final IMendixObject item;
+	private final java.lang.String member;
 
-	public getOriginalValueAsString(IContext context, IMendixObject item, java.lang.String member)
+	public getOriginalValueAsString(
+		IContext context,
+		IMendixObject _item,
+		java.lang.String _member
+	)
 	{
 		super(context);
-		this.item = item;
-		this.member = member;
+		this.item = _item;
+		this.member = _member;
 	}
 
 	@java.lang.Override

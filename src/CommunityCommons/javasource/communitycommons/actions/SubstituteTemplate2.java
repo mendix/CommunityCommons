@@ -13,26 +13,33 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Identical to SubstituteTemplate, but adds an datetimeformat argument
- * 
+ * Identical to SubstituteTemplate, but adds an datetimeformat argument
+ * 
  * DateTimeFormat identifies a format string which is applied to date/time based attributes. Can be left empty. Defaults to "EEE dd MMM yyyy, HH:mm"
  */
-public class SubstituteTemplate2 extends CustomJavaAction<java.lang.String>
+public class SubstituteTemplate2 extends UserAction<java.lang.String>
 {
-	private java.lang.String template;
-	private IMendixObject substitute;
-	private java.lang.Boolean useHTMLEncoding;
-	private java.lang.String datetimeformat;
+	private final java.lang.String template;
+	private final IMendixObject substitute;
+	private final java.lang.Boolean useHTMLEncoding;
+	private final java.lang.String datetimeformat;
 
-	public SubstituteTemplate2(IContext context, java.lang.String template, IMendixObject substitute, java.lang.Boolean useHTMLEncoding, java.lang.String datetimeformat)
+	public SubstituteTemplate2(
+		IContext context,
+		java.lang.String _template,
+		IMendixObject _substitute,
+		java.lang.Boolean _useHTMLEncoding,
+		java.lang.String _datetimeformat
+	)
 	{
 		super(context);
-		this.template = template;
-		this.substitute = substitute;
-		this.useHTMLEncoding = useHTMLEncoding;
-		this.datetimeformat = datetimeformat;
+		this.template = _template;
+		this.substitute = _substitute;
+		this.useHTMLEncoding = _useHTMLEncoding;
+		this.datetimeformat = _datetimeformat;
 	}
 
 	@java.lang.Override

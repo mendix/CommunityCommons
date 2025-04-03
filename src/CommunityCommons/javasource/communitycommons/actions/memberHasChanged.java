@@ -13,25 +13,30 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
- * 
- * - item : the object to inspect
- * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
- * 
+ * Checks whether a member has changed since the last commit. Useful in combination with getOriginalValueAsString.
+ * 
+ * - item : the object to inspect
+ * - member: the name of the member to inspect. Note that for references, the module name needs to be included.
+ * 
  * Returns true if changed.
  */
-public class memberHasChanged extends CustomJavaAction<java.lang.Boolean>
+public class memberHasChanged extends UserAction<java.lang.Boolean>
 {
-	private IMendixObject item;
-	private java.lang.String member;
+	private final IMendixObject item;
+	private final java.lang.String member;
 
-	public memberHasChanged(IContext context, IMendixObject item, java.lang.String member)
+	public memberHasChanged(
+		IContext context,
+		IMendixObject _item,
+		java.lang.String _member
+	)
 	{
 		super(context);
-		this.item = item;
-		this.member = member;
+		this.item = _item;
+		this.member = _member;
 	}
 
 	@java.lang.Override
