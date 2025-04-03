@@ -164,6 +164,7 @@ public class XPathTest {
 			return id;
 		}
 
+		@Deprecated
 		@Override
 		public short getEntityId() {
 			throw new UnsupportedOperationException("Unimplemented method 'getEntityId'");
@@ -174,11 +175,13 @@ public class XPathTest {
 			throw new UnsupportedOperationException("Unimplemented method 'getObject'");
 		}
 
+		@Deprecated
 		@Override
 		public void setObject(IMendixObject object) {
 			throw new UnsupportedOperationException("Unimplemented method 'setObject'");
 		}
 
+		@Deprecated
 		public TestIdentifier clone() {
 			return new TestIdentifier(id);
 		}
@@ -246,6 +249,7 @@ public class XPathTest {
 			throw new UnsupportedOperationException("Unimplemented method 'hasMember'");
 		}
 
+		@Deprecated
 		@Override
 		public IMendixObjectMember<?> getMember(IContext context, String memberName) {
 			throw new UnsupportedOperationException("Unimplemented method 'getMember'");
@@ -336,11 +340,13 @@ public class XPathTest {
 			throw new UnsupportedOperationException("Unimplemented method 'isNew'");
 		}
 
+		@Deprecated
 		@Override
 		public TestObject createClone() {
 			return new TestObject(id);
 		}
 
+		@Deprecated
 		public TestObject clone() {
 			return new TestObject(id);
 		}

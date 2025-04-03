@@ -354,7 +354,7 @@ public class TestManager
 
 		if (testSuite.getAutoRollbackMFs()) {
 			if (Core.getMicroflowNames().contains(testSuite.getModule() + ".Setup"))
-				mfContext = setupContext.clone();
+				mfContext = setupContext.createClone();
 			else
 				mfContext = Core.createSystemContext();
 			mfContext.startTransaction();
