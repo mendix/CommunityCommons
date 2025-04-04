@@ -142,10 +142,20 @@ public class Misc {
 		return StringUtils.removeEnd(applicationURL, "/");
 	}
 
+	/**
+	 * @return the runtime version
+	 * @deprecated since 11.0.0. Use {@link com.mendix.core.Core.getRuntimeVersion} instead
+	*/
+	@Deprecated
 	public static String getRuntimeVersion() {
 		return Core.getRuntimeVersion();
 	}
 
+	/**
+	 * @return the model version
+	 * @deprecated since 11.0.0. Use {@link com.mendix.core.Core.getModelVersion} instead
+	*/
+	@Deprecated
 	public static String getModelVersion() {
 		return Core.getModelVersion();
 	}
