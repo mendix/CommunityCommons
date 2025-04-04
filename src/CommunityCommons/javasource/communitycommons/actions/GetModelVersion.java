@@ -9,14 +9,14 @@
 
 package communitycommons.actions;
 
+import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
-import communitycommons.Misc;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Returns the model version of the deployed application.
  */
-public class GetModelVersion extends CustomJavaAction<java.lang.String>
+public class GetModelVersion extends UserAction<java.lang.String>
 {
 	public GetModelVersion(IContext context)
 	{
@@ -27,7 +27,7 @@ public class GetModelVersion extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return Misc.getModelVersion();
+		return Core.getModelVersion();
 		// END USER CODE
 	}
 

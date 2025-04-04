@@ -15,30 +15,35 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Reads contents from a FileDocument and stores it in a file on the local (server) storage.
  */
-public class FileFromFileDocument extends CustomJavaAction<java.lang.Boolean>
+public class FileFromFileDocument extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String targetFile;
-	private IMendixObject __fileDocument;
-	private system.proxies.FileDocument fileDocument;
+	private final java.lang.String targetFile;
+	/** @deprecated use fileDocument.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __fileDocument;
+	private final system.proxies.FileDocument fileDocument;
 
-	public FileFromFileDocument(IContext context, java.lang.String targetFile, IMendixObject fileDocument)
+	public FileFromFileDocument(
+		IContext context,
+		java.lang.String _targetFile,
+		IMendixObject _fileDocument
+	)
 	{
 		super(context);
-		this.targetFile = targetFile;
-		this.__fileDocument = fileDocument;
+		this.targetFile = _targetFile;
+		this.__fileDocument = _fileDocument;
+		this.fileDocument = _fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), _fileDocument);
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.fileDocument = this.__fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __fileDocument);
-
 		// BEGIN USER CODE
 		File output = new File(targetFile);
 		

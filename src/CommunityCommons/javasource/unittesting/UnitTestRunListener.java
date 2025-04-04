@@ -1,7 +1,6 @@
 package unittesting;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.AccessControlException;
 import java.util.Date;
 
 import org.junit.runner.Description;
@@ -74,11 +73,6 @@ public class UnitTestRunListener extends RunListener {
 
 	@Override
 	public void testFailure(Failure failure) throws java.lang.Exception {
-		boolean isCloudSecurityError = 
-				failure.getException() != null && 
-				failure.getException() instanceof AccessControlException &&
-				((AccessControlException) failure.getException()).getPermission().getName().equals("accessDeclaredMembers");
-		
 		UnitTest t = getUnitTest(failure.getDescription());
 
 		/** 
@@ -91,7 +85,7 @@ public class UnitTestRunListener extends RunListener {
 		
 		t.setResult(UnitTestResult._2_Failed);
 		t.setResultMessage(String.format("%s %s: %s\n\n:%s",
-				isCloudSecurityError ? "CLOUD SECURITY EXCEPTION \n\n" + TestManager.CLOUD_SECURITY_ERROR : "FAILED",
+				"FAILED",
 				findProperExceptionLine(failure.getTrace()),
 				failure.getMessage(),
 				failure.getTrace()

@@ -12,8 +12,9 @@ package unittesting.actions;
 import unittesting.TestManager;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
-public class StartRunAllSuites extends CustomJavaAction<java.lang.Boolean>
+public class StartRunAllSuites extends UserAction<java.lang.Boolean>
 {
 	public StartRunAllSuites(IContext context)
 	{

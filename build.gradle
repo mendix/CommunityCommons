@@ -9,11 +9,11 @@ plugins {
     id 'net.researchgate.release' version '2.8.1'
 }
 
-sourceCompatibility = '11'
+sourceCompatibility = '21'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    mendixPublicApiVersion = '9.18.0'
+    mendixPublicApiVersion = '10.21.0'
 }
 
 def mprDir = "$projectDir/src/CommunityCommons"

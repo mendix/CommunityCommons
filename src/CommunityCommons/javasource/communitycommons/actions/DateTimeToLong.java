@@ -10,20 +10,23 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.DateTime;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Converts a DateTime to a Unix timestamps. (Milliseconds since 1-1-1970)
  */
-public class DateTimeToLong extends CustomJavaAction<java.lang.Long>
+public class DateTimeToLong extends UserAction<java.lang.Long>
 {
-	private java.util.Date dateObject;
+	private final java.util.Date dateObject;
 
-	public DateTimeToLong(IContext context, java.util.Date dateObject)
+	public DateTimeToLong(
+		IContext context,
+		java.util.Date _dateObject
+	)
 	{
 		super(context);
-		this.dateObject = dateObject;
+		this.dateObject = _dateObject;
 	}
 
 	@java.lang.Override

@@ -11,22 +11,26 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Takes the top n items of a given list and returns the resulting list.
  */
-public class ListTop extends CustomJavaAction<java.util.List<IMendixObject>>
+public class ListTop extends UserAction<java.util.List<IMendixObject>>
 {
-	private java.util.List<IMendixObject> ObjectList;
-	private java.lang.Long Top;
+	private final java.util.List<IMendixObject> ObjectList;
+	private final java.lang.Long Top;
 
-	public ListTop(IContext context, java.util.List<IMendixObject> ObjectList, java.lang.Long Top)
+	public ListTop(
+		IContext context,
+		java.util.List<IMendixObject> _objectList,
+		java.lang.Long _top
+	)
 	{
 		super(context);
-		this.ObjectList = ObjectList;
-		this.Top = Top;
+		this.ObjectList = _objectList;
+		this.Top = _top;
 	}
 
 	@java.lang.Override

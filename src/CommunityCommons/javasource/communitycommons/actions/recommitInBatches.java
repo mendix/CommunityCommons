@@ -11,22 +11,28 @@ package communitycommons.actions;
 
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
-public class recommitInBatches extends CustomJavaAction<java.lang.Boolean>
+public class recommitInBatches extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String xpath;
-	private java.lang.Long batchsize;
-	private java.lang.Boolean waitUntilFinished;
-	private java.lang.Boolean ascending;
+	private final java.lang.String xpath;
+	private final java.lang.Long batchsize;
+	private final java.lang.Boolean waitUntilFinished;
+	private final java.lang.Boolean ascending;
 
-	public recommitInBatches(IContext context, java.lang.String xpath, java.lang.Long batchsize, java.lang.Boolean waitUntilFinished, java.lang.Boolean ascending)
+	public recommitInBatches(
+		IContext context,
+		java.lang.String _xpath,
+		java.lang.Long _batchsize,
+		java.lang.Boolean _waitUntilFinished,
+		java.lang.Boolean _ascending
+	)
 	{
 		super(context);
-		this.xpath = xpath;
-		this.batchsize = batchsize;
-		this.waitUntilFinished = waitUntilFinished;
-		this.ascending = ascending;
+		this.xpath = _xpath;
+		this.batchsize = _batchsize;
+		this.waitUntilFinished = _waitUntilFinished;
+		this.ascending = _ascending;
 	}
 
 	@java.lang.Override

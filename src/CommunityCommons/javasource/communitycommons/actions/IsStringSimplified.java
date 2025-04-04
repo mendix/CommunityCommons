@@ -10,20 +10,23 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * True if a string can be simplified by the removal of diacritics.
  */
-public class IsStringSimplified extends CustomJavaAction<java.lang.Boolean>
+public class IsStringSimplified extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String value;
+	private final java.lang.String value;
 
-	public IsStringSimplified(IContext context, java.lang.String value)
+	public IsStringSimplified(
+		IContext context,
+		java.lang.String _value
+	)
 	{
 		super(context);
-		this.value = value;
+		this.value = _value;
 	}
 
 	@java.lang.Override

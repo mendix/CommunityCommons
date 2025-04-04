@@ -11,19 +11,22 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Returns the actual type of an Entity. Useful as alternative way to split upon inheritance, or as input of other functions in this module.
  */
-public class getTypeAsString extends CustomJavaAction<java.lang.String>
+public class getTypeAsString extends UserAction<java.lang.String>
 {
-	private IMendixObject instance;
+	private final IMendixObject instance;
 
-	public getTypeAsString(IContext context, IMendixObject instance)
+	public getTypeAsString(
+		IContext context,
+		IMendixObject _instance
+	)
 	{
 		super(context);
-		this.instance = instance;
+		this.instance = _instance;
 	}
 
 	@java.lang.Override

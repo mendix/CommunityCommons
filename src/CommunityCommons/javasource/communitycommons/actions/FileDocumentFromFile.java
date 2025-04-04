@@ -13,30 +13,35 @@ import java.io.File;
 import java.io.FileInputStream;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Loads a file from the local (server) storage and stores it inside a FileDocument.
  */
-public class FileDocumentFromFile extends CustomJavaAction<java.lang.Boolean>
+public class FileDocumentFromFile extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String file;
-	private IMendixObject __fileDocument;
-	private system.proxies.FileDocument fileDocument;
+	private final java.lang.String file;
+	/** @deprecated use fileDocument.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __fileDocument;
+	private final system.proxies.FileDocument fileDocument;
 
-	public FileDocumentFromFile(IContext context, java.lang.String file, IMendixObject fileDocument)
+	public FileDocumentFromFile(
+		IContext context,
+		java.lang.String _file,
+		IMendixObject _fileDocument
+	)
 	{
 		super(context);
-		this.file = file;
-		this.__fileDocument = fileDocument;
+		this.file = _file;
+		this.__fileDocument = _fileDocument;
+		this.fileDocument = _fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), _fileDocument);
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.fileDocument = this.__fileDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __fileDocument);
-
 		// BEGIN USER CODE
 		try (
 			FileInputStream fis = new FileInputStream(new File(this.file))

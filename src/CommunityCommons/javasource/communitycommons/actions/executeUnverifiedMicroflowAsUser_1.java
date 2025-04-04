@@ -10,29 +10,36 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Identical to executeMicroflowAsUser, but takes 1 argument
  */
-public class executeUnverifiedMicroflowAsUser_1 extends CustomJavaAction<java.lang.String>
+public class executeUnverifiedMicroflowAsUser_1 extends UserAction<java.lang.String>
 {
-	private java.lang.String microflowName;
-	private java.lang.String username;
-	private java.lang.Boolean sudoContext;
-	private java.lang.String arg1name;
-	private IMendixObject arg1value;
+	private final java.lang.String microflowName;
+	private final java.lang.String username;
+	private final java.lang.Boolean sudoContext;
+	private final java.lang.String arg1name;
+	private final IMendixObject arg1value;
 
-	public executeUnverifiedMicroflowAsUser_1(IContext context, java.lang.String microflowName, java.lang.String username, java.lang.Boolean sudoContext, java.lang.String arg1name, IMendixObject arg1value)
+	public executeUnverifiedMicroflowAsUser_1(
+		IContext context,
+		java.lang.String _microflowName,
+		java.lang.String _username,
+		java.lang.Boolean _sudoContext,
+		java.lang.String _arg1name,
+		IMendixObject _arg1value
+	)
 	{
 		super(context);
-		this.microflowName = microflowName;
-		this.username = username;
-		this.sudoContext = sudoContext;
-		this.arg1name = arg1name;
-		this.arg1value = arg1value;
+		this.microflowName = _microflowName;
+		this.username = _username;
+		this.sudoContext = _sudoContext;
+		this.arg1name = _arg1name;
+		this.arg1value = _arg1value;
 	}
 
 	@java.lang.Override

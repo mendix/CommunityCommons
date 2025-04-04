@@ -10,22 +10,26 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Gets the substring before the last occurrence of a separator.
  */
-public class SubstringBeforeLast extends CustomJavaAction<java.lang.String>
+public class SubstringBeforeLast extends UserAction<java.lang.String>
 {
-	private java.lang.String str;
-	private java.lang.String separator;
+	private final java.lang.String str;
+	private final java.lang.String separator;
 
-	public SubstringBeforeLast(IContext context, java.lang.String str, java.lang.String separator)
+	public SubstringBeforeLast(
+		IContext context,
+		java.lang.String _str,
+		java.lang.String _separator
+	)
 	{
 		super(context);
-		this.str = str;
-		this.separator = separator;
+		this.str = _str;
+		this.separator = _separator;
 	}
 
 	@java.lang.Override

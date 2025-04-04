@@ -2,7 +2,6 @@ package communitycommons;
 
 import com.mendix.core.Core;
 import com.mendix.core.CoreException;
-import com.mendix.core.conf.RuntimeVersion;
 import com.mendix.core.objectmanagement.member.MendixBoolean;
 import com.mendix.integration.WebserviceException;
 import com.mendix.systemwideinterfaces.core.IContext;
@@ -16,6 +15,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -141,11 +142,20 @@ public class Misc {
 		return StringUtils.removeEnd(applicationURL, "/");
 	}
 
+	/**
+	 * @return the runtime version
+	 * @deprecated since 11.0.0. Use {@link com.mendix.core.Core.getRuntimeVersion} instead
+	*/
+	@Deprecated
 	public static String getRuntimeVersion() {
-		RuntimeVersion runtimeVersion = RuntimeVersion.getInstance();
-		return runtimeVersion.toString();
+		return Core.getRuntimeVersion();
 	}
 
+	/**
+	 * @return the model version
+	 * @deprecated since 11.0.0. Use {@link com.mendix.core.Core.getModelVersion} instead
+	*/
+	@Deprecated
 	public static String getModelVersion() {
 		return Core.getModelVersion();
 	}
@@ -160,7 +170,7 @@ public class Misc {
 
 	public static String retrieveURL(String url, String postdata) throws Exception {
 		// Send data, appname
-		URLConnection conn = new URL(url).openConnection();
+		URLConnection conn = new URI(url).toURL().openConnection();
 
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
@@ -188,7 +198,7 @@ public class Misc {
 			throw new Exception("No file to clone or to clone into provided");
 		}
 
-		MendixBoolean hasContents = (MendixBoolean) toClone.getMember(context, FileDocument.MemberNames.HasContents.toString());
+		MendixBoolean hasContents = (MendixBoolean) toClone.getMember(FileDocument.MemberNames.HasContents.toString());
 		if (!hasContents.getValue(context)) {
 			return false;
 		}
@@ -206,7 +216,7 @@ public class Misc {
 			throw new Exception("No file to clone or to clone into provided");
 		}
 
-		MendixBoolean hasContents = (MendixBoolean) toClone.getMember(context, FileDocument.MemberNames.HasContents.toString());
+		MendixBoolean hasContents = (MendixBoolean) toClone.getMember(FileDocument.MemberNames.HasContents.toString());
 		if (!hasContents.getValue(context)) {
 			return false;
 		}
@@ -220,14 +230,14 @@ public class Misc {
 		return true;
 	}
 
-	public static Boolean storeURLToFileDocument(IContext context, String url, IMendixObject __document, String filename) throws IOException {
+	public static Boolean storeURLToFileDocument(IContext context, String url, IMendixObject __document, String filename) throws IOException, URISyntaxException {
 		if (__document == null || url == null || filename == null) {
 			throw new IllegalArgumentException("No document, filename or URL provided");
 		}
 
 		final int MAX_REMOTE_FILESIZE = 1024 * 1024 * 200; //maximum of 200 MB
 		try {
-			URL imageUrl = new URL(url);
+			URL imageUrl = new URI(url).toURL();
 			URLConnection connection = imageUrl.openConnection();
 			//we connect in 20 seconds or not at all
 			connection.setConnectTimeout(20000);
@@ -255,9 +265,9 @@ public class Misc {
 				}
 				Core.storeFileDocumentContent(context, __document, filename, fileContentIS);
 			}
-		} catch (IOException ioe) {
-			Logging.error(LOGNODE, String.format("A problem occurred while reading from URL %s: %s", url, ioe.getMessage()));
-			throw ioe;
+		} catch (IOException | URISyntaxException e) {
+			Logging.error(LOGNODE, String.format("A problem occurred while reading from URL %s: %s", url, e.getMessage()));
+			throw e;
 		}
 
 		return true;
@@ -515,7 +525,7 @@ public class Misc {
 	public static Boolean executeInBatches(String xpathRaw, BatchState batchState, int batchsize, boolean waitUntilFinished, boolean asc) throws CoreException, InterruptedException {
 		String xpath = xpathRaw.startsWith("//") ? xpathRaw : "//" + xpathRaw;
 
-		long count = Core.retrieveXPathQueryAggregate(Core.createSystemContext(), "count(" + xpath + ")");
+		long count = Core.createXPathQuery("count(" + xpath + ")").executeAggregateLong(Core.createSystemContext());
 		int loop = (int) Math.ceil(((float) count) / ((float) batchsize));
 
 		Logging.debug(LOGNODE,
@@ -549,15 +559,12 @@ public class Misc {
 					Thread.sleep(200);
 					IContext c = Core.createSystemContext();
 
-					List<IMendixObject> objects = Core.retrieveXPathQuery(c, xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""),
-						batchsize,
-						0,
-						new HashMap<String, String>() {
-						{
-							put("id", asc ? "asc" : "desc");
-						}
-					}
-					);
+					List<IMendixObject> objects = 
+						Core.createXPathQuery(xpath + (last > 0 ? "[id " + (asc ? "> " : "< ") + last + "]" : ""))
+							.setAmount(batchsize)
+							.setOffset(0)
+							.addSort("id", asc ? true : false)
+							.execute(c);
 
 					//no new objects found :)
 					if (objects.isEmpty()) {
