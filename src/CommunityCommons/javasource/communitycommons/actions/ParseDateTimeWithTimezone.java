@@ -12,7 +12,6 @@ package communitycommons.actions;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;
 import communitycommons.proxies.LogNodes;

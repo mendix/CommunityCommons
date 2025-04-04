@@ -14,7 +14,6 @@ import communitycommons.StringUtils;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**

@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.ImageDimensions;
 import java.io.InputStream;
 import com.mendix.systemwideinterfaces.core.UserAction;

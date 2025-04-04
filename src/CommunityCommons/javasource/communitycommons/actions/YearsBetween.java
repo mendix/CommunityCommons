@@ -10,7 +10,6 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.DateTime;
 import communitycommons.Logging;
 import communitycommons.proxies.LogLevel;

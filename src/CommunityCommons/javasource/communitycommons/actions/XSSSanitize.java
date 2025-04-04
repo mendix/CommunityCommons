@@ -11,7 +11,6 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.MendixRuntimeException;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.proxies.SanitizerPolicy;
 import java.util.List;
 import java.util.Objects;
