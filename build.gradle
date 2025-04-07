@@ -5,7 +5,7 @@
 
 plugins {
     id 'java'
-    id 'com.mendix.gradle.publish-module-plugin' version '1.20'
+    id 'com.mendix.gradle.publish-module-plugin' version '1.21'
     id 'net.researchgate.release' version '2.8.1'
 }
 
@@ -25,11 +25,12 @@ mxMarketplace {
     moduleLicense = 'Apache V2'
     appDirectory = "src/CommunityCommons"
     versionPathPrefix = "_Version " // the path prefix within the module to the version folder
-    createMigrationFile = true
-    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.1.3__READMEOSS.html"]
+    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__11.0.0__READMEOSS.html"]
+    syncJavaDependenciesBeforeBuild = true
 }
 
 def userLibDir = "$mprDir/userlib"
+def vendorLibDir = "$mprDir/vendorlib"
 
 repositories {
     maven {
@@ -55,20 +56,13 @@ dependencies {
             [group: 'org.hamcrest', name: 'hamcrest', version: '2.2']
     )
 
-    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"])
+    testImplementation fileTree(vendorLibDir) { include '*.jar' }
 
-    implementation(
-            [group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'],
-            [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
-            [group: 'commons-io', name: 'commons-io', version: '2.17.0'],
-            [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'],
-            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'],
-            [group: 'org.apache.commons', name: 'commons-text', version: '1.10.0']
-    )
+    compileOnly([group: 'com.mendix', name: 'public-api', version: "$mendixPublicApiVersion"])
 }
 
 tasks.withType(JavaCompile) {
-    options.compilerArgs << "-Xlint:deprecation"
+    options.deprecation = true
 }
 
 sourceSets {
@@ -106,6 +100,7 @@ tasks.named('compileJava') {
 
 clean {
     delete "$userLibDir"
+    delete "$vendorLibDir"
 }
 
 release {
