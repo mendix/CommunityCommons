@@ -12,19 +12,22 @@ package communitycommons.actions;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
 import communitycommons.ORM;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * returns the Global Unique Identifier (GUID, or id) of an object.
  */
-public class getGUID extends CustomJavaAction<java.lang.Long>
+public class getGUID extends UserAction<java.lang.Long>
 {
-	private IMendixObject item;
+	private final IMendixObject item;
 
-	public getGUID(IContext context, IMendixObject item)
+	public getGUID(
+		IContext context,
+		IMendixObject _item
+	)
 	{
 		super(context);
-		this.item = item;
+		this.item = _item;
 	}
 
 	@java.lang.Override

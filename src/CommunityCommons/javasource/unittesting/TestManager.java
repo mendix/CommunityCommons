@@ -172,7 +172,7 @@ public class TestManager
 
 		// Either we had a teardown a teardown or
 		if (testSuite.getAutoRollbackMFs() && tearDownContext != null) {
-			tearDownContext.rollbackTransAction();
+			tearDownContext.rollbackTransaction();
 		}
 
 		// Make sure we clean setupContext after running this test/suite
@@ -185,7 +185,7 @@ public class TestManager
 		//Context without transaction!
 		IContext context = Core.createSystemContext();
 
-		List<IMendixObject> testsuites = Core.retrieveXPathQuery(context, "//" + TestSuite.entityName);
+		List<IMendixObject> testsuites = Core.createXPathQuery("//" + TestSuite.entityName).execute(context);
 
 		for(IMendixObject suite : testsuites) {
 			suite.setValue(context, TestSuite.MemberNames.Result.toString(), null);;
@@ -354,7 +354,7 @@ public class TestManager
 
 		if (testSuite.getAutoRollbackMFs()) {
 			if (Core.getMicroflowNames().contains(testSuite.getModule() + ".Setup"))
-				mfContext = setupContext.clone();
+				mfContext = setupContext.createClone();
 			else
 				mfContext = Core.createSystemContext();
 			mfContext.startTransaction();
@@ -396,7 +396,7 @@ public class TestManager
 		}
 		finally {
 			if (testSuite.getAutoRollbackMFs())
-				mfContext.rollbackTransAction();
+				mfContext.rollbackTransaction();
 			test.setLastStep(lastStep);
 			test.setReadableTime((start > 10000 ? Math.round(start / 1000) + " seconds" : start + " milliseconds"));
 			commitSilent(test);
@@ -577,7 +577,7 @@ public class TestManager
 		query.append(String.format("//%s", TestSuite.entityName));
 		query.append("[not(" + UnitTest.MemberNames.UnitTest_TestSuite + "/" + UnitTest.entityName + ")]");
 
-		List<IMendixObject> testSuites = Core.retrieveXPathQuery(context, query.toString());
+		List<IMendixObject> testSuites = Core.createXPathQuery(query.toString()).execute(context);
 		Core.delete(context, testSuites);
 	}
 
@@ -631,7 +631,7 @@ public class TestManager
 			deleteQuery.append(String.format("//%s", UnitTest.entityName));
 			deleteQuery.append(String.format("[%s=true]", UnitTest.MemberNames._dirty));
 		
-			List<IMendixObject> dirtyTests = Core.retrieveXPathQuery(context, deleteQuery.toString());
+			List<IMendixObject> dirtyTests = Core.createXPathQuery(deleteQuery.toString()).execute(context);
 			Core.delete(context, dirtyTests);
 
 			/*
@@ -640,7 +640,7 @@ public class TestManager
 			StringBuilder countQuery = new StringBuilder();
 			countQuery.append(String.format("//%s", UnitTest.entityName));
 			countQuery.append(String.format("[%s=" + testSuite.getMendixObject().getId().toLong() + "]", UnitTest.MemberNames.UnitTest_TestSuite));
-			Long testCount = Core.retrieveXPathQueryAggregate(context, "count(" + countQuery.toString() + ")");
+			Long testCount = Core.createXPathQuery("count(" + countQuery.toString() + ")").executeAggregateLong(context);
 			
 			testSuite.setTestCount(testCount);
 			testSuite.commit();

@@ -11,19 +11,22 @@ package communitycommons.actions;
 
 import communitycommons.StringUtils;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Remove diacritics from a string.
  */
-public class StringSimplify extends CustomJavaAction<java.lang.String>
+public class StringSimplify extends UserAction<java.lang.String>
 {
-	private java.lang.String value;
+	private final java.lang.String value;
 
-	public StringSimplify(IContext context, java.lang.String value)
+	public StringSimplify(
+		IContext context,
+		java.lang.String _value
+	)
 	{
 		super(context);
-		this.value = value;
+		this.value = _value;
 	}
 
 	@java.lang.Override

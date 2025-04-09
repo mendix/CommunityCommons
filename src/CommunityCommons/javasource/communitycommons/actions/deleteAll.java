@@ -10,20 +10,23 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.XPath;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Removes ALL instances of a certain domain object type using batches.
  */
-public class deleteAll extends CustomJavaAction<java.lang.Boolean>
+public class deleteAll extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String entityType;
+	private final java.lang.String entityType;
 
-	public deleteAll(IContext context, java.lang.String entityType)
+	public deleteAll(
+		IContext context,
+		java.lang.String _entityType
+	)
 	{
 		super(context);
-		this.entityType = entityType;
+		this.entityType = _entityType;
 	}
 
 	@java.lang.Override

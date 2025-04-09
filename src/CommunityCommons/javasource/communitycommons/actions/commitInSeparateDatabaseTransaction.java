@@ -12,20 +12,23 @@ package communitycommons.actions;
 import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.ISession;
-import com.mendix.webui.CustomJavaAction;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * This function commits an object in a seperate context and transaction, making sure it gets persisted in the database (regarding which exception happens after invocation).
  */
-public class commitInSeparateDatabaseTransaction extends CustomJavaAction<java.lang.Boolean>
+public class commitInSeparateDatabaseTransaction extends UserAction<java.lang.Boolean>
 {
-	private IMendixObject mxObject;
+	private final IMendixObject mxObject;
 
-	public commitInSeparateDatabaseTransaction(IContext context, IMendixObject mxObject)
+	public commitInSeparateDatabaseTransaction(
+		IContext context,
+		IMendixObject _mxObject
+	)
 	{
 		super(context);
-		this.mxObject = mxObject;
+		this.mxObject = _mxObject;
 	}
 
 	@java.lang.Override

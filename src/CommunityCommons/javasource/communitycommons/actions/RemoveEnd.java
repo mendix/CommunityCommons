@@ -10,22 +10,26 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Removes a string (if present) from the end of an input string,
  */
-public class RemoveEnd extends CustomJavaAction<java.lang.String>
+public class RemoveEnd extends UserAction<java.lang.String>
 {
-	private java.lang.String input;
-	private java.lang.String toRemove;
+	private final java.lang.String input;
+	private final java.lang.String toRemove;
 
-	public RemoveEnd(IContext context, java.lang.String input, java.lang.String toRemove)
+	public RemoveEnd(
+		IContext context,
+		java.lang.String _input,
+		java.lang.String _toRemove
+	)
 	{
 		super(context);
-		this.input = input;
-		this.toRemove = toRemove;
+		this.input = _input;
+		this.toRemove = _toRemove;
 	}
 
 	@java.lang.Override

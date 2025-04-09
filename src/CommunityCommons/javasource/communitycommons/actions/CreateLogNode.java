@@ -10,20 +10,23 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.Logging;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Initializes a log node for later use. Useful to set logging to a more detailed log level before the first time a certain log action is executed.
  */
-public class CreateLogNode extends CustomJavaAction<java.lang.Boolean>
+public class CreateLogNode extends UserAction<java.lang.Boolean>
 {
-	private java.lang.String logNodeParameter;
+	private final java.lang.String logNodeParameter;
 
-	public CreateLogNode(IContext context, java.lang.String logNodeParameter)
+	public CreateLogNode(
+		IContext context,
+		java.lang.String _logNodeParameter
+	)
 	{
 		super(context);
-		this.logNodeParameter = logNodeParameter;
+		this.logNodeParameter = _logNodeParameter;
 	}
 
 	@java.lang.Override

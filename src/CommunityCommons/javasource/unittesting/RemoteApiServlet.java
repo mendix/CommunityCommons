@@ -169,7 +169,7 @@ public class RemoteApiServlet extends RequestHandler {
 			long count = 0l;
 			long failures = 0l;
 			
-			List<IMendixObject> testSuites = Core.retrieveXPathQuery(context, String.format("//%s", TestSuite.entityName));
+			List<IMendixObject> testSuites = Core.createXPathQuery(String.format("//%s", TestSuite.entityName)).execute(context);
 
 			for (IMendixObject mxObject : testSuites) {
 				TestSuite testSuite = TestSuite.initialize(context, mxObject);
@@ -191,7 +191,7 @@ public class RemoteApiServlet extends RequestHandler {
 			query.append("[" + UnitTest.MemberNames.UnitTest_TestSuite + "/" + TestSuite.entityName + "/"
 					+ TestSuite.MemberNames.Result + "=\"" + UnitTestResult._2_Failed + "\"]");
 			
-			List<IMendixObject> unitTests = Core.retrieveXPathQuery(context, query.toString());
+			List<IMendixObject> unitTests = Core.createXPathQuery(query.toString()).execute(context);
 
 			for(IMendixObject mxObject : unitTests)
 			{

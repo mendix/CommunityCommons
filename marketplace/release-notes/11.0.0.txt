@@ -1,0 +1,3 @@
+- We upgraded the Community Commons module to Mendix version 10.21.0.
+- We deprecated the Misc.getRuntimeVersion Java method, use Core.getRuntimeVersion instead.
+- We deprecated the Misc.getModelVersion Java method, use Core.getModelVersion instead.

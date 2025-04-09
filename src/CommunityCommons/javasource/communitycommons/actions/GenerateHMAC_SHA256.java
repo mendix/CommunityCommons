@@ -10,22 +10,26 @@
 package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Generates and asymmetric hexadecimal hash using the HMAC_SHA256 hash algorithm
  */
-public class GenerateHMAC_SHA256 extends CustomJavaAction<java.lang.String>
+public class GenerateHMAC_SHA256 extends UserAction<java.lang.String>
 {
-	private java.lang.String key;
-	private java.lang.String valueToEncrypt;
+	private final java.lang.String key;
+	private final java.lang.String valueToEncrypt;
 
-	public GenerateHMAC_SHA256(IContext context, java.lang.String key, java.lang.String valueToEncrypt)
+	public GenerateHMAC_SHA256(
+		IContext context,
+		java.lang.String _key,
+		java.lang.String _valueToEncrypt
+	)
 	{
 		super(context);
-		this.key = key;
-		this.valueToEncrypt = valueToEncrypt;
+		this.key = _key;
+		this.valueToEncrypt = _valueToEncrypt;
 	}
 
 	@java.lang.Override

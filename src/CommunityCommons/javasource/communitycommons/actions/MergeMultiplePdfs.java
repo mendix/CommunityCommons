@@ -11,37 +11,43 @@ package communitycommons.actions;
 
 import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.IMendixObject;
-import com.mendix.webui.CustomJavaAction;
 import communitycommons.Misc;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Restricted to 10 files at once for Mendix Cloud v4 compatibility. If you need to merge more than 10 files at once merge recursively instead or change the MergeMultiplePdfs_MaxAtOnce constant.
  */
-public class MergeMultiplePdfs extends CustomJavaAction<java.lang.Boolean>
+public class MergeMultiplePdfs extends UserAction<java.lang.Boolean>
 {
-	private java.util.List<IMendixObject> __FilesToMerge;
-	private java.util.List<system.proxies.FileDocument> FilesToMerge;
-	private IMendixObject __MergedDocument;
-	private system.proxies.FileDocument MergedDocument;
+	/** @deprecated use com.mendix.utils.ListUtils.map(FilesToMerge, com.mendix.systemwideinterfaces.core.IEntityProxy::getMendixObject) instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final java.util.List<IMendixObject> __FilesToMerge;
+	private final java.util.List<system.proxies.FileDocument> FilesToMerge;
+	/** @deprecated use MergedDocument.getMendixObject() instead. */
+	@java.lang.Deprecated(forRemoval = true)
+	private final IMendixObject __MergedDocument;
+	private final system.proxies.FileDocument MergedDocument;
 
-	public MergeMultiplePdfs(IContext context, java.util.List<IMendixObject> FilesToMerge, IMendixObject MergedDocument)
+	public MergeMultiplePdfs(
+		IContext context,
+		java.util.List<IMendixObject> _filesToMerge,
+		IMendixObject _mergedDocument
+	)
 	{
 		super(context);
-		this.__FilesToMerge = FilesToMerge;
-		this.__MergedDocument = MergedDocument;
+		this.__FilesToMerge = _filesToMerge;
+		this.FilesToMerge = java.util.Optional.ofNullable(_filesToMerge)
+			.orElse(java.util.Collections.emptyList())
+			.stream()
+			.map(filesToMergeElement -> system.proxies.FileDocument.initialize(getContext(), filesToMergeElement))
+			.collect(java.util.stream.Collectors.toList());
+		this.__MergedDocument = _mergedDocument;
+		this.MergedDocument = _mergedDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), _mergedDocument);
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
-		this.FilesToMerge = java.util.Optional.ofNullable(this.__FilesToMerge)
-			.orElse(java.util.Collections.emptyList())
-			.stream()
-			.map(__FilesToMergeElement -> system.proxies.FileDocument.initialize(getContext(), __FilesToMergeElement))
-			.collect(java.util.stream.Collectors.toList());
-
-		this.MergedDocument = this.__MergedDocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __MergedDocument);
-
 		// BEGIN USER CODE
 		return Misc.mergePDF(this.getContext(), this.FilesToMerge, this.MergedDocument.getMendixObject());
 		// END USER CODE

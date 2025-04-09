@@ -9,14 +9,14 @@
 
 package communitycommons.actions;
 
-import communitycommons.Misc;
+import com.mendix.core.Core;
 import com.mendix.systemwideinterfaces.core.IContext;
-import com.mendix.webui.CustomJavaAction;
+import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
  * Returns the runtime version of this application.
  */
-public class GetRuntimeVersion extends CustomJavaAction<java.lang.String>
+public class GetRuntimeVersion extends UserAction<java.lang.String>
 {
 	public GetRuntimeVersion(IContext context)
 	{
@@ -27,7 +27,7 @@ public class GetRuntimeVersion extends CustomJavaAction<java.lang.String>
 	public java.lang.String executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return Misc.getRuntimeVersion();
+		return Core.getRuntimeVersion();
 		// END USER CODE
 	}
 
