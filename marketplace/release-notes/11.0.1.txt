@@ -1,1 +1,1 @@
-- The StringFromFile Java action now removes BOM from strings as well. (Ticket #242904)
+- The StringFromFile Java action now removes BOM from strings. (Ticket #242904)
