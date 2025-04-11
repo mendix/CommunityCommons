@@ -17,6 +17,8 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 
 /**
  * This function commits an object in a seperate context and transaction, making sure it gets persisted in the database (regarding which exception happens after invocation).
+ * 
+ * Please note that this action is prone to deadlock. For example if you commit an object in one transaction and then use this action to commit the same object in a separate transaction. We do not recommend the use of this action.
  */
 public class commitInSeparateDatabaseTransaction extends CustomJavaAction<java.lang.Boolean>
 {
