@@ -14,6 +14,10 @@ import org.junit.Test;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.DigestException;
 import java.security.NoSuchAlgorithmException;
 
@@ -169,5 +173,33 @@ public class StringUtilsTest {
 
 		assertEquals(StringUtils.hash(originalString), StringUtils.hash(originalString, length));
 		assertEquals(StringUtils.hash(originalString), hashedString);
+	}
+
+	@Test
+	public void testStringFromInputStream() throws IOException {
+		Charset utf8 = Charset.forName("UTF-8");
+		Charset utf16 = Charset.forName("UTF-16");
+		Charset utf16be = Charset.forName("UTF-16BE");
+		Charset utf16le = Charset.forName("UTF-16LE");
+
+		String text = "hello";
+
+		assertEquals(text, testStringFromInputStream(text, utf8));
+		assertEquals(text, testStringFromInputStream(text, utf16));
+		assertEquals(text, testStringFromInputStream(text, utf16be));
+		assertEquals(text, testStringFromInputStream(text, utf16le));
+
+		// BOM should be removed (UTF-8)
+		byte[] UTF8BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+		String textUTF8BOM = new String(UTF8BOM) + text;
+		assertEquals(text, testStringFromInputStream(textUTF8BOM, utf8));
+	}
+
+	private String testStringFromInputStream(String text, Charset charset) throws IOException {
+		return StringUtils.stringFromInputStream(stringToInputStream(text, charset), charset);
+	}
+
+	private InputStream stringToInputStream(String str, Charset charset) {
+		return new ByteArrayInputStream(str.getBytes(charset));
 	}
 }
