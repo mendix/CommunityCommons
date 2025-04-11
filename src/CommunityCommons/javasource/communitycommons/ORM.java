@@ -265,6 +265,11 @@ public class ORM {
 
 	public static Boolean cloneObject(IContext c, IMendixObject source,
 		IMendixObject target, Boolean withAssociations) {
+		return cloneObject(c, source, target, withAssociations, false);
+	}
+
+	public static Boolean cloneObject(IContext c, IMendixObject source,
+		IMendixObject target, Boolean withAssociations, Boolean skipIsBoth) {
 		Map<String, ? extends IMendixObjectMember<?>> members = source.getMembers(c);
 
 		for (var entry : members.entrySet()) {
@@ -279,6 +284,10 @@ public class ORM {
 				continue;
             }
 			if (withAssociations || ((!(m instanceof MendixObjectReference) && !(m instanceof MendixObjectReferenceSet) && !(m instanceof MendixAutoNumber)))) {
+				if (skipIsBoth && (
+					(m instanceof MendixObjectReference && ((MendixObjectReference) m).isBoth()) ||
+					(m instanceof MendixObjectReferenceSet && ((MendixObjectReferenceSet) m).isBoth())))
+					continue;
 				target.setValue(c, entry.getKey(), m.getValue(c));
 			}
 		}
