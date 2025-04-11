@@ -1,2 +1,2 @@
 - The StringFromFile Java action now removes BOM from strings. (Ticket #242904)
-- We have upgraded the Guava dependency to 33.4.7. This also removes the dependency on the jsr305 version 3.0.2 dependency, which triggered some code quality scanning tools.
+- We have upgraded the Guava dependency to 33.4.7. This also removes the dependency on the jsr305 version 3.0.2 dependency, which causes some code quality scanning tools to report issues.
