@@ -2,3 +2,4 @@
 - We have upgraded the Guava dependency to 33.4.7. This also removes the dependency on the jsr305 version 3.0.2 dependency, which causes some code quality scanning tools to report issues.
 - We have added a warning about possible deadlocks to the commitInSeparateDatabaseTransaction Java action.
 - We added the objectHasChangedMemberValue and memberHasChangedValue Java actions. These actions can be used to check if an object or member has a changed value that is different from the original value.
+- We added the ORM.cloneObject(IContext, IMendixObject, IMendixObject, Boolean, Boolean) method. This is an overload for the ORM.cloneObject with an extra Boolean parameter 'skipIsBoth' that can be used to skip 1-on-1 associations.
