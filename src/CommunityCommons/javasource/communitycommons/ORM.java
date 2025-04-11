@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import system.proxies.FileDocument;
 
 public class ORM {
 
@@ -46,6 +45,12 @@ public class ORM {
 		return anyobject.isChanged();
 	}
 
+	/** Returns true if any member has a value other than its original value. */
+	public static boolean objectHasChangedMemberValue(IContext context, IMendixObject object) {
+		if (object == null) throw new IllegalArgumentException("The provided object is empty");
+		return object.hasChangedMemberValue(context);
+	}
+
 	/**
 	 * checks whether a certain member of an object has changed. If the objects itself is still new,
 	 * we consider to be changes as well.
@@ -63,6 +68,13 @@ public class ORM {
 			throw new IllegalArgumentException("Unknown member: " + member);
 		}
 		return item.getMember(member).isChanged() || item.getState() != ObjectState.NORMAL;
+	}
+
+	/** Check if the value of the member was changed to something other than its original value. */
+	public static boolean memberHasChangedValue(IContext context, IMendixObject item, String member) {
+		if (item == null) throw new IllegalArgumentException("The provided object is empty");
+		if (!item.hasMember(member)) throw new IllegalArgumentException("Unknown member: " + member);
+		return item.getMember(member).isValueChanged(context);
 	}
 
 	public static void deepClone(IContext c, IMendixObject source, IMendixObject target, String membersToSkip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules) throws CoreException {
