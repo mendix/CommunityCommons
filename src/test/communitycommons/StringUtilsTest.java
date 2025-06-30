@@ -49,13 +49,22 @@ public class StringUtilsTest {
 	}
 
 	/**
-	 * Test of HTMLToPlainText method, of class StringUtils.
+	 * Tests of HTMLToPlainText method, of class StringUtils.
 	 */
 	@Test
 	public void testHTMLToPlainText() throws Exception {
 		System.out.println("HTMLToPlainText");
 		String html = "<html>Hello world</html>";
 		String expResult = "Hello world";
+		String result = StringUtils.HTMLToPlainText(html);
+		assertEquals(expResult, result);
+	}
+
+	@Test
+	public void testHTMLToPlainText_line_break() throws Exception {
+		System.out.println("HTMLToPlainText");
+		String html = "<html>Hello world<h1>header</h1><br><p>paragraph</p><hr><p>paragraph2</html>";
+		String expResult = "Hello worldheader\r\n\r\nparagraph\r\n\r\nparagraph2\r\n";
 		String result = StringUtils.HTMLToPlainText(html);
 		assertEquals(expResult, result);
 	}
