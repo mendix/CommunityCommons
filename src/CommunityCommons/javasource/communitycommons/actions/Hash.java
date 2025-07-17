@@ -14,10 +14,10 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Hashes a value using the SHA-256 hash algorithm. 
- * 
- * - value : the value to hash
- * 
+ * Hashes a value using the SHA-256 hash algorithm. 
+ * 
+ * - value : the value to hash
+ * 
  * Returns a SHA-256 hash of 'value'
  */
 public class Hash extends CustomJavaAction<java.lang.String>

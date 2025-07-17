@@ -15,8 +15,8 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Identical to SubstituteTemplate, but adds an datetimeformat argument
- * 
+ * Identical to SubstituteTemplate, but adds an datetimeformat argument
+ * 
  * DateTimeFormat identifies a format string which is applied to date/time based attributes. Can be left empty. Defaults to "EEE dd MMM yyyy, HH:mm"
  */
 public class SubstituteTemplate2 extends CustomJavaAction<java.lang.String>

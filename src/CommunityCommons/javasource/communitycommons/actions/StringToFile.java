@@ -17,7 +17,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Stores a string into the provided FileDocument, using the specified encoding.
+ * Stores a string into the provided FileDocument, using the specified encoding.
  * Note that destination will be committed.
  */
 public class StringToFile extends CustomJavaAction<java.lang.Boolean>

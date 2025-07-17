@@ -14,9 +14,9 @@ import com.mendix.webui.CustomJavaAction;
 import communitycommons.StringUtils;
 
 /**
- * Given a, escapes it to html codes, for example
- * 
- * "< Joe & John >" will be converted to 
+ * Given a, escapes it to html codes, for example
+ * 
+ * "< Joe & John >" will be converted to 
  * "&lt; Joe &amp; John &gt;"
  */
 public class EscapeHTML extends CustomJavaAction<java.lang.String>
