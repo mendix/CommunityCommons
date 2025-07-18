@@ -13,7 +13,7 @@ sourceCompatibility = '11'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 project.ext {
-    mendixPublicApiVersion = '9.18.0'
+    mendixPublicApiVersion = '9.24.36'
 }
 
 def mprDir = "$projectDir/src/CommunityCommons"
@@ -26,7 +26,7 @@ mxMarketplace {
     appDirectory = "src/CommunityCommons"
     versionPathPrefix = "_Version " // the path prefix within the module to the version folder
     createMigrationFile = true
-    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.2.0__READMEOSS.html"]
+    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.3.0__READMEOSS.html"]
 }
 
 def userLibDir = "$mprDir/userlib"
@@ -111,7 +111,7 @@ clean {
 release {
     tagTemplate = '$name-$version'
     git {
-        requireBranch = 'lts/9.18'
+        requireBranch = 'lts/9.24'
     }
 }
 

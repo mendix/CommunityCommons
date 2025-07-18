@@ -13,7 +13,7 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Left and right trims a string (that is; removes all surrounding whitespace characters such as tabs, spaces and returns). 
+ * Left and right trims a string (that is; removes all surrounding whitespace characters such as tabs, spaces and returns). 
  * Returns the empty string if value is the empty value. Returns the trimmed string otherwise.
  */
 public class StringTrim extends CustomJavaAction<java.lang.String>

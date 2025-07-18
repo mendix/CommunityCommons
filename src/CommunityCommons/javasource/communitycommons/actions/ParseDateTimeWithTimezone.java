@@ -19,7 +19,7 @@ import communitycommons.proxies.LogNodes;
 import java.text.ParseException;
 
 /**
- * This method parses a date from a string with a given pattern according to a specific timezone.
+ * This method parses a date from a string with a given pattern according to a specific timezone.
  * The timezone has to be a valid timezone id http://docs.oracle.com/javase/7/docs/api/java/util/TimeZone.html (e.g. one of https://garygregory.wordpress.com/2013/06/18/what-are-the-java-timezone-ids/) 
  */
 public class ParseDateTimeWithTimezone extends CustomJavaAction<java.util.Date>

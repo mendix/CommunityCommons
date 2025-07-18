@@ -1,0 +1,2 @@
+- We upgraded the Community Commons module to Mendix version 9.24.36.
+- We added the objectHasChangedMemberValue and memberHasChangedValue Java actions. These actions can be used to check if an object or member has a changed value that is different from the original value.

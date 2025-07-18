@@ -15,25 +15,25 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Returns true if at least one member (including owned associations) of this object has changed.
- * 
- * For Mendix < 9.5 this action keeps track of changes to the object except when 'changing to the same value'. For Mendix >= 9.5 this action keeps track of all changes. This is a result of a change of the underlying Mendix runtime-server behaviour. 
+ * Check if the value of the member was changed to something other than its original value.
  */
-public class objectHasChanged extends CustomJavaAction<java.lang.Boolean>
+public class memberHasChangedValue extends CustomJavaAction<java.lang.Boolean>
 {
 	private IMendixObject item;
+	private java.lang.String member;
 
-	public objectHasChanged(IContext context, IMendixObject item)
+	public memberHasChangedValue(IContext context, IMendixObject item, java.lang.String member)
 	{
 		super(context);
 		this.item = item;
+		this.member = member;
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.objectHasChanged(item);
+		return ORM.memberHasChangedValue(this.getContext(), item, member);
 		// END USER CODE
 	}
 
@@ -44,7 +44,7 @@ public class objectHasChanged extends CustomJavaAction<java.lang.Boolean>
 	@java.lang.Override
 	public java.lang.String toString()
 	{
-		return "objectHasChanged";
+		return "memberHasChangedValue";
 	}
 
 	// BEGIN EXTRA CODE

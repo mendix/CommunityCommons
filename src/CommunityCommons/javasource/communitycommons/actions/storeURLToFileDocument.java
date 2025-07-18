@@ -15,13 +15,13 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.webui.CustomJavaAction;
 
 /**
- * Retrieve a document from an URL using a HTTP GET request. 
- * - url : the URL to retrieve 
- * - document: the document to store the data into
- * - filename: the filename to store it under. Only for internal use, so it can be an arbitrary filename. 
- * 
- * Example URL: 'http://www.mendix.com/wordpress/wp-content/themes/mendix_new/images/mendix.png'
- * 
+ * Retrieve a document from an URL using a HTTP GET request. 
+ * - url : the URL to retrieve 
+ * - document: the document to store the data into
+ * - filename: the filename to store it under. Only for internal use, so it can be an arbitrary filename. 
+ * 
+ * Example URL: 'http://www.mendix.com/wordpress/wp-content/themes/mendix_new/images/mendix.png'
+ * 
  * NOTE: For images, no thumbnail will be generated.
  */
 public class storeURLToFileDocument extends CustomJavaAction<java.lang.Boolean>
