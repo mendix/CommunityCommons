@@ -277,6 +277,11 @@ public class XPathTest {
 		}
 
 		@Override
+		public boolean hasChangedMemberValue(IContext context) {
+			throw new UnsupportedOperationException("Unimplemented method 'hasChangedMemberValue'");
+		}
+
+		@Override
 		public boolean hasOwnerAttribute() {
 			throw new UnsupportedOperationException("Unimplemented method 'hasOwnerAttribute'");
 		}
@@ -327,6 +332,11 @@ public class XPathTest {
 		}
 
 		public TestObject clone() {
+			return new TestObject(id);
+		}
+
+		@Override
+		public TestObject createClone() {
 			return new TestObject(id);
 		}
 	}
