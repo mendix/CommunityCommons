@@ -1,0 +1,1 @@
+- We upgraded Commons-lang3 library to version 3.18.0 to resolve CVE-2025-48924. (Ticket 254671, 255184)
