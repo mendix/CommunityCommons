@@ -62,7 +62,7 @@ dependencies {
             [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
             [group: 'commons-io', name: 'commons-io', version: '2.17.0'],
             [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'],
-            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'],
+            [group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'],
             [group: 'org.apache.commons', name: 'commons-text', version: '1.10.0']
     )
 }
