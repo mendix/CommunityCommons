@@ -1,0 +1,2 @@
+- We upgraded the module to 10.24.0.
+- We fixed an issue where the module could not be used when Gradle synchronization was disabled.
