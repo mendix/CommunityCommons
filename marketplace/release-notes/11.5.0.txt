@@ -1,0 +1,7 @@
+- We upgraded guava to 33.5.0-jre
+- We upgraded owasp-java-html-sanitizer to 20240325.1
+- We upgraded commons-io to 2.21.0
+- We upgraded pdfbox to 3.0.6
+- We upgraded commons-lang3 to 3.20.0
+- We upgraded commons-text to 1.14.0
+- We added the pdfbox-io 3.0.6 dependency

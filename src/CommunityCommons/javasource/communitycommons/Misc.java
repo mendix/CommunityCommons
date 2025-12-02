@@ -36,6 +36,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.io.RandomAccessRead;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -629,12 +632,12 @@ public class Misc {
 	public static boolean mergePDF(IContext context, List<FileDocument> documents, IMendixObject mergedDocument) throws IOException {
 		if (getMergeMultiplePdfs_MaxAtOnce() <= 0 || documents.size() <= getMergeMultiplePdfs_MaxAtOnce()) {
 
-			List<InputStream> sources = new ArrayList<>();
+			List<RandomAccessRead> sources = new ArrayList<>();
 			try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 				PDFMergerUtility mergePdf = new PDFMergerUtility();
 
 				for (FileDocument file : documents) {
-					InputStream content = Core.getFileDocumentContent(context, file.getMendixObject());
+					RandomAccessRead content = new RandomAccessReadBuffer(Core.getFileDocumentContent(context, file.getMendixObject()));
 					sources.add(content);
 				}
 				mergePdf.addSources(sources);
@@ -648,7 +651,7 @@ public class Misc {
 			} catch (IOException e) {
 				throw new RuntimeException("Failed to merge documents" + e.getMessage(), e);
 			} finally { // We cannot use try-with-resources because streams would be prematurely closed
-				for (InputStream is : sources) {
+				for (RandomAccessRead is : sources) {
 					is.close();
 				}
 			}
@@ -675,8 +678,10 @@ public class Misc {
 	public static boolean overlayPdf(IContext context, IMendixObject generatedDocumentMendixObject, IMendixObject overlayMendixObject, boolean onTopOfContent) throws IOException {
 		Logging.trace(LOGNODE, "Retrieve generated document");
 		try (
-			PDDocument inputDoc = PDDocument.load(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
-			PDDocument overlayDoc = PDDocument.load(Core.getFileDocumentContent(context, overlayMendixObject));
+			RandomAccessRead generatedDocumentInput = new RandomAccessReadBuffer(Core.getFileDocumentContent(context, generatedDocumentMendixObject));
+			RandomAccessRead overlayInput = new RandomAccessReadBuffer(Core.getFileDocumentContent(context, overlayMendixObject));
+			PDDocument inputDoc = Loader.loadPDF(generatedDocumentInput);
+			PDDocument overlayDoc = Loader.loadPDF(overlayInput);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			Logging.trace(LOGNODE, "Overlay PDF start, retrieve overlay PDF");
 
