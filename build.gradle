@@ -26,7 +26,7 @@ mxMarketplace {
     appDirectory = "src/CommunityCommons"
     versionPathPrefix = "_Version " // the path prefix within the module to the version folder
     createMigrationFile = true
-    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.4.0__READMEOSS.html"]
+    includeFiles = ["$mprDir/License.txt", "$mprDir/SiemensMendixCommunityCommons__10.4.1__READMEOSS.html"]
 }
 
 def userLibDir = "$mprDir/userlib"
@@ -59,7 +59,7 @@ dependencies {
 
     implementation(
             [group: 'com.google.guava', name: 'guava', version: '33.4.7-jre'],
-            [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20211018.2'],
+            [group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: '20260101.1'],
             [group: 'commons-io', name: 'commons-io', version: '2.17.0'],
             [group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'],
             [group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'],
