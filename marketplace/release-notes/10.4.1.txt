@@ -1,0 +1,1 @@
+- We upgraded owasp-java-html-sanitizer to 20260101.1
