@@ -53,15 +53,11 @@ public class StringUtils {
 	static final String SPECIAL = stringRange('!', '/');
 	private static final String ALPHANUMERIC = UPPERCASE_ALPHA + LOWERCASE_ALPHA + DIGITS;
 
-	static final Map<String, PolicyFactory> SANITIZER_POLICIES =
-		Map.ofEntries(
+	static final Map<String, PolicyFactory> SANITIZER_POLICIES = Map.ofEntries(
 			new SimpleEntry<>(BLOCKS.name(), Sanitizers.BLOCKS),
 			new SimpleEntry<>(FORMATTING.name(), Sanitizers.FORMATTING),
-			new SimpleEntry<>(IMAGES.name(), Sanitizers.IMAGES),
-			new SimpleEntry<>(LINKS.name(), Sanitizers.LINKS),
-			new SimpleEntry<>(STYLES.name(), Sanitizers.STYLES),
-			new SimpleEntry<>(TABLES.name(), Sanitizers.TABLES)
-		);
+			new SimpleEntry<>(IMAGES.name(), Sanitizers.IMAGES), new SimpleEntry<>(LINKS.name(), Sanitizers.LINKS),
+			new SimpleEntry<>(STYLES.name(), Sanitizers.STYLES), new SimpleEntry<>(TABLES.name(), Sanitizers.TABLES));
 
 	public static final String HASH_ALGORITHM = "SHA-256";
 
@@ -93,16 +89,17 @@ public class StringUtils {
 	}
 
 	/**
-	 * The default replaceAll microflow function doesn't support capture variables such as $1, $2
-	 * etc. so for that reason we do not deprecate this method.
+	 * The default replaceAll microflow function doesn't support capture variables
+	 * such as $1, $2 etc. so for that reason we do not deprecate this method.
 	 *
 	 * @param haystack    The string to replace patterns in
 	 * @param needleRegex The regular expression pattern
-	 * @param replacement The string that should come in place of the pattern matches.
-	 * @return The resulting string, where all matches have been replaced by the replacement.
+	 * @param replacement The string that should come in place of the pattern
+	 *                    matches.
+	 * @return The resulting string, where all matches have been replaced by the
+	 *         replacement.
 	 */
-	public static String regexReplaceAll(String haystack, String needleRegex,
-										 String replacement) {
+	public static String regexReplaceAll(String haystack, String needleRegex, String replacement) {
 		Pattern pattern = Pattern.compile(needleRegex);
 		Matcher matcher = pattern.matcher(haystack);
 		return matcher.replaceAll(replacement);
@@ -126,8 +123,8 @@ public class StringUtils {
 		return randomStringFromCharArray(length, ALPHANUMERIC.toCharArray());
 	}
 
-	public static String substituteTemplate(final IContext context, String template,
-											final IMendixObject substitute, final boolean HTMLEncode, final String datetimeformat) {
+	public static String substituteTemplate(final IContext context, String template, final IMendixObject substitute,
+			final boolean HTMLEncode, final String datetimeformat) {
 		return regexReplaceAll(template, "\\{(@)?([\\w./]+)\\}", (MatchResult match) -> {
 			String value;
 			String path = match.group(2);
@@ -144,7 +141,8 @@ public class StringUtils {
 		});
 	}
 
-	public static String regexReplaceAll(String source, String regexString, Function<MatchResult, String> replaceFunction) {
+	public static String regexReplaceAll(String source, String regexString,
+			Function<MatchResult, String> replaceFunction) {
 		if (source == null || source.trim().isEmpty()) // avoid NPE's, save CPU
 		{
 			return "";
@@ -214,6 +212,25 @@ public class StringUtils {
 		}
 	}
 
+	public static String stringFromFileUtf8Bom(IContext context, FileDocument source) throws IOException {
+		if (source == null) {
+			return null;
+		}
+
+		// Read using normal UTF‑8
+		String value = stringFromFile(context, source, StandardCharsets.UTF_8);
+		if (value == null || value.isEmpty()) {
+			return value;
+		}
+
+		// Remove BOM character (U+FEFF) if present at the beginning
+		if (value.charAt(0) == '\uFEFF') {
+			return value.substring(1);
+		}
+
+		return value;
+	}
+
 	public static String stringFromFile(IContext context, FileDocument source) throws IOException {
 		return stringFromFile(context, source, StandardCharsets.UTF_8);
 	}
@@ -231,11 +248,25 @@ public class StringUtils {
 		return IOUtils.toString(BOMInputStream.builder().setInputStream(inputStream).get(), charset);
 	}
 
+	public static void stringToFileUtf8Bom(IContext context, String value, FileDocument destination)
+			throws IOException {
+		if (destination == null) {
+			throw new IllegalArgumentException("Destination file is null");
+		}
+		if (value == null) {
+			throw new IllegalArgumentException("Value to write is null");
+		}
+
+		// Prepend BOM as U+FEFF, then write with standard UTF-8
+		stringToFile(context, "\uFEFF" + value, destination, StandardCharsets.UTF_8);
+	}
+
 	public static void stringToFile(IContext context, String value, FileDocument destination) throws IOException {
 		stringToFile(context, value, destination, StandardCharsets.UTF_8);
 	}
 
-	public static void stringToFile(IContext context, String value, FileDocument destination, Charset charset) throws IOException {
+	public static void stringToFile(IContext context, String value, FileDocument destination, Charset charset)
+			throws IOException {
 		if (destination == null) {
 			throw new IllegalArgumentException("Destination file is null");
 		}
@@ -281,30 +312,32 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns a random strong password containing a specified minimum number of uppercase, digits
-	 * and the exact number of special characters.
+	 * Returns a random strong password containing a specified minimum number of
+	 * uppercase, digits and the exact number of special characters.
 	 *
 	 * @param minLen        Minimum length
 	 * @param maxLen        Maximum length
 	 * @param noOfCAPSAlpha Minimum number of capitals
 	 * @param noOfDigits    Minimum number of digits
 	 * @param noOfSplChars  Exact number of special characters
-	 * @deprecated          Use the overload randomStrongPassword instead
+	 * @deprecated Use the overload randomStrongPassword instead
 	 */
 	@Deprecated
-	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfDigits, int noOfSplChars) {
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfDigits,
+			int noOfSplChars) {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
 		if ((noOfCAPSAlpha + noOfDigits + noOfSplChars) > minLen) {
-			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
+			throw new IllegalArgumentException(
+					"Min. Length should be atleast sum of (CAPS, DIGITS, SPL CHARS) Length!");
 		}
 		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, 0, noOfDigits, noOfSplChars);
 	}
 
 	/**
-	 * Returns a random strong password containing a specified minimum number of uppercase, lowercase, digits
-	 * and the exact number of special characters.
+	 * Returns a random strong password containing a specified minimum number of
+	 * uppercase, lowercase, digits and the exact number of special characters.
 	 *
 	 * @param minLen             Minimum length
 	 * @param maxLen             Maximum length
@@ -313,19 +346,24 @@ public class StringUtils {
 	 * @param noOfDigits         Minimum number of digits
 	 * @param noOfSplChars       Exact number of special characters
 	 */
-	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfLowercaseAlpha, int noOfDigits, int noOfSplChars) {
+	public static String randomStrongPassword(int minLen, int maxLen, int noOfCAPSAlpha, int noOfLowercaseAlpha,
+			int noOfDigits, int noOfSplChars) {
 		if (minLen > maxLen) {
 			throw new IllegalArgumentException("Min. Length > Max. Length!");
 		}
 		if ((noOfCAPSAlpha + noOfLowercaseAlpha + noOfDigits + noOfSplChars) > minLen) {
-			throw new IllegalArgumentException("Min. Length should be atleast sum of (CAPS, LOWER, DIGITS, SPL CHARS) Length!");
+			throw new IllegalArgumentException(
+					"Min. Length should be atleast sum of (CAPS, LOWER, DIGITS, SPL CHARS) Length!");
 		}
 		return generateCommonLangPassword(minLen, maxLen, noOfCAPSAlpha, noOfLowercaseAlpha, noOfDigits, noOfSplChars);
 	}
 
 	// See https://www.baeldung.com/java-generate-secure-password
-	// Implementation inspired by https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis (under MIT license)
-	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfLowercaseAlpha, int noOfDigits, int noOfSplChars) {
+	// Implementation inspired by
+	// https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-string-apis
+	// (under MIT license)
+	private static String generateCommonLangPassword(int minLen, int maxLen, int noOfCapsAlpha, int noOfLowercaseAlpha,
+			int noOfDigits, int noOfSplChars) {
 		String upperCaseLetters = randomStringFromCharArray(noOfCapsAlpha, UPPERCASE_ALPHA.toCharArray());
 		String lowerCaseLetters = randomStringFromCharArray(noOfLowercaseAlpha, LOWERCASE_ALPHA.toCharArray());
 		String numbers = randomStringFromCharArray(noOfDigits, DIGITS.toCharArray());
@@ -336,29 +374,24 @@ public class StringUtils {
 		final int upperBound = maxLen - fixedNumber;
 		String totalChars = randomStringFromCharArray(lowerBound, upperBound, ALPHANUMERIC.toCharArray());
 
-		String combinedChars = upperCaseLetters
-			.concat(lowerCaseLetters)
-			.concat(numbers)
-			.concat(specialChar)
-			.concat(totalChars);
-		List<Character> pwdChars = combinedChars.chars()
-			.mapToObj(c -> (char) c)
-			.collect(Collectors.toList());
+		String combinedChars = upperCaseLetters.concat(lowerCaseLetters).concat(numbers).concat(specialChar)
+				.concat(totalChars);
+		List<Character> pwdChars = combinedChars.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 		Collections.shuffle(pwdChars);
-		String password = pwdChars.stream()
-			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-			.toString();
+		String password = pwdChars.stream().collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+				.toString();
 		return password;
 	}
 
 	/**
-	 * Generate a secure random string using the given array of characters, of which the resulting
-	 * string will be composed of.
+	 * Generate a secure random string using the given array of characters, of which
+	 * the resulting string will be composed of.
 	 *
 	 * @param count        The length of the random string.
 	 * @param allowedChars The characters used for constructing the random string.
 	 * @return A random string.
-	 * @throws IllegalArgumentException if <code>count</code> is negative or <code>allowedChars</code> is null or empty.
+	 * @throws IllegalArgumentException if <code>count</code> is negative or
+	 *                                  <code>allowedChars</code> is null or empty.
 	 */
 	private static String randomStringFromCharArray(int count, final char[] allowedChars) {
 		if (count == 0)
@@ -381,33 +414,44 @@ public class StringUtils {
 	}
 
 	/**
-	 * Generate a random string with a random length between <code>minLengthBound</code> and <code>maxLengthBound</code> (inclusive),
+	 * Generate a random string with a random length between
+	 * <code>minLengthBound</code> and <code>maxLengthBound</code> (inclusive),
 	 * using the given set of allowed characters.
 	 *
 	 * @param minLengthBound The lower bound for the random length of the string.
 	 * @param maxLengthBound The upper bound for the random length of the string.
-	 * @param allowedChars   An array of characters of which the resulting string will be made up of.
-	 * @return A random string with a length between <code>minLengthBound</code> and <code>maxLengthBound</code>.
-	 * @throws IllegalArgumentException if <code>minLengthBound</code> is larger than <code>maxLengthBound</code>.
+	 * @param allowedChars   An array of characters of which the resulting string
+	 *                       will be made up of.
+	 * @return A random string with a length between <code>minLengthBound</code> and
+	 *         <code>maxLengthBound</code>.
+	 * @throws IllegalArgumentException if <code>minLengthBound</code> is larger
+	 *                                  than <code>maxLengthBound</code>.
 	 */
 	private static String randomStringFromCharArray(int minLengthBound, int maxLengthBound, final char[] allowedChars) {
 		if (minLengthBound == maxLengthBound)
 			return randomStringFromCharArray(minLengthBound, allowedChars);
 		if (minLengthBound > maxLengthBound)
-			throw new IllegalArgumentException("The minimum bound (" + minLengthBound + ") was larger than the maximum bound (" + maxLengthBound + ".");
-		final int randomLength = minLengthBound + RANDOM.nextInt(maxLengthBound - minLengthBound + 1); // add one to make the range inclusive.
+			throw new IllegalArgumentException("The minimum bound (" + minLengthBound
+					+ ") was larger than the maximum bound (" + maxLengthBound + ".");
+		final int randomLength = minLengthBound + RANDOM.nextInt(maxLengthBound - minLengthBound + 1); // add one to
+																										// make the
+																										// range
+																										// inclusive.
 		return randomStringFromCharArray(randomLength, allowedChars);
 	}
 
 	/**
-	 * Produces a 'range' string starting from the <code>begin</code> character up to
-	 * the <code>end</code> character (inclusive range). For example, for the range (a-z),
-	 * this method will generate the lowercase alphabet.
+	 * Produces a 'range' string starting from the <code>begin</code> character up
+	 * to the <code>end</code> character (inclusive range). For example, for the
+	 * range (a-z), this method will generate the lowercase alphabet.
 	 *
 	 * @param begin The starting point of the string.
 	 * @param end   The ending point of the string.
-	 * @return A string from <code>begin</code> to <code>end</code> (inclusive range).
-	 * @throws IllegalArgumentException if the <code>begin</code> character has a higher code point than the <code>end</code> character.
+	 * @return A string from <code>begin</code> to <code>end</code> (inclusive
+	 *         range).
+	 * @throws IllegalArgumentException if the <code>begin</code> character has a
+	 *                                  higher code point than the <code>end</code>
+	 *                                  character.
 	 */
 	private static String stringRange(char begin, char end) {
 		if (begin > end) {
@@ -420,7 +464,8 @@ public class StringUtils {
 		return builder.toString();
 	}
 
-	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt) throws UnsupportedEncodingException, IllegalStateException, InvalidKeyException, NoSuchAlgorithmException {
+	private static byte[] generateHmacSha256Bytes(String key, String valueToEncrypt)
+			throws UnsupportedEncodingException, IllegalStateException, InvalidKeyException, NoSuchAlgorithmException {
 		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
 		Mac mac = Mac.getInstance("HmacSHA256");
 		mac.init(secretKey);
@@ -438,7 +483,8 @@ public class StringUtils {
 				result.append(String.format("%02x", b));
 			}
 			return result.toString();
-		} catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
+		} catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException
+				| NoSuchAlgorithmException e) {
 			throw new RuntimeException("CommunityCommons::generateHmacSha256::Unable to encode: " + e.getMessage(), e);
 		}
 	}
@@ -446,18 +492,19 @@ public class StringUtils {
 	public static String generateHmacSha256Hash(String key, String valueToEncrypt) {
 		try {
 			return Base64.getEncoder().encodeToString(generateHmacSha256Bytes(key, valueToEncrypt));
-		} catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException | NoSuchAlgorithmException e) {
-			throw new RuntimeException("CommunityCommons::generateHmacSha256Hash::Unable to encode: " + e.getMessage(), e);
+		} catch (UnsupportedEncodingException | IllegalStateException | InvalidKeyException
+				| NoSuchAlgorithmException e) {
+			throw new RuntimeException("CommunityCommons::generateHmacSha256Hash::Unable to encode: " + e.getMessage(),
+					e);
 		}
 	}
 
 	public static String escapeHTML(String input) {
-		return input.replace("&", "&amp;")
-			.replace("<", "&lt;")
-			.replace(">", "&gt;")
-			.replace("\"", "&quot;")
-			.replace("'", "&#39;");// notice this one: for xml "&#39;" would be "&apos;" (http://blogs.msdn.com/b/kirillosenkov/archive/2010/03/19/apos-is-in-xml-in-html-use-39.aspx)
-		// OWASP also advises to escape "/" but give no convincing reason why: https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet
+		return input.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
+				.replace("'", "&#39;");// notice this one: for xml "&#39;" would be "&apos;"
+										// (http://blogs.msdn.com/b/kirillosenkov/archive/2010/03/19/apos-is-in-xml-in-html-use-39.aspx)
+		// OWASP also advises to escape "/" but give no convincing reason why:
+		// https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet
 	}
 
 	public static String regexQuote(String unquotedLiteral) {

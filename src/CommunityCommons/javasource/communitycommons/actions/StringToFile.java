@@ -47,6 +47,12 @@ public class StringToFile extends UserAction<java.lang.Boolean>
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
+
+		if (this.encoding == communitycommons.proxies.StandardEncodings.UTF_8_BOM) {
+			StringUtils.stringToFileUtf8Bom(getContext(), value, destination);
+			return true;
+		}
+
 		Charset charset = StandardCharsets.UTF_8;
 		if (this.encoding != null)
 			charset = Charset.forName(this.encoding.name().replace('_', '-'));

@@ -17,22 +17,17 @@ import com.mendix.systemwideinterfaces.core.IContext;
 import com.mendix.systemwideinterfaces.core.UserAction;
 
 /**
- * Reads the contents form the provided file document, using the specified encoding, and returns it as string.
+ * Reads the contents form the provided file document, using the specified
+ * encoding, and returns it as string.
  */
-public class StringFromFile extends UserAction<java.lang.String>
-{
+public class StringFromFile extends UserAction<java.lang.String> {
 	/** @deprecated use source.getMendixObject() instead. */
 	@java.lang.Deprecated(forRemoval = true)
 	private final IMendixObject __source;
 	private final system.proxies.FileDocument source;
 	private final communitycommons.proxies.StandardEncodings encoding;
 
-	public StringFromFile(
-		IContext context,
-		IMendixObject _source,
-		java.lang.String _encoding
-	)
-	{
+	public StringFromFile(IContext context, IMendixObject _source, java.lang.String _encoding) {
 		super(context);
 		this.__source = _source;
 		this.source = _source == null ? null : system.proxies.FileDocument.initialize(getContext(), _source);
@@ -40,9 +35,13 @@ public class StringFromFile extends UserAction<java.lang.String>
 	}
 
 	@java.lang.Override
-	public java.lang.String executeAction() throws Exception
-	{
+	public java.lang.String executeAction() throws Exception {
 		// BEGIN USER CODE
+
+		if (this.encoding == communitycommons.proxies.StandardEncodings.UTF_8_BOM) {
+			return StringUtils.stringFromFileUtf8Bom(getContext(), source);
+		}
+
 		Charset charset = StandardCharsets.UTF_8;
 		if (this.encoding != null)
 			charset = Charset.forName(this.encoding.name().replace('_', '-'));
@@ -52,11 +51,11 @@ public class StringFromFile extends UserAction<java.lang.String>
 
 	/**
 	 * Returns a string representation of this action
+	 * 
 	 * @return a string representation of this action
 	 */
 	@java.lang.Override
-	public java.lang.String toString()
-	{
+	public java.lang.String toString() {
 		return "StringFromFile";
 	}
 
