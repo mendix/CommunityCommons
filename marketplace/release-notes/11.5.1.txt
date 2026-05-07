@@ -1,0 +1,1 @@
+We upgraded pdfbox to 3.0.7
