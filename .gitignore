@@ -41,3 +41,6 @@ private/cache/retriever/catalog.xml
 /src/CommunityCommons/themesource/
 /src/CommunityCommons/userlib/
 /src/CommunityCommons/vendorlib/
+
+/src/CommunityCommons/.mxcli/
+/test-scenarios/

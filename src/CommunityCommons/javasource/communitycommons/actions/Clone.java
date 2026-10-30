@@ -28,25 +28,31 @@ public class Clone extends UserAction<java.lang.Boolean>
 	private final IMendixObject source;
 	private final IMendixObject target;
 	private final java.lang.Boolean withAssociations;
+	private final java.lang.Boolean includeSystemAttributes;
+	private final java.lang.String excludeAttributes;
 
 	public Clone(
 		IContext context,
 		IMendixObject _source,
 		IMendixObject _target,
-		java.lang.Boolean _withAssociations
+		java.lang.Boolean _withAssociations,
+		java.lang.Boolean _includeSystemAttributes,
+		java.lang.String _excludeAttributes
 	)
 	{
 		super(context);
 		this.source = _source;
 		this.target = _target;
 		this.withAssociations = _withAssociations;
+		this.includeSystemAttributes = _includeSystemAttributes;
+		this.excludeAttributes = _excludeAttributes;
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		return ORM.cloneObject(this.getContext(), source, target, withAssociations);
+		return ORM.cloneObject(this.getContext(), source, target, withAssociations, includeSystemAttributes, excludeAttributes);
 		// END USER CODE
 	}
 

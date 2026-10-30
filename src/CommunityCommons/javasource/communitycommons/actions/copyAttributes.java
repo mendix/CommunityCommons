@@ -23,23 +23,29 @@ public class copyAttributes extends UserAction<java.lang.Boolean>
 {
 	private final IMendixObject source;
 	private final IMendixObject target;
+	private final java.lang.Boolean includeSystemAttributes;
+	private final java.lang.String excludeAttributes;
 
 	public copyAttributes(
 		IContext context,
 		IMendixObject _source,
-		IMendixObject _target
+		IMendixObject _target,
+		java.lang.Boolean _includeSystemAttributes,
+		java.lang.String _excludeAttributes
 	)
 	{
 		super(context);
 		this.source = _source;
 		this.target = _target;
+		this.includeSystemAttributes = _includeSystemAttributes;
+		this.excludeAttributes = _excludeAttributes;
 	}
 
 	@java.lang.Override
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
-		ORM.copyAttributes(getContext(), source, target);
+		ORM.copyAttributes(getContext(), source, target, includeSystemAttributes, excludeAttributes);
 		return true;
 		// END USER CODE
 	}

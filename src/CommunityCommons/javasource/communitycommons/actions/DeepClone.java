@@ -70,14 +70,16 @@ public class DeepClone extends UserAction<java.lang.Boolean>
 	public java.lang.Boolean executeAction() throws Exception
 	{
 		// BEGIN USER CODE
+
 		java.lang.String membersToSkip       = this.membersToSkip == null       ? "" : this.membersToSkip;
 		java.lang.String membersToKeep       = this.membersToKeep == null       ? "" : this.membersToKeep;
 		java.lang.String reverseAssociations = this.reverseAssociations == null ? "" : this.reverseAssociations;
 		java.lang.String excludeEntities     = this.excludeEntities == null     ? "" : this.excludeEntities;
 		java.lang.String excludeModules      = this.excludeModules == null      ? "" : this.excludeModules;
-
+		
 		ORM.deepClone(getContext(), source, target, membersToSkip, membersToKeep, reverseAssociations, excludeEntities, excludeModules);
 		return true;
+
 		// END USER CODE
 	}
 

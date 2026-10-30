@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ORM {
 
@@ -79,6 +81,19 @@ public class ORM {
 
 	public static void deepClone(IContext c, IMendixObject source, IMendixObject target, String membersToSkip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules) throws CoreException {
 		List<String> toskip = Arrays.asList((membersToSkip + ",createdDate,changedDate").split(","));
+		deepClone(c, source, target, toskip, membersToKeep, reverseAssociations, excludeEntities, excludeModules);
+	}
+
+	/**
+	 * Like deepClone, but createdDate is copied as well. __UUID__, owner and changedBy are copied too.
+	 * changedDate is not preserved: the clone is committed, and a commit sets changedDate to the current time.
+	 */
+	public static void deepCloneWithSystemAttributes(IContext c, IMendixObject source, IMendixObject target, String membersToSkip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules) throws CoreException {
+		List<String> toskip = Arrays.asList(membersToSkip.split(","));
+		deepClone(c, source, target, toskip, membersToKeep, reverseAssociations, excludeEntities, excludeModules);
+	}
+
+	private static void deepClone(IContext c, IMendixObject source, IMendixObject target, List<String> toskip, String membersToKeep, String reverseAssociations, String excludeEntities, String excludeModules) throws CoreException {
 		List<String> tokeep = Arrays.asList((membersToKeep + ",System.owner,System.changedBy").split(","));
 		List<String> revAssoc = Arrays.asList(reverseAssociations.split(","));
 		List<String> skipEntities = Arrays.asList(excludeEntities.split(","));
@@ -281,6 +296,20 @@ public class ORM {
 
 	public static Boolean cloneObject(IContext c, IMendixObject source,
 		IMendixObject target, Boolean withAssociations, Boolean skipIsBoth) {
+		return cloneObject(c, source, target, withAssociations, skipIsBoth, true, new HashSet<String>());
+	}
+
+	/**
+	 * When includeSystemAttributes is false, __UUID__, createdDate, changedDate, owner and changedBy are not copied.
+	 * excludeAttributes is a comma separated list of member names that are not copied. A null includeSystemAttributes is treated as true.
+	 */
+	public static Boolean cloneObject(IContext c, IMendixObject source,
+		IMendixObject target, Boolean withAssociations, Boolean includeSystemAttributes, String excludeAttributes) {
+		return cloneObject(c, source, target, withAssociations, false, !Boolean.FALSE.equals(includeSystemAttributes), parseAttributeList(excludeAttributes));
+	}
+
+	private static Boolean cloneObject(IContext c, IMendixObject source,
+		IMendixObject target, Boolean withAssociations, Boolean skipIsBoth, boolean includeSystemAttributes, Set<String> excludeAttributes) {
 		Map<String, ? extends IMendixObjectMember<?>> members = source.getMembers(c);
 
 		for (var entry : members.entrySet()) {
@@ -292,6 +321,9 @@ public class ORM {
 				continue;
 			}
 			if ("__UUID__".equals(m.getName()) && (isFileDocument(source) || isFileDocument(target))) {
+				continue;
+			}
+			if (isExcluded(entry.getKey(), includeSystemAttributes, excludeAttributes)) {
 				continue;
 			}
 			if (withAssociations || ((!(m instanceof MendixObjectReference) && !(m instanceof MendixObjectReferenceSet) && !(m instanceof MendixAutoNumber)))) {
@@ -355,13 +387,43 @@ public class ORM {
 		}
 	}
 
+	private static final Set<String> SYSTEM_ATTRIBUTES = Set.of("__UUID__", "createdDate", "changedDate", "owner", "changedBy", "System.owner", "System.changedBy");
+
+	private static Set<String> parseAttributeList(String attributes) {
+		Set<String> result = new HashSet<String>();
+		if (attributes != null) {
+			for (String attribute : attributes.split(",")) {
+				String trimmed = attribute.trim();
+				if (!trimmed.isEmpty()) {
+					result.add(trimmed);
+				}
+			}
+		}
+		return result;
+	}
+
+	private static boolean isExcluded(String member, boolean includeSystemAttributes, Set<String> excludeAttributes) {
+		return excludeAttributes.contains(member) || (!includeSystemAttributes && SYSTEM_ATTRIBUTES.contains(member));
+	}
+
 	public static void copyAttributes(IContext context, IMendixObject source, IMendixObject target) {
+		copyAttributes(context, source, target, true, null);
+	}
+
+	/**
+	 * When includeSystemAttributes is false, __UUID__, createdDate, changedDate, owner and changedBy are not copied.
+	 * excludeAttributes is a comma separated list of attribute names that are not copied. A null includeSystemAttributes is treated as true.
+	 */
+	public static void copyAttributes(IContext context, IMendixObject source, IMendixObject target, Boolean includeSystemAttributes, String excludeAttributes) {
 		if (source == null) {
 			throw new IllegalStateException("source is null");
 		}
 		if (target == null) {
 			throw new IllegalStateException("target is null");
 		}
+
+		boolean includeSystem = !Boolean.FALSE.equals(includeSystemAttributes);
+		Set<String> excluded = parseAttributeList(excludeAttributes);
 
 		for (IMetaPrimitive e : target.getMetaObject().getMetaPrimitives()) {
 			if (!source.hasMember(e.getName())) {
@@ -371,6 +433,9 @@ public class ORM {
 				continue;
 			}
 			if ("__UUID__".equals(e.getName()) && (isFileDocument(source) || isFileDocument(target))) {
+				continue;
+			}
+			if (isExcluded(e.getName(), includeSystem, excluded)) {
 				continue;
 			}
 
