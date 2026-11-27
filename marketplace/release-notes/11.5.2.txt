@@ -1,0 +1,1 @@
+- We removed the guava library (and its dependencies), which is no longer needed, to resolve CVE-2026-102554

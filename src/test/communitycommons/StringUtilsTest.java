@@ -211,4 +211,10 @@ public class StringUtilsTest {
 	private InputStream stringToInputStream(String str, Charset charset) {
 		return new ByteArrayInputStream(str.getBytes(charset));
 	}
+
+	@Test
+	public void sanitizeHTMLStripsScriptAndKeepsFormatting() {
+		String result = StringUtils.sanitizeHTML("<b>bold</b><script>alert(1)</script>", java.util.Arrays.asList(communitycommons.proxies.SanitizerPolicy.FORMATTING));
+		assertEquals("<b>bold</b>", result);
+	}
 }
